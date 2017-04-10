@@ -1,0 +1,35 @@
+<div
+	class="dq-flex-container flex-column dq-input-wrapper"
+	[ngClass]="[color, (labelType) ? labelType : '', (isTextArea) ? 'dq-textarea' : '']">
+	<span class="input-label">
+		{{ label }}
+	</span>
+	<span *ngIf="labelHelper" class="label-helper">
+		<span *ngIf="charMax">{{ charsLeft }}</span>
+		{{ labelHelper }}
+	</span>
+	<input
+		tappable
+		*ngIf="!isTextArea"
+		[type]="type"
+		[maxlength]="charMax"
+		[(ngModel)]="value"
+		float-label
+		[isFloating]="labelType === 'float'"
+		[hasValue]="value"
+		(focus)="onFocus()"
+		(keyup)="onKeyup($event)"
+	/>
+	<textarea
+		*ngIf="isTextArea"
+		[maxlength]="charMax"
+		[(ngModel)]="value"
+		float-label
+		[isFloating]="labelType === 'float'"
+		[hasValue]="value"
+		(focus)="onFocus()"
+		(keyup)="onKeyup($event)"
+		cols="30"
+		rows="10">
+	</textarea>
+</div>

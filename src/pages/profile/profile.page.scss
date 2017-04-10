@@ -1,0 +1,13 @@
+profile-page {
+  ion-content {
+    background: linear-gradient(180deg, rgba(59,50,71, 0.85) 40%, rgba(59,50,71, 0.85)),
+    url('../assets/img/auth_background.png') no-repeat 10% center / cover;
+  }
+
+  ion-navbar {
+    .bar-buttons,
+    .toolbar-title {
+      color: #d8d8d8;
+    }
+  }
+}

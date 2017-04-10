@@ -1,0 +1,118 @@
+<ion-header></ion-header>
+
+<ion-content>
+	<ion-toolbar transparent></ion-toolbar>
+
+	<div class="dq-flex-container flex-column auth-page-wrapper">
+		<div class="dq-flex-container flex-column center auth-page-header">
+			<div class="img-wrapper">
+				<div class="img-inner-wrapper">
+					<img src="assets/img/logo_light.png" alt="devquiz logo">
+				</div>
+			</div>
+		</div>
+
+		<div class="ia-flex-container flex-column segment-wrapper">
+			<ion-segment mode="md" [(ngModel)]="formType">
+				<ion-segment-button value="register" (ionSelect)="onRegisterBtnClick()">
+					Register
+				</ion-segment-button>
+				<ion-segment-button value="login" (ionSelect)="onSignInBtnClick()">
+					Sign In
+				</ion-segment-button>
+			</ion-segment>
+		</div>
+
+		<form
+			(ngSubmit)="submitAuthForm()"
+			#authForm="ngForm">
+
+			<div class="dq-flex-container flex-column">
+				<input-cmp
+					[label]="'Email'"
+					[labelType]="labelType.float"
+					[type]="inputType.email"
+					[color]="inputColor.light"
+					[error]="authError"
+					[(ngModel)]="email"
+					(clearError)="onClearError()"
+					name="email"
+					required>
+				</input-cmp>
+			</div>
+
+			<div class="dq-flex-container flex-column">
+				<input-cmp
+					[label]="'Password'"
+					[labelType]="labelType.float"
+					[type]="inputType.password"
+					[color]="inputColor.light"
+					[error]="authError"
+					[(ngModel)]="password"
+					(clearError)="onClearError()"
+					name="password"
+					required>
+				</input-cmp>
+			</div>
+
+			<div *ngIf="formType === 'register'" class="dq-flex-container flex-column">
+				<input-cmp
+					[label]="'Username'"
+					[labelType]="labelType.float"
+					[type]="inputType.text"
+					[color]="inputColor.light"
+					[error]="authError"
+					[(ngModel)]="userName"
+					(clearError)="onClearError()"
+					name="userName"
+					required>
+				</input-cmp>
+			</div>
+
+			<!--<div *ngIf="formType === 'register'" class="dq-flex-container flex-column">-->
+				<!--<input-cmp-->
+					<!--[label]="'First Name'"-->
+					<!--[labelType]="labelType.float"-->
+					<!--[type]="inputType.text"-->
+					<!--[name]="'firstName'"-->
+					<!--[color]="inputColor.light"-->
+					<!--[(model)]="firstName"-->
+					<!--[error]="authError"-->
+					<!--[required]="true"-->
+					<!--(clearError)="onClearError()">-->
+				<!--</input-cmp>-->
+			<!--</div>-->
+
+			<!--<div *ngIf="formType === 'register'" class="dq-flex-container flex-column">-->
+				<!--<input-cmp-->
+					<!--[label]="'Last Name'"-->
+					<!--[labelType]="labelType.float"-->
+					<!--[type]="inputType.text"-->
+					<!--[name]="'lastName'"-->
+					<!--[color]="inputColor.light"-->
+					<!--[(model)]="lastName"-->
+					<!--[error]="authError"-->
+					<!--[required]="true"-->
+					<!--(clearError)="onClearError()">-->
+				<!--</input-cmp>-->
+			<!--</div>-->
+
+			<div *ngIf="authError" class="dq-flex-container form-error">
+				<span>{{authError.message}}</span>
+			</div>
+
+			<div class="dq-flex-container auth-btn-wrapper">
+				<button
+					ion-button
+					full
+					color="secondary"
+					type="submit"
+					class="auth-btn block"
+					[disabled]="!authForm.form.valid || error">
+					Submit
+				</button>
+			</div>
+		</form>
+
+	</div>
+</ion-content>

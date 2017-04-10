@@ -1,0 +1,43 @@
+profile-edit-cmp {
+  .bar-button {
+    ion-icon {
+      font-size: 3rem !important;
+    }
+  }
+
+  .profile-edit-content-wrapper {
+    padding: 20px;
+  }
+
+  .dq-form-group {
+    &:nth-of-type(2),
+    &:nth-of-type(3) {
+      margin-top: 10px;
+    }
+  }
+
+  .form-error {
+    background: map_get($colors, tertiary);
+    align-items: center;
+    color: #fff;
+    padding: 0 10px;
+    height: 42px;
+    border-radius: 3px;
+    margin: 8px 0 10px;
+  }
+}
+
+.user-update-alert {
+  .alert-head,
+  .alert-message {
+    text-align: center;
+  }
+
+  .alert-head {
+    padding-bottom: 5px;
+  }
+
+  .alert-message {
+    padding-bottom: 0;
+  }
+}

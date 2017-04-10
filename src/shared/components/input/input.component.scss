@@ -1,0 +1,162 @@
+.dq-input-wrapper {
+  height: 64px;
+  justify-content: flex-end;
+  position: relative;
+  margin-bottom: 7px;
+
+  .input-label {
+    font-size: 13px;
+    margin-bottom: 4px;
+    @include transition(all, .3s, ease-in-out);
+
+    &.active-input {
+      @include transition(all .3s ease-in-out);
+    }
+  }
+
+  .label-helper {
+    @include abs-pos(3px, 0);
+    @include font-size(10);
+    color: map_get($colors, tertiary);
+  }
+
+  input {
+    padding: 12px;
+  }
+
+  textarea {
+    padding: 8px 12px;
+  }
+
+  input,
+  textarea {
+    background: transparent;
+    border-radius: 3px;
+    width: 100%;
+    @include transition(all .3s ease-in-out);
+
+    &:focus {
+      background: rgba(255, 255, 255, 0.65);
+      @include transition(all .3s ease-in-out);
+    }
+  }
+
+  &.dq-textarea {
+    height: 84px;
+    padding-top: 20px;
+
+    &.float {
+      .input-label {
+        top: 28px;
+      }
+    }
+  }
+
+  &.primary {
+    .input-label {
+      color: map_get($colors, primary);
+
+      &.active-input {
+        color: darken(map_get($colors, primary), 10%);
+      }
+    }
+
+    input,
+    textarea {
+      color: map_get($colors, primary);
+      border: 1px solid map_get($colors, primary);
+
+      &:focus {
+        color: darken(map_get($colors, primary), 10%);
+        border-color: darken(map_get($colors, primary), 10%);
+      }
+    }
+  }
+
+  &.primary-dark {
+    .input-label {
+      color: map_get($colors, primary-dark);
+
+      &.active-input {
+        color: darken(map_get($colors, primary-dark), 10%);
+      }
+    }
+
+    input,
+    texarea {
+      color: map_get($colors, primary-dark);
+      border: 1px solid map_get($colors, primary-dark);
+
+      &:focus {
+        color: darken(map_get($colors, primary-dark), 10%);
+        border-color: darken(map_get($colors, primary-dark), 10%);
+      }
+    }
+  }
+
+  &.secondary {
+    .input-label {
+      color: map_get($colors, secondary);
+
+      &.active-input {
+        color: darken(map_get($colors, secondary), 10%);
+      }
+    }
+
+    input,
+    textarea {
+      color: map_get($colors, secondary);
+      border: 1px solid map_get($colors, secondary);
+
+      &:focus {
+        color: darken(map_get($colors, secondary), 10%);
+        border-color: darken(map_get($colors, secondary), 10%);
+      }
+    }
+  }
+
+  &.light {
+    .input-label {
+      color: #bdbdbd;
+
+      &.active-input {
+        color: #fff;
+      }
+    }
+
+    input,
+    textarea {
+      color: #bdbdbd;
+      border: 1px solid #bdbdbd;
+
+      &:focus {
+        color: #2a2a2a;
+        border-color: #fff;
+      }
+    }
+  }
+
+  &.float {
+    .input-label {
+      position: absolute;
+      top: 34px;
+      left: 10px;
+      font-size: 15px;
+      margin-bottom: 0;
+
+      &.active-input {
+        top: 0;
+        left: 0;
+        font-size: 13px;
+        -webkit-transform: rotate3d(1, -1, 1, 360deg);
+        transform: rotate3d(1, -1, 1, 360deg);
+      }
+    }
+
+    input,
+    textarea {
+      position: relative;
+      z-index: 10;
+    }
+  }
+}

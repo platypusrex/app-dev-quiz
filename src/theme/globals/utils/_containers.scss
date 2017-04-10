@@ -1,0 +1,12 @@
+.dq-flex-container {
+  display: flex;
+
+  &.flex-column {
+    flex-direction: column;
+  }
+
+  &.center {
+    align-items: center;
+    justify-content: center;
+  }
+}

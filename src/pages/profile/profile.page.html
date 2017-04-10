@@ -1,0 +1,25 @@
+<ion-header no-border>
+	<ion-navbar transparent>
+		<button ion-button icon-only menuToggle>
+			<ion-icon name="menu"></ion-icon>
+		</button>
+		<ion-title>
+			profile
+		</ion-title>
+	</ion-navbar>
+</ion-header>
+
+<ion-content>
+
+	<profile-head-cmp
+		[userName]="(user$ | async)?.userName"
+		[createdOn]="(user$ | async)?.createdOn"
+		[title]="(user$ | async)?.title"
+		[description]="(user$ | async)?.description"
+		[games]="(user$ | async)?.games"
+		[followers]="(user$ | async)?.followers"
+		[following]="(user$ | async)?.following"
+		(editProfile)="onEditProfileBtnClick()">
+	</profile-head-cmp>
+
+</ion-content>

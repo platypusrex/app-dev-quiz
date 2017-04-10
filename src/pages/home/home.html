@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button icon-only menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>
+      Ionic Blank
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <span>{{(user$ | async)?.userName}}</span>
+  Is a biznitch
+
+  <!--<form #form="ngForm" (ngSubmit)="submit()">-->
+    <!--<div class="dq-flex-container flex-column">-->
+      <!--<input-cmp-->
+        <!--name="name"-->
+        <!--[(ngModel)]="value"-->
+        <!--[label]="'Name'"-->
+        <!--[labelType]="labelType.float"-->
+        <!--[color]="inputColor.primaryDark"-->
+        <!--[type]="inputType.text"-->
+        <!--required>-->
+      <!--</input-cmp>-->
+    <!--</div>-->
+    <!--<div class="dq-flex-container flex-column">-->
+      <!--<button ion-button [disabled]="!form.form.valid">Save</button>-->
+    <!--</div>-->
+  <!--</form>-->
+
+  <!--<span>{{value}}</span>-->
+
+  <p>
+    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will be your guide.
+  </p>
+</ion-content>

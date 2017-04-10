@@ -1,0 +1,52 @@
+<ion-card class="profile-header">
+
+	<div class="profile-img-container">
+		<img src="assets/img/profile_placeholder.jpg" alt="profile image placeholder">
+	</div>
+
+	<div class="dq-flex-container center profile-date-container">
+		<ion-icon name="ios-calendar-outline"></ion-icon>
+		<span>&nbsp;&nbsp;{{ createdOn | date:'shortDate' }}</span>
+	</div>
+
+	<div
+		class="dq-flex-container center edit-icon-container"
+		tappable
+		(click)="onProfileEditBtnClick()">
+		<ion-icon name="md-create"></ion-icon>
+	</div>
+
+	<div class="dq-flex-container flex-column center profile-header-content">
+		<h1>{{ userName }}</h1>
+		<p *ngIf="title" class="profile-title">
+			{{'"' + title + '"'}}
+		</p>
+		<p *ngIf="!title" class="profile-title">
+			{{'"' + 'Add your title here!' + '"' }}
+		</p>
+		<span *ngIf="description" class="profile-description">
+			{{description}}
+		</span>
+		<span *ngIf="!description" class="profile-description">
+			Your chance at 140 character description of the wonder that is you. Boom.
+		</span>
+	</div>
+
+	<div class="dq-flex-container profile-stats-wrapper">
+		<div class="dq-flex-container flex-column center profile-stats-container">
+			<span>games</span>
+			<h2>{{ games?.length }}</h2>
+		</div>
+
+		<div class="dq-flex-container flex-column center profile-stats-container">
+			<span>followers</span>
+			<h2>{{ followers?.length }}</h2>
+		</div>
+
+		<div class="dq-flex-container flex-column center profile-stats-container">
+			<span>following</span>
+			<h2>{{ following?.length }}</h2>
+		</div>
+	</div>
+
+</ion-card>

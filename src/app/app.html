@@ -1,0 +1,21 @@
+<ion-menu id="main-menu" [content]="content">
+	<ion-content>
+		<div class="menu-header">
+			<ion-item no-border detail-push (click)="onProfileHeaderClick()">
+				<ion-avatar item-left>
+					<img src="assets/img/profile_placeholder.jpg" alt="profile placeholder" style="width:60px;height:60px;">
+				</ion-avatar>
+				<h2>{{ (user$ | async)?.userName }}</h2>
+				<p>{{ (user$ | async)?.title }}</p>
+			</ion-item>
+		</div>
+		<ion-list>
+			<button ion-item *ngFor="let page of menuPages" (click)="openPage(page)">
+				<ion-icon item-left [name]="page.icon"></ion-icon>
+				{{page.title}}
+			</button>
+		</ion-list>
+	</ion-content>
+</ion-menu>
+
+<ion-nav #content [root]="rootPage"></ion-nav>

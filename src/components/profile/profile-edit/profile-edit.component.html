@@ -1,0 +1,75 @@
+<ion-header no-border>
+	<ion-toolbar color="primary-dark">
+		<ion-buttons left>
+			<button ion-button icon-only (click)="closeModal($event)" [disabled]="!profileEditForm.form.valid || authError.message">
+				<ion-icon name="ios-close"></ion-icon>
+			</button>
+		</ion-buttons>
+		<ion-title>
+			edit profile
+		</ion-title>
+		<ion-buttons end>
+			<button
+				ion-button
+				form="profileEditForm"
+				[disabled]="!profileEditForm.form.valid">Save
+			</button>
+		</ion-buttons>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+	<div class="dq-flex-container flex-column profile-edit-content-wrapper">
+		<form
+			id="profileEditForm"
+			#profileEditForm="ngForm"
+			(ngSubmit)="profileEditForm.valid && submitProfileEditForm()">
+
+			<div class="dq-flex-container flex-column dq-form-group">
+				<input-cmp
+					[label]="'Username'"
+					[labelType]="labelType.float"
+					[labelHelper]="userNameLabelHelper"
+					[type]="inputType.text"
+					[color]="inputColor.primaryDark"
+					[(ngModel)]="user.userName"
+					name="userName"
+					required>
+				</input-cmp>
+			</div>
+
+			<div class="dq-flex-container flex-column dq-form-group">
+				<input-cmp
+					[label]="'Title'"
+					[labelHelper]="labelHelper"
+					[labelType]="labelType.float"
+					[type]="inputType.text"
+					[color]="inputColor.primaryDark"
+					[charMax]="titleCharMax"
+					[(ngModel)]="user.title"
+					name="title">
+				</input-cmp>
+			</div>
+
+			<div class="dq-flex-container flex-column dq-form-group">
+				<input-cmp
+					[isTextArea]="true"
+					[label]="'Description'"
+					[labelHelper]="labelHelper"
+					[labelType]="labelType.float"
+					[color]="inputColor.primaryDark"
+					[charMax]="descCharMax"
+					[(ngModel)]="user.description"
+					name="description">
+				</input-cmp>
+			</div>
+
+			<div *ngIf="authError?.message" class="dq-flex-container form-error">
+				<span>{{ authError.message }}</span>
+			</div>
+
+		</form>
+	</div>
+
+</ion-content>

@@ -1,0 +1,85 @@
+// Vendor Prefix
+// Usage example -> @include prefix(transform, rotate(42deg), webkit ms);
+@mixin prefix($property, $value, $vendors: webkit) {
+  @if($vendors) {
+    @each $vendor in $vendors {
+      #{'-' + $vendor + '-' + $property}: #{$value};
+    }
+  }
+  #{$property}: #{$value};
+}
+
+// Calculate REM
+// Usage example -> @include font-size(18px);
+@function calculateRem($size) {
+  $remSize: $size / 10;
+  @return $remSize * 1rem;
+}
+@mixin font-size($size) {
+  font-size: $size;
+  font-size: calculateRem($size);
+}
+
+@function unfoldTransition ($transition) {
+  // Default values
+  $property: all;
+  $duration: .2s;
+  $easing: null; // Browser default is ease, which is what we want
+  $delay: null; // Browser default is 0, which is what we want
+  $defaultProperties: ($property, $duration, $easing, $delay);
+
+  // Grab transition properties if they exist
+  $unfoldedTransition: ();
+  @for $i from 1 through length($defaultProperties) {
+    $p: null;
+    @if $i <= length($transition) {
+      $p: nth($transition, $i)
+    } @else {
+      $p: nth($defaultProperties, $i)
+    }
+    $unfoldedTransition: append($unfoldedTransition, $p);
+  }
+
+  @return $unfoldedTransition;
+}
+
+// Transitions
+// Usage example -> @include transition(all .3s, ease-in-out);
+@mixin transition($transitions...) {
+  $unfoldedTransitions: ();
+  @each $transition in $transitions {
+    $unfoldedTransitions: append($unfoldedTransitions, unfoldTransition($transition), comma);
+  }
+
+  -webkit-transition: $unfoldedTransitions;
+  transition: $unfoldedTransitions;
+}
+
+// Truncate Text
+// Usage example -> @include truncateText();
+@mixin truncateText($text-overflow: ellipsis) {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: $text-overflow; // values are: clip, ellipsis, or a string
+}
+
+// Absolute Position
+// Usage example -> @include abs-pos(0, 0, 0, 0);
+@mixin abs-pos($top: auto, $right: auto, $bottom: auto, $left: auto) {
+  position: absolute;
+  top: $top;
+  right: $right;
+  bottom: $bottom;
+  left: $left;
+}
+
+// Background Color
+// Usage example -> @include backgroundColorWithAlpha(#333, 0.5);
+@mixin backgroundColorWithAlpha($hexColor, $alpha: null) {
+  @if($alpha == null) {
+    background: rgba($hexColor, 1);
+  } @else {
+    background: rgba($hexColor, $alpha);
+  }
+}
+

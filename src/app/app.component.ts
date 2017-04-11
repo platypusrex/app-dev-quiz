@@ -63,8 +63,7 @@ export class MyApp {
 
     this.store.select(state => state.games).subscribe(games => {
       this.games = games;
-      console.log(this.games);
-    })
+    });
   }
 
   deleteLocalStore() {

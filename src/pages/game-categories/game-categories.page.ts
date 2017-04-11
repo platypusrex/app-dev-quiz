@@ -1,10 +1,8 @@
 import { Component } from '@angular/core';
-import { IonicPage } from 'ionic-angular';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../state/app.state';
 import { IGameCategories } from '../../shared/models/game-categories.model';
 
-@IonicPage()
 @Component({
   selector: 'game-categories-page',
   templateUrl: 'game-categories.page.html'

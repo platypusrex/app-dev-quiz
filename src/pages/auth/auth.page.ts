@@ -1,5 +1,5 @@
 import { Component, Renderer, ElementRef, ViewChild, ChangeDetectionStrategy, ChangeDetectorRef, OnDestroy } from '@angular/core';
-import { AlertController, NavController, IonicPage } from 'ionic-angular';
+import { AlertController, NavController } from 'ionic-angular';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { UserActions } from '../../state/actions/user.actions';
@@ -9,7 +9,6 @@ import { IUser } from '../../shared/models/user.model';
 import * as input from '../../shared/constants/input.constants';
 import { HomePage } from '../../pages/home/home';
 
-@IonicPage()
 @Component({
   selector: 'auth-page',
   templateUrl: 'auth.page.html',

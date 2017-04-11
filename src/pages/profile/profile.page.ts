@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
-import { ModalController } from 'ionic-angular';
+import { ModalController, IonicPage } from 'ionic-angular';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../state/app.state';
 import { IUser } from '../../shared/models/user.model';
 import { Observable } from 'rxjs';
 import { ProfileEditComponent } from '../../components/profile';
 
+@IonicPage()
 @Component({
   selector: 'profile-page',
   templateUrl: 'profile.page.html'

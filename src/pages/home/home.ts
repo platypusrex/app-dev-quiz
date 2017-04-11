@@ -1,11 +1,12 @@
 import { Component, ChangeDetectionStrategy, ViewChild } from '@angular/core';
-import { MenuController } from 'ionic-angular';
+import { MenuController, IonicPage } from 'ionic-angular';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../state/app.state';
 import { Observable } from 'rxjs';
 import { IUser } from '../../shared/models/user.model';
 import * as input from '../../shared/constants/input.constants';
 
+@IonicPage()
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html',

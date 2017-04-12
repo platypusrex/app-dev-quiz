@@ -3,7 +3,7 @@
 		<div class="menu-header">
 			<ion-item no-border detail-push (click)="onProfileHeaderClick()">
 				<ion-avatar item-left>
-					<img src="assets/img/profile_placeholder.jpg" alt="profile placeholder" style="width:60px;height:60px;">
+					<img src="assets/img/profile_placeholder.jpg" alt="profile placeholder" style="width:70px;height:70px;object-fit:contain;">
 				</ion-avatar>
 				<h2>{{ (user$ | async)?.userName }}</h2>
 				<p>{{ (user$ | async)?.title }}</p>

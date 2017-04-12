@@ -12,6 +12,9 @@ $font-path: "../assets/fonts";
 // To view all the possible Ionic variables, see:
 // http://ionicframework.com/docs/v2/theming/overriding-ionic-variables/
 
+$font-family-base: 'Lato', 'Roboto', sans-serif;
+$font-family-md-base: 'Lato', 'Roboto', sans-serif;
+$font-family-ios-base: 'Lato', 'Roboto', sans-serif;
 
 
 
@@ -80,6 +83,9 @@ $colors: (
 // Fonts
 // --------------------------------------------------
 
-@import "roboto";
-@import "noto-sans";
-
+//@import "roboto";
+//@import "noto-sans";
+//
+//$font-family-md-base: "Dosis";
+//$font-family-ios-base: "Dosis";
+//$font-family-wp-base: "Dosis";

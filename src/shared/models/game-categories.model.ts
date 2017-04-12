@@ -1,6 +1,8 @@
 export interface IGameCategory {
   type?: string;
   displayName?: string;
+  icon?: string;
+  color?: string;
 }
 
 export interface IGameCategories {
@@ -11,17 +13,17 @@ export interface IGameCategories {
   javascript?: IGameCategory,
   python?: IGameCategory,
   php?: IGameCategory,
-  swift?: IGameCategory,
+  elixir?: IGameCategory,
   objectiveC?: IGameCategory,
   ruby?: IGameCategory,
   go?: IGameCategory,
   sql?: IGameCategory,
   scala?: IGameCategory,
-  lisp?: IGameCategory,
+  elm?: IGameCategory,
   haskell?: IGameCategory,
   perl?: IGameCategory,
-  r?: IGameCategory,
-  matlab?: IGameCategory,
-  scratch?: IGameCategory,
-  bash?: IGameCategory
+  erlang?: IGameCategory,
+  clojure?: IGameCategory,
+  css?: IGameCategory,
+  html?: IGameCategory
 }

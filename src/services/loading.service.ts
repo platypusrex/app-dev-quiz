@@ -27,7 +27,6 @@ export class LoadingService {
     this.loadingCmp = this.loadingCtrl.create({
       spinner: 'hide',
       content: loading,
-      duration: 10000000
     });
 
     this.loadingCmp.present();

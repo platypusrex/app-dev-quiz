@@ -3,6 +3,7 @@ import { LoadingController, Loading } from 'ionic-angular';
 import { Subject } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { AppState } from '../state/app.state';
+import { loading } from '../shared/constants/loading.constant';
 
 @Injectable()
 export class LoadingService {
@@ -24,7 +25,9 @@ export class LoadingService {
 
   presentLoading() {
     this.loadingCmp = this.loadingCtrl.create({
-      content: 'Please wait...'
+      spinner: 'hide',
+      content: loading,
+      duration: 10000000
     });
 
     this.loadingCmp.present();

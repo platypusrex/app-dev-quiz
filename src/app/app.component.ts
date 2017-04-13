@@ -45,9 +45,6 @@ export class MyApp {
   userToken:string = storageGet('token');
   userId:string = storageGet('userId');
 
-  // GamesCategories
-  games: any;
-
   constructor(
     private statusBar: StatusBar,
     private splashScreen: SplashScreen,
@@ -60,10 +57,6 @@ export class MyApp {
     this.initialize();
 
     this.user$ = store.select(state => state.auth.user);
-
-    this.store.select(state => state.games).subscribe(games => {
-      this.games = games;
-    });
   }
 
   deleteLocalStore() {

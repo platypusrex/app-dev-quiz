@@ -43,6 +43,12 @@ export class UserEffects {
       return Observable.of(action, this.loadingActions.loadingFinish());
     });
 
+  @Effect() logoutUser$: Observable<Action> = this.actions$
+    .ofType(UserActions.LOGOUT_USER)
+    .mergeMap(action => this.authService.logout()
+      .map(() => this.userActions.removeAuthSuccess())
+    );
+
   @Effect() getUser$: Observable<Action> = this.actions$
     .ofType(UserActions.GET_USER)
     .mergeMap(action => this.userService.getUser(action.payload)

@@ -58,4 +58,11 @@ export class UserActions {
       payload: err
     }
   }
+
+  static REMOVE_AUTH_SUCCESS = 'REMOVE_AUTH_SUCCESS';
+  removeAuthSuccess(): Action {
+    return {
+      type: UserActions.REMOVE_AUTH_SUCCESS
+    }
+  }
 }

@@ -3,7 +3,7 @@ import { ApiService } from './api.service';
 import { Observable } from 'rxjs';
 import 'rxjs/add/operator/map';
 import { IUser } from '../shared/models/user.model';
-import { storageSet } from '../shared/utils/storage.util';
+import { storageSet, storageRemove } from '../shared/utils/storage.util';
 
 @Injectable()
 export class AuthService {
@@ -15,6 +15,11 @@ export class AuthService {
   private setLocalStore(data:{token:string, user:IUser}) {
     storageSet('token', data.token);
     storageSet('userId', data.user._id);
+  }
+
+  private removeLocalStore() {
+    storageRemove('token');
+    storageRemove('userId');
   }
 
   register(user: IUser): Observable<any> {
@@ -31,5 +36,10 @@ export class AuthService {
         this.setLocalStore(result);
         return result.user;
       });
+  }
+
+  logout():Observable<any> {
+    this.removeLocalStore();
+    return Observable.empty()
   }
 }

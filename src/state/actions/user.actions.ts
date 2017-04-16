@@ -59,7 +59,7 @@ export class UserActions {
     }
   }
 
-  static AUTH_SUCCESS = 'AUTH_SUCESS';
+  static AUTH_SUCCESS = 'AUTH_SUCCESS';
   authSuccess(userData: {user: IUser, token: string}): Action {
     console.log('auth success', userData);
     return {

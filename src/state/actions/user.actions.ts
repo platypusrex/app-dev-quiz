@@ -59,6 +59,15 @@ export class UserActions {
     }
   }
 
+  static AUTH_SUCCESS = 'AUTH_SUCESS';
+  authSuccess(userData: {user: IUser, token: string}): Action {
+    console.log('auth success', userData);
+    return {
+      type: UserActions.AUTH_SUCCESS,
+      payload: userData
+    }
+  }
+
   static REMOVE_AUTH_SUCCESS = 'REMOVE_AUTH_SUCCESS';
   removeAuthSuccess(): Action {
     return {

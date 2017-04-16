@@ -26,7 +26,7 @@ export class AuthService {
     return this.api.post(this.registerPath, user)
       .map(result => {
         this.setLocalStore(result);
-        return result.user;
+        return result;
       });
   }
 
@@ -34,7 +34,7 @@ export class AuthService {
     return this.api.post(this.loginPath, params)
       .map(result => {
         this.setLocalStore(result);
-        return result.user;
+        return result;
       });
   }
 

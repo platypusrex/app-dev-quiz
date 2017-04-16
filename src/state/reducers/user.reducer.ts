@@ -36,11 +36,21 @@ export const UserReducer: ActionReducer<any> = (state: IUserState = initialState
     case UserActions.USER_FAILURE:
       return Object.assign({}, state, { authError: action.payload });
 
+    case UserActions.AUTH_SUCCESS:
+      return Object.assign({}, state, {
+        authError: {},
+        user: action.payload.user,
+        authData: {
+          token: action.payload.token,
+          userId: action.payload.user._id
+        }
+      });
+
     case UserActions.REMOVE_AUTH_SUCCESS:
       return Object.assign({}, state, { user: {}, authError: {}, });
 
     case UserActions.LOGOUT_USER:
-      return Object.assign({}, state, { user: {}, authError: {} });
+      return Object.assign({}, state, { user: {}, authError: {}, authData: {} });
 
     default:
       return state;

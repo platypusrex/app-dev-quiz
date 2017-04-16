@@ -15,7 +15,7 @@ import { ProfilePage } from '../pages/profile/profile.page';
 import { GameCategoriesPage } from '../pages/game-categories/game-categories.page';
 
 import { IUser } from '../shared/models/user.model';
-import { storageGet, storageRemove } from '../shared/utils/storage.util';
+// import { storageGet, storageRemove } from '../shared/utils/storage.util';
 
 interface PageObj {
   title: string;
@@ -42,8 +42,8 @@ export class MyApp {
 
   // User
   public user$: Observable<IUser>;
-  userToken:string = storageGet('token');
-  userId:string = storageGet('userId');
+  userToken: string;
+  userId: string;
 
   constructor(
     private statusBar: StatusBar,
@@ -57,17 +57,21 @@ export class MyApp {
     this.initialize();
 
     this.user$ = store.select(state => state.auth.user);
+
+    this.store.select(state => state.auth.authData).subscribe(authData => {
+      this.userToken = authData.token;
+      this.userId = authData.userId;
+    });
   }
 
-  deleteLocalStore() {
-    storageRemove('token');
-    storageRemove('userId');
-    this.userToken = '';
-    this.userId = '';
-  }
+  // deleteLocalStore() {
+    // storageRemove('token');
+    // storageRemove('userId');
+    // this.userToken = '';
+    // this.userId = '';
+  // }
 
   initialize() {
-    //this.deleteStore();
     this.platform.ready().then(() => {
       this.checkForAuthToken();
       this.getGamesCategories();
@@ -103,7 +107,6 @@ export class MyApp {
     }
 
     if(page.title === 'Logout') {
-      this.deleteLocalStore();
       this.store.dispatch(this.userActions.logoutUser());
       this.nav.setRoot(AuthPage, pageTransition);
       this.menuCtrl.close();

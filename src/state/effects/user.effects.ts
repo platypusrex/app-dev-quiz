@@ -25,7 +25,7 @@ export class UserEffects {
     .ofType(UserActions.REGISTER_USER)
     .do(() => this.store.dispatch(this.loadingActions.loadingStart()))
     .mergeMap(action => this.authService.register(action.payload)
-      .map(user => this.userActions.userSuccess(user))
+      .map(userData => this.userActions.authSuccess(userData))
       .catch(err => Observable.of(this.userActions.userFailure(err)))
     )
     .mergeMap((action) => {
@@ -36,12 +36,18 @@ export class UserEffects {
     .ofType(UserActions.LOGIN_USER)
     .do(() => this.store.dispatch(this.loadingActions.loadingStart()))
     .mergeMap(action => this.authService.login(action.payload)
-      .map(user => this.userActions.userSuccess(user))
+      .map(userData => this.userActions.authSuccess(userData))
       .catch(err => Observable.of(this.userActions.userFailure(err)))
     )
     .mergeMap((action) => {
       return Observable.of(action, this.loadingActions.loadingFinish());
     });
+
+  @Effect() logoutUser$: Observable<Action> = this.actions$
+    .ofType(UserActions.LOGOUT_USER)
+    .mergeMap(action => this.authService.logout()
+      .map(() => this.userActions.removeAuthSuccess())
+    );
 
   @Effect() getUser$: Observable<Action> = this.actions$
     .ofType(UserActions.GET_USER)

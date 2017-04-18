@@ -58,4 +58,19 @@ export class UserActions {
       payload: err
     }
   }
+
+  static AUTH_SUCCESS = 'AUTH_SUCCESS';
+  authSuccess(userData: {user: IUser, token: string}): Action {
+    return {
+      type: UserActions.AUTH_SUCCESS,
+      payload: userData
+    }
+  }
+
+  static REMOVE_AUTH_SUCCESS = 'REMOVE_AUTH_SUCCESS';
+  removeAuthSuccess(): Action {
+    return {
+      type: UserActions.REMOVE_AUTH_SUCCESS
+    }
+  }
 }

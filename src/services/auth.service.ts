@@ -3,7 +3,7 @@ import { ApiService } from './api.service';
 import { Observable } from 'rxjs';
 import 'rxjs/add/operator/map';
 import { IUser } from '../shared/models/user.model';
-import { storageSet } from '../shared/utils/storage.util';
+import { storageSet, storageRemove } from '../shared/utils/storage.util';
 
 @Injectable()
 export class AuthService {
@@ -17,11 +17,16 @@ export class AuthService {
     storageSet('userId', data.user._id);
   }
 
+  private removeLocalStore() {
+    storageRemove('token');
+    storageRemove('userId');
+  }
+
   register(user: IUser): Observable<any> {
     return this.api.post(this.registerPath, user)
       .map(result => {
         this.setLocalStore(result);
-        return result.user;
+        return result;
       });
   }
 
@@ -29,7 +34,12 @@ export class AuthService {
     return this.api.post(this.loginPath, params)
       .map(result => {
         this.setLocalStore(result);
-        return result.user;
+        return result;
       });
+  }
+
+  logout(): Observable<any> {
+    this.removeLocalStore();
+    return Observable.empty().defaultIfEmpty();
   }
 }

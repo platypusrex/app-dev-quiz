@@ -40,6 +40,6 @@ export class AuthService {
 
   logout(): Observable<any> {
     this.removeLocalStore();
-    return Observable.empty()
+    return Observable.empty().defaultIfEmpty();
   }
 }

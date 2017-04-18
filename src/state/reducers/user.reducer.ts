@@ -47,9 +47,6 @@ export const UserReducer: ActionReducer<any> = (state: IUserState = initialState
       });
 
     case UserActions.REMOVE_AUTH_SUCCESS:
-      return Object.assign({}, state, { user: {}, authError: {}, });
-
-    case UserActions.LOGOUT_USER:
       return Object.assign({}, state, { user: {}, authError: {}, authData: {} });
 
     default:

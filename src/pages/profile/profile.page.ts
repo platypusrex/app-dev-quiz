@@ -29,4 +29,8 @@ export class ProfilePage {
   toggleSearchBar() {
     this.showSearchBar = !this.showSearchBar;
   }
+
+  onInput(e) {
+    console.log(e.target.value);
+  }
 }

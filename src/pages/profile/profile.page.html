@@ -6,11 +6,15 @@
 		<ion-title *ngIf="!showSearchBar">
 			profile
 		</ion-title>
-		<ion-searchbar *ngIf="showSearchBar"></ion-searchbar>
+		<ion-searchbar
+			*ngIf="showSearchBar"
+			(ionInput)="onInput($event)"
+			[debounce]="0">
+		</ion-searchbar>
 		<ion-buttons end>
 			<button ion-button (click)="toggleSearchBar()">
 				<ion-icon *ngIf="!showSearchBar" name="md-search"></ion-icon>
-				<ion-icon *ngIf="showSearchBar" name="ios-close"></ion-icon>
+				<span class="close-btn" *ngIf="showSearchBar">Cancel</span>
 			</button>
 		</ion-buttons>
 	</ion-navbar>

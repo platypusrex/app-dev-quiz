@@ -7,7 +7,8 @@ profile-page {
   ion-navbar {
     .bar-buttons,
     .toolbar-title,
-    ion-icon {
+    ion-icon,
+    .close-btn {
       color: #d8d8d8;
     }
 
@@ -15,8 +16,8 @@ profile-page {
       @include font-size(20);
     }
 
-    .ion-ios-close {
-      @include font-size(30);
+    .close-btn {
+      @include font-size(10);
     }
 
     .searchbar-search-icon {

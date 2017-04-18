@@ -6,13 +6,16 @@
 		<ion-title *ngIf="!showSearchBar">
 			profile
 		</ion-title>
-		<ion-searchbar
-			*ngIf="showSearchBar"
-			(ionInput)="onInput($event)"
-			(ionFocus)="onFocus()"
-			(ionBlur)="onBlur($event)"
-			[debounce]="0">
-		</ion-searchbar>
+		<div class="searchbar-wrapper" *ngIf="showSearchBar">
+			<ion-icon name="md-search"></ion-icon>
+			<ion-searchbar
+				[type]="'text'"
+				(ionInput)="onInput($event)"
+				(ionFocus)="onFocus()"
+				(ionBlur)="onBlur($event)"
+				[debounce]="0">
+			</ion-searchbar>
+		</div>
 		<ion-buttons end>
 			<button ion-button (click)="toggleSearchBar()">
 				<ion-icon *ngIf="!showSearchBar" name="md-search"></ion-icon>

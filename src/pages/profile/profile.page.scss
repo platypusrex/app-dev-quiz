@@ -6,8 +6,26 @@ profile-page {
 
   ion-navbar {
     .bar-buttons,
-    .toolbar-title {
+    .toolbar-title,
+    ion-icon {
       color: #d8d8d8;
+    }
+
+    .ion-md-search {
+      @include font-size(20);
+    }
+
+    .ion-ios-close {
+      @include font-size(30);
+    }
+
+    .searchbar-search-icon {
+      top: 8px !important;
+    }
+
+    .searchbar-input {
+      padding-top: 2px !important;
+      padding-bottom: 2px !important;
     }
   }
 }

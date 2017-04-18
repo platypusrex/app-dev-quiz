@@ -3,9 +3,16 @@
 		<button ion-button icon-only menuToggle>
 			<ion-icon name="menu"></ion-icon>
 		</button>
-		<ion-title>
+		<ion-title *ngIf="!showSearchBar">
 			profile
 		</ion-title>
+		<ion-searchbar *ngIf="showSearchBar"></ion-searchbar>
+		<ion-buttons end>
+			<button ion-button (click)="toggleSearchBar()">
+				<ion-icon *ngIf="!showSearchBar" name="md-search"></ion-icon>
+				<ion-icon *ngIf="showSearchBar" name="ios-close"></ion-icon>
+			</button>
+		</ion-buttons>
 	</ion-navbar>
 </ion-header>
 

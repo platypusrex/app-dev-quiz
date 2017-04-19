@@ -1,0 +1,10 @@
+<div class="searchbar-wrapper">
+	<ion-icon name="md-search"></ion-icon>
+	<ion-searchbar
+		[value]="query"
+		(ionInput)="onInput($event)"
+		(ionFocus)="onFocus()"
+		(ionBlur)="onBlur()"
+		[debounce]="100">
+	</ion-searchbar>
+</div>

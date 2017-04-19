@@ -25,35 +25,5 @@ profile-page {
     .close-btn {
       @include font-size(10);
     }
-
-    .searchbar-wrapper {
-      position: relative;
-
-      ion-icon {
-        position: absolute;
-        top: 12px;
-        left: 12px;
-      }
-    }
-
-    .searchbar-search-icon {
-      top: 8px !important;
-      display: none;
-    }
-
-    .searchbar-input {
-      padding-top: 2px !important;
-      padding-bottom: 2px !important;
-      padding-left: 35px !important;
-      background-color: transparent !important;
-      border-bottom: 1px solid #d8d8d8 !important;
-      border-radius: 0 !important;
-      color: #d8d8d8 !important;
-      box-shadow: none !important;
-
-      &::-webkit-input-placeholder {
-        color: #d8d8d8;
-      }
-    }
   }
 }

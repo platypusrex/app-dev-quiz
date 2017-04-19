@@ -1,11 +1,13 @@
 import {
   ProfileHeadComponent,
   ProfileEditComponent,
-  ProfileListComponent
+  ProfileListComponent,
+  ProfileSearchComponent
 } from './profile';
 
 export const APP_COMPONENTS = [
   ProfileHeadComponent,
   ProfileEditComponent,
-  ProfileListComponent
+  ProfileListComponent,
+  ProfileSearchComponent
 ];

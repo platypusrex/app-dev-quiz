@@ -15,6 +15,7 @@ import { ProfileEditComponent } from '../../components/profile';
 export class ProfilePage {
   public user$: Observable<IUser>;
   public users$: Observable<IUser[]>;
+  public query$: Observable<string>;
   showSearchBar: boolean = false;
   showOverlay: boolean = false;
 
@@ -24,8 +25,8 @@ export class ProfilePage {
     private modalCtrl: ModalController
   ) {
     this.user$ = this.store.select(state => state.auth.user);
-
     this.users$ = this.store.select(state => state.userSearch.result);
+    this.query$ = this.store.select(state => state.userSearch.query);
   }
 
   onEditProfileBtnClick() {
@@ -37,11 +38,9 @@ export class ProfilePage {
     this.showSearchBar = !this.showSearchBar;
   }
 
-  onInput(e) {
-    let val = e.target.value;
-
-    if(val && val.trim().length >= 3) {
-      this.store.dispatch(this.userSearchActions.searchUsers(val));
+  onInput(query: string) {
+    if(query && query.trim().length >= 3) {
+      this.store.dispatch(this.userSearchActions.searchUsers(query));
     }
   }
 
@@ -49,8 +48,7 @@ export class ProfilePage {
     this.showOverlay = true;
   }
 
-  onBlur(e) {
-    e.target.value = '';
+  onBlur() {
     this.showOverlay = false;
     this.store.dispatch(this.userSearchActions.searchUsersCancel());
   }

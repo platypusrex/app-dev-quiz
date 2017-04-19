@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { ModalController } from 'ionic-angular';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../state/app.state';
@@ -9,7 +9,8 @@ import { ProfileEditComponent } from '../../components/profile';
 
 @Component({
   selector: 'profile-page',
-  templateUrl: 'profile.page.html'
+  templateUrl: 'profile.page.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProfilePage {
   public user$: Observable<IUser>;

@@ -1,9 +1,11 @@
 import {
   ProfileHeadComponent,
-  ProfileEditComponent
+  ProfileEditComponent,
+  ProfileListComponent
 } from './profile';
 
 export const APP_COMPONENTS = [
   ProfileHeadComponent,
-  ProfileEditComponent
+  ProfileEditComponent,
+  ProfileListComponent
 ];

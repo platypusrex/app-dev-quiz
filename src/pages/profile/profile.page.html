@@ -39,16 +39,6 @@
 		(editProfile)="onEditProfileBtnClick()">
 	</profile-head-cmp>
 
-	<div class="dq-flex-container user-list-container">
-		<ion-list>
-			<ion-item *ngFor="let user of users$ | async">
-				<ion-avatar item-left>
-					<img src="assets/img/profile_placeholder.jpg" alt="profile image placeholder">
-				</ion-avatar>
-				<h2>{{ user.userName }}</h2>
-				<p>{{ user.title }}</p>
-			</ion-item>
-		</ion-list>
-	</div>
+	<profile-list-cmp [users]="users$ | async"></profile-list-cmp>
 
 </ion-content>

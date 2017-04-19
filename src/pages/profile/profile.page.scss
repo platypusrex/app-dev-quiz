@@ -8,16 +8,6 @@ profile-page {
       z-index: 1000;
       background: rgba(0, 0, 0, 0.6);
     }
-
-    .user-list-container {
-      @include abs-pos(0, 0, null, 0);
-      z-index: 1001;
-      flex: 1;
-
-      ion-list {
-        width: 100%;
-      }
-    }
   }
 
   ion-navbar {

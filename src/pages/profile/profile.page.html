@@ -6,17 +6,27 @@
 		<ion-title *ngIf="!showSearchBar">
 			profile
 		</ion-title>
-		<ion-searchbar *ngIf="showSearchBar"></ion-searchbar>
+		<profile-search-cmp
+			*ngIf="showSearchBar"
+			[query]="query$ | async"
+			(emitOnInput)="onInput($event)"
+			(emitOnFocus)="onFocus($event)"
+			(emitOnBlur)="onBlur($event)">
+		</profile-search-cmp>
 		<ion-buttons end>
 			<button ion-button (click)="toggleSearchBar()">
 				<ion-icon *ngIf="!showSearchBar" name="md-search"></ion-icon>
-				<ion-icon *ngIf="showSearchBar" name="ios-close"></ion-icon>
+				<span class="close-btn" *ngIf="showSearchBar">Cancel</span>
 			</button>
 		</ion-buttons>
 	</ion-navbar>
 </ion-header>
 
 <ion-content>
+	<div
+		class="overlay"
+		*ngIf="showOverlay">
+	</div>
 
 	<profile-head-cmp
 		[userName]="(user$ | async)?.userName"
@@ -28,5 +38,9 @@
 		[following]="(user$ | async)?.following"
 		(editProfile)="onEditProfileBtnClick()">
 	</profile-head-cmp>
+
+	<profile-list-cmp
+		[users]="users$ | async">
+	</profile-list-cmp>
 
 </ion-content>

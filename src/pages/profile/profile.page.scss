@@ -2,12 +2,19 @@ profile-page {
   ion-content {
     background: linear-gradient(180deg, rgba(59,50,71, 0.85) 40%, rgba(59,50,71, 0.85)),
     url('../assets/img/auth_background.png') no-repeat 10% center / cover;
+
+    .overlay {
+      @include abs-pos(0, 0, 0, 0);
+      z-index: 1000;
+      background: rgba(0, 0, 0, 0.6);
+    }
   }
 
   ion-navbar {
     .bar-buttons,
     .toolbar-title,
-    ion-icon {
+    ion-icon,
+    .close-btn {
       color: #d8d8d8;
     }
 
@@ -15,17 +22,8 @@ profile-page {
       @include font-size(20);
     }
 
-    .ion-ios-close {
-      @include font-size(30);
-    }
-
-    .searchbar-search-icon {
-      top: 8px !important;
-    }
-
-    .searchbar-input {
-      padding-top: 2px !important;
-      padding-bottom: 2px !important;
+    .close-btn {
+      @include font-size(10);
     }
   }
 }

@@ -1,9 +1,10 @@
 import { IUserState } from '../state/reducers/user.reducer';
+import { IUserSearch } from '../shared/models/user-search.model';
 import { IGamesState } from '../state/reducers/games.reducer';
-
 
 export interface AppState {
   auth: IUserState;
+  userSearch: IUserSearch;
   loading: boolean;
   games: IGamesState
 }

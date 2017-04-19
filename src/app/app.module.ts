@@ -17,6 +17,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { RootReducer } from '../state/reducers/root.reducer';
 import { ACTIONS } from '../state/actions';
 import { UserEffects } from '../state/effects/user.effects';
+import { UserSearchEffects } from '../state/effects/user-search.effects';
 import { GamesEffects } from '../state/effects/games.effects';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -40,6 +41,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
       maxAge: 5
     }),
     EffectsModule.run(UserEffects),
+    EffectsModule.run(UserSearchEffects),
     EffectsModule.run(GamesEffects)
   ],
   bootstrap: [IonicApp],

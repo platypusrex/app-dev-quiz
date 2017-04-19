@@ -17,8 +17,15 @@ export class UserService {
       });
   }
 
-  updateUser(user:IUser) {
+  updateUser(user:IUser): Observable<any> {
     return this.api.put(`${this.usersPath}${user._id}`, user, true)
+      .map(result => {
+        return result;
+      });
+  }
+
+  getUsers(query: string): Observable<any> {
+    return this.api.get(`${this.usersPath}?search=${query}`, true)
       .map(result => {
         return result;
       });

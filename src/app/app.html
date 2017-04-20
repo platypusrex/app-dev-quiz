@@ -10,7 +10,7 @@
 			</ion-item>
 		</div>
 		<ion-list>
-			<button ion-item *ngFor="let page of menuPages" (click)="openPage(page)">
+			<button ion-item no-lines *ngFor="let page of menuPages" (click)="openPage(page)">
 				<ion-icon item-left [name]="page.icon"></ion-icon>
 				{{page.title}}
 			</button>

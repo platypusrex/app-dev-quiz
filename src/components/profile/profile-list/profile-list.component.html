@@ -1,11 +1,15 @@
 <div class="dq-flex-container user-list-container">
 	<ion-list>
-		<ion-item *ngFor="let user of users">
+		<button ion-item *ngFor="let user of users">
 			<ion-avatar item-left>
 				<img src="assets/img/profile_placeholder.jpg" alt="profile image placeholder">
 			</ion-avatar>
 			<h2>{{ user.userName }}</h2>
 			<p>{{ user.title }}</p>
-		</ion-item>
+			<button ion-button item-right outline color="secondary">
+				<ion-icon name="ios-add-outline"></ion-icon>
+				<ion-icon name="ios-person-outline"></ion-icon>
+			</button>
+		</button>
 	</ion-list>
 </div>

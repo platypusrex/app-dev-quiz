@@ -36,6 +36,11 @@ export class ProfilePage {
 
   toggleSearchBar() {
     this.showSearchBar = !this.showSearchBar;
+
+    if(!this.showSearchBar) {
+      this.showOverlay = false;
+      this.store.dispatch(this.userSearchActions.searchUsersCancel());
+    }
   }
 
   onInput(query: string) {
@@ -46,10 +51,5 @@ export class ProfilePage {
 
   onFocus() {
     this.showOverlay = true;
-  }
-
-  onBlur() {
-    this.showOverlay = false;
-    this.store.dispatch(this.userSearchActions.searchUsersCancel());
   }
 }

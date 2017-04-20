@@ -8,7 +8,6 @@ export class ProfileSearchComponent {
   @Input() query: string;
   @Output() emitOnInput: EventEmitter<string> = new EventEmitter<string>();
   @Output() emitOnFocus = new EventEmitter();
-  @Output() emitOnBlur = new EventEmitter();
 
   onInput(e) {
     this.emitOnInput.emit(e.target.value);
@@ -16,9 +15,5 @@ export class ProfileSearchComponent {
 
   onFocus() {
     this.emitOnFocus.emit()
-  }
-
-  onBlur() {
-    this.emitOnBlur.emit()
   }
 }

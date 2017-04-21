@@ -35,14 +35,6 @@ export class UserActions {
     }
   }
 
-  static GET_PROFILE_USER = 'GET_PROFILE_USER';
-  getProfileUser(userId: string): Action {
-    return {
-      type: UserActions.GET_PROFILE_USER,
-      payload: userId
-    }
-  }
-
   static UPDATE_USER = 'UPDATE_USER';
   updateUser(user: IUser): Action {
     return {
@@ -64,14 +56,6 @@ export class UserActions {
     return {
       type: UserActions.USER_FAILURE,
       payload: err
-    }
-  }
-
-  static PROFILE_USER_SUCCESS = 'PROFILE_USER_SUCCESS';
-  profileUserSuccess(user: IUser): Action {
-    return {
-      type: UserActions.PROFILE_USER_SUCCESS,
-      payload: user
     }
   }
 

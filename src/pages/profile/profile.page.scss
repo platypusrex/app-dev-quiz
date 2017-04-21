@@ -25,15 +25,5 @@ profile-page {
     .close-btn {
       @include font-size(10);
     }
-
-    .bar-buttons-md {
-      &:nth-of-type(1) {
-        order: 0 !important;
-      }
-
-      .back-btn {
-        margin-right: 22px;
-      }
-    }
   }
 }

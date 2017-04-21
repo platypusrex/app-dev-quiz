@@ -15,7 +15,6 @@ import { ProfileEditComponent } from '../../components/profile';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProfilePage implements OnDestroy {
-  public profileUser$: Observable<IUser>;
   public users$: Observable<IUser[]>;
   public query$: Observable<string>;
   userSubscription$: Subscription;
@@ -23,7 +22,7 @@ export class ProfilePage implements OnDestroy {
   user: IUser;
   showSearchBar: boolean = false;
   showOverlay: boolean = false;
-  isAuthUser: boolean = true;
+  dismissModal: boolean = false;
 
   constructor(
     private store: Store<AppState>,
@@ -32,7 +31,6 @@ export class ProfilePage implements OnDestroy {
     private loadingService: LoadingService,
     private modalCtrl: ModalController
   ) {
-    this.profileUser$ = this.store.select(state => state.auth.profileUser);
     this.users$ = this.store.select(state => state.userSearch.result);
     this.query$ = this.store.select(state => state.userSearch.query);
 
@@ -41,7 +39,11 @@ export class ProfilePage implements OnDestroy {
     });
 
     this.loadingSubscription$ = this.loadingService.loadingCmp$.subscribe(loadingCmp => {
-      loadingCmp.dismiss();
+      if(this.dismissModal) {
+        loadingCmp.dismiss().then(() => {
+          this.dismissModal = false;
+        });
+      }
     });
   }
 
@@ -83,15 +85,10 @@ export class ProfilePage implements OnDestroy {
     user.following.push({ userId });
 
     this.store.dispatch(this.userActions.updateUser(user));
+    this.dismissModal = true;
   }
 
   updateProfileUser(userId: string) {
-    this.isAuthUser = false;
-    this.store.dispatch(this.userActions.getProfileUser(userId));
-  }
-
-  onBackBtnClick() {
-    this.isAuthUser = true;
-    this.store.dispatch(this.userActions.getProfileUser(this.user._id));
+    // this.store.dispatch(this.userActions.getProfileUser(userId));
   }
 }

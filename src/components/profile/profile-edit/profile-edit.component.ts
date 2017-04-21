@@ -1,5 +1,5 @@
 import { Component, ViewChild, OnDestroy } from '@angular/core';
-import { NavController, AlertController } from 'ionic-angular';
+import { AlertController, ViewController } from 'ionic-angular';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { AppState } from '../../../state/app.state';
@@ -36,7 +36,7 @@ export class ProfileEditComponent implements OnDestroy {
     private store: Store<AppState>,
     private userActions: UserActions,
     private loadingService: LoadingService,
-    private navCtrl: NavController,
+    private viewCtrl: ViewController,
     private alertCtrl: AlertController
   ) {
 
@@ -71,7 +71,7 @@ export class ProfileEditComponent implements OnDestroy {
         {
           text: 'Cool',
           handler: () => {
-            this.navCtrl.pop()
+            this.viewCtrl.dismiss();
           }
         }
       ]
@@ -80,7 +80,7 @@ export class ProfileEditComponent implements OnDestroy {
   }
 
   closeModal() {
-    this.navCtrl.pop();
+    this.viewCtrl.dismiss();
   }
 
   submitProfileEditForm() {

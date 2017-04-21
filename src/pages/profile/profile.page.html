@@ -1,13 +1,8 @@
 <ion-header no-border>
 	<ion-navbar transparent>
-		<ion-buttons start>
-			<button ion-button icon-only menuToggle *ngIf="isAuthUser">
-				<ion-icon name="menu"></ion-icon>
-			</button>
-			<button class="back-btn" ion-button icon-only *ngIf="!isAuthUser" (click)="onBackBtnClick()">
-				<ion-icon name="ios-arrow-back-outline"></ion-icon>
-			</button>
-		</ion-buttons>
+		<button ion-button icon-only menuToggle>
+			<ion-icon name="menu"></ion-icon>
+		</button>
 		<ion-title *ngIf="!showSearchBar">
 			profile
 		</ion-title>
@@ -15,8 +10,7 @@
 			*ngIf="showSearchBar"
 			[query]="query$ | async"
 			(emitOnInput)="onInput($event)"
-			(emitOnFocus)="onFocus($event)"
-			(emitOnBlur)="onBlur($event)">
+			(emitOnFocus)="onFocus($event)">
 		</profile-search-cmp>
 		<ion-buttons end>
 			<button ion-button (click)="toggleSearchBar()">
@@ -34,13 +28,13 @@
 	</div>
 
 	<profile-head-cmp
-		[userName]="(profileUser$ | async)?.userName"
-		[createdOn]="(profileUser$ | async)?.createdOn"
-		[title]="(profileUser$ | async)?.title"
-		[description]="(profileUser$ | async)?.description"
-		[games]="(profileUser$ | async)?.games"
-		[followers]="(profileUser$ | async)?.followers"
-		[following]="(profileUser$ | async)?.following"
+		[userName]="user?.userName"
+		[createdOn]="user?.createdOn"
+		[title]="user?.title"
+		[description]="user?.description"
+		[games]="user?.games"
+		[followers]="user?.followers"
+		[following]="user?.following"
 		(editProfile)="onEditProfileBtnClick()">
 	</profile-head-cmp>
 

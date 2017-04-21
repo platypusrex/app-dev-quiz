@@ -17,7 +17,6 @@ export interface IUserState {
   user: IUser;
   authError: IAuthError,
   authData: IAuthData
-  profileUser: IUser
 }
 
 const initialState: IUserState = {
@@ -26,14 +25,13 @@ const initialState: IUserState = {
   authData: {
     token: storageGet('token'),
     userId: storageGet('userId')
-  },
-  profileUser: {}
+  }
 };
 
 export const UserReducer: ActionReducer<any> = (state: IUserState = initialState, action: Action) => {
   switch(action.type) {
     case UserActions.USER_SUCCESS:
-      return Object.assign({}, state, { user: action.payload, authError: {}, profileUser: action.payload });
+      return Object.assign({}, state, { user: action.payload, authError: {} });
 
     case UserActions.USER_FAILURE:
       return Object.assign({}, state, { authError: action.payload });
@@ -45,12 +43,8 @@ export const UserReducer: ActionReducer<any> = (state: IUserState = initialState
         authData: {
           token: action.payload.token,
           userId: action.payload.user._id
-        },
-        profileUser: action.payload.user
+        }
       });
-
-    case UserActions.PROFILE_USER_SUCCESS:
-      return Object.assign({}, state, { profileUser: action.payload});
 
     case UserActions.REMOVE_AUTH_SUCCESS:
       return Object.assign({}, state, { user: {}, authError: {}, authData: {} });

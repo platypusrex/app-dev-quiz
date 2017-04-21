@@ -56,13 +56,6 @@ export class UserEffects {
       .catch(err => Observable.of(this.userActions.userFailure(err)))
     );
 
-  @Effect() getProfileUser$: Observable<Action> = this.actions$
-    .ofType(UserActions.GET_PROFILE_USER)
-    .mergeMap(action => this.userService.getUserForProfile(action.payload)
-      .map(user => this.userActions.profileUserSuccess(user))
-      .catch(err => Observable.of(this.userActions.userFailure(err)))
-    );
-
   @Effect() updateUser$: Observable<Action> = this.actions$
     .ofType(UserActions.UPDATE_USER)
     .do(() => this.store.dispatch(this.loadingActions.loadingStart()))

@@ -29,18 +29,20 @@
 	</div>
 
 	<profile-head-cmp
-		[userName]="(user$ | async)?.userName"
-		[createdOn]="(user$ | async)?.createdOn"
-		[title]="(user$ | async)?.title"
-		[description]="(user$ | async)?.description"
-		[games]="(user$ | async)?.games"
-		[followers]="(user$ | async)?.followers"
-		[following]="(user$ | async)?.following"
+		[userName]="(profileUser$ | async)?.userName"
+		[createdOn]="(profileUser$ | async)?.createdOn"
+		[title]="(profileUser$ | async)?.title"
+		[description]="(profileUser$ | async)?.description"
+		[games]="(profileUser$ | async)?.games"
+		[followers]="(profileUser$ | async)?.followers"
+		[following]="(profileUser$ | async)?.following"
 		(editProfile)="onEditProfileBtnClick()">
 	</profile-head-cmp>
 
 	<profile-list-cmp
-		[users]="users$ | async">
+		[currentUser]="user"
+		[users]="users$ | async"
+		(emitFollowUser)="followUser($event)">
 	</profile-list-cmp>
 
 </ion-content>

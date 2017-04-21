@@ -35,6 +35,14 @@ export class UserActions {
     }
   }
 
+  static GET_PROFILE_USER = 'GET_PROFILE_USER';
+  getProfileUser(userId: string): Action {
+    return {
+      type: UserActions.GET_PROFILE_USER,
+      payload: userId
+    }
+  }
+
   static UPDATE_USER = 'UPDATE_USER';
   updateUser(user: IUser): Action {
     return {

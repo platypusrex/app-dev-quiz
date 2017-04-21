@@ -23,6 +23,7 @@ export class ProfilePage implements OnDestroy {
   user: IUser;
   showSearchBar: boolean = false;
   showOverlay: boolean = false;
+  isAuthUser: boolean = true;
 
   constructor(
     private store: Store<AppState>,
@@ -82,5 +83,15 @@ export class ProfilePage implements OnDestroy {
     user.following.push({ userId });
 
     this.store.dispatch(this.userActions.updateUser(user));
+  }
+
+  updateProfileUser(userId: string) {
+    this.isAuthUser = false;
+    this.store.dispatch(this.userActions.getProfileUser(userId));
+  }
+
+  onBackBtnClick() {
+    this.isAuthUser = true;
+    this.store.dispatch(this.userActions.getProfileUser(this.user._id));
   }
 }

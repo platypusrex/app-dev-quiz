@@ -67,6 +67,14 @@ export class UserActions {
     }
   }
 
+  static PROFILE_USER_SUCCESS = 'PROFILE_USER_SUCCESS';
+  profileUserSuccess(user: IUser): Action {
+    return {
+      type: UserActions.PROFILE_USER_SUCCESS,
+      payload: user
+    }
+  }
+
   static AUTH_SUCCESS = 'AUTH_SUCCESS';
   authSuccess(userData: {user: IUser, token: string}): Action {
     return {

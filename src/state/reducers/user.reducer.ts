@@ -49,6 +49,9 @@ export const UserReducer: ActionReducer<any> = (state: IUserState = initialState
         profileUser: action.payload.user
       });
 
+    case UserActions.PROFILE_USER_SUCCESS:
+      return Object.assign({}, state, { profileUser: action.payload});
+
     case UserActions.REMOVE_AUTH_SUCCESS:
       return Object.assign({}, state, { user: {}, authError: {}, authData: {} });
 

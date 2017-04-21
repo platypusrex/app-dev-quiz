@@ -1,8 +1,13 @@
 <ion-header no-border>
 	<ion-navbar transparent>
-		<button ion-button icon-only menuToggle>
-			<ion-icon name="menu"></ion-icon>
-		</button>
+		<ion-buttons start>
+			<button ion-button icon-only menuToggle *ngIf="isAuthUser">
+				<ion-icon name="menu"></ion-icon>
+			</button>
+			<button class="back-btn" ion-button icon-only *ngIf="!isAuthUser" (click)="onBackBtnClick()">
+				<ion-icon name="ios-arrow-back-outline"></ion-icon>
+			</button>
+		</ion-buttons>
 		<ion-title *ngIf="!showSearchBar">
 			profile
 		</ion-title>
@@ -42,7 +47,8 @@
 	<profile-list-cmp
 		[currentUser]="user"
 		[users]="users$ | async"
-		(emitFollowUser)="followUser($event)">
+		(emitFollowUser)="followUser($event)"
+		(emitUpdateProfileUser)="updateProfileUser($event)">
 	</profile-list-cmp>
 
 </ion-content>

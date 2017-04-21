@@ -9,6 +9,7 @@ export class ProfileListComponent implements OnChanges {
   @Input() currentUser: IUser;
   @Input() users: IUser[];
   @Output() emitFollowUser: EventEmitter<string> = new EventEmitter<string>();
+  @Output() emitUpdateProfileUser: EventEmitter<string> = new EventEmitter<string>();
 
   ngOnChanges() {
     const followingIds = this.getFollowingIds(this.currentUser);
@@ -28,5 +29,9 @@ export class ProfileListComponent implements OnChanges {
 
   followUser(userId: string) {
     this.emitFollowUser.emit(userId);
+  }
+
+  updateProfileUser(userId: string) {
+    this.emitUpdateProfileUser.emit(userId);
   }
 }

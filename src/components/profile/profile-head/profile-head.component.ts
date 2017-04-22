@@ -13,6 +13,7 @@ export class ProfileHeadComponent {
   @Input() games: IGameData[];
   @Input() followers: IFollower[];
   @Input() following: IFollower[];
+  @Input() isFriendProfile: boolean;
   @Output() editProfile: EventEmitter<any> = new EventEmitter<any>();
 
   onProfileEditBtnClick() {

@@ -6,13 +6,13 @@ import { IUser } from '../../../shared/models/user.model';
   templateUrl: 'profile-list.component.html'
 })
 export class ProfileListComponent implements OnChanges {
-  @Input() currentUser: IUser;
+  @Input() user: IUser;
   @Input() users: IUser[];
-  @Output() emitFollowUser: EventEmitter<string> = new EventEmitter<string>();
-  @Output() emitUpdateProfileUser: EventEmitter<string> = new EventEmitter<string>();
+  @Output() emitFollowUser: EventEmitter<{userId: string, user: IUser}> = new EventEmitter<{userId: string, user: IUser}>();
+  @Output() emitShowFriendProfile: EventEmitter<string> = new EventEmitter<string>();
 
   ngOnChanges() {
-    const followingIds = this.getFollowingIds(this.currentUser);
+    const followingIds = this.getFollowingIds(this.user);
 
     this.users.forEach(val => {
       if(followingIds && followingIds.includes(val._id)) {
@@ -28,10 +28,10 @@ export class ProfileListComponent implements OnChanges {
   }
 
   followUser(userId: string) {
-    this.emitFollowUser.emit(userId);
+    this.emitFollowUser.emit({userId, user: this.user});
   }
 
-  updateProfileUser(userId: string) {
-    this.emitUpdateProfileUser.emit(userId);
+  showFriendProfile(userId: string) {
+    this.emitShowFriendProfile.emit(userId);
   }
 }

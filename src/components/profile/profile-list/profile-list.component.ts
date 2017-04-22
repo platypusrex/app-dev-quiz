@@ -27,7 +27,8 @@ export class ProfileListComponent implements OnChanges {
     }
   }
 
-  followUser(userId: string) {
+  followUser(userId: string, e: Event) {
+    e.stopPropagation();
     this.emitFollowUser.emit({userId, user: this.user});
   }
 

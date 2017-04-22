@@ -75,15 +75,16 @@ export class ProfilePage implements OnDestroy {
     this.showOverlay = true;
   }
 
-  followUser(data: {userId: string, user: IUser}) {
-    let user: IUser = {
-      _id: data.user._id,
-      following: data.user.following
+  followUser(data: {friend: IUser, user: IUser}) {
+    const { friend, user } = data;
+    let u: IUser = {
+      _id: user._id,
+      following: user.following
     };
 
-    user.following.push({ userId: data.userId });
+    user.following.push({ userId: friend._id, userName: friend.userName, title: friend.title  });
 
-    this.store.dispatch(this.userActions.updateUser(user));
+    this.store.dispatch(this.userActions.updateUser(u));
     this.dismissModal = true;
   }
 

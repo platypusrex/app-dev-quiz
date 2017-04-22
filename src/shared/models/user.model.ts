@@ -1,5 +1,7 @@
 export interface IFollower {
   userId?: string;
+  userName?: string;
+  title?: string;
 }
 
 export interface IGameData {

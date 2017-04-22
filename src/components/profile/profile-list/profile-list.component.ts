@@ -8,7 +8,7 @@ import { IUser } from '../../../shared/models/user.model';
 export class ProfileListComponent implements OnChanges {
   @Input() user: IUser;
   @Input() users: IUser[];
-  @Output() emitFollowUser: EventEmitter<{userId: string, user: IUser}> = new EventEmitter<{userId: string, user: IUser}>();
+  @Output() emitFollowUser: EventEmitter<{friend: IUser, user: IUser}> = new EventEmitter<{friend: IUser, user: IUser}>();
   @Output() emitShowFriendProfile: EventEmitter<string> = new EventEmitter<string>();
 
   ngOnChanges() {
@@ -27,9 +27,9 @@ export class ProfileListComponent implements OnChanges {
     }
   }
 
-  followUser(userId: string, e: Event) {
+  followUser(friend: IUser, e: Event) {
     e.stopPropagation();
-    this.emitFollowUser.emit({userId, user: this.user});
+    this.emitFollowUser.emit({friend , user: this.user});
   }
 
   showFriendProfile(userId: string) {

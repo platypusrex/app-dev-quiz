@@ -15,6 +15,9 @@ export const ProfileUserReducer: ActionReducer<any> = (state: IProfileUserState 
     case ProfileUserActions.GET_PROFILE_USER_SUCCESS:
       return Object.assign({}, state, { user: action.payload });
 
+    case ProfileUserActions.REMOVE_PROFILE_USER:
+      return Object.assign({}, state, { user: {} });
+
     default:
       return state;
   }

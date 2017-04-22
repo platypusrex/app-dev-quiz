@@ -12,6 +12,13 @@ export class ProfileUserActions {
     }
   }
 
+  static REMOVE_PROFILE_USER = 'REMOVE_PROFILE_USER';
+  removeProfileUser(): Action {
+    return {
+      type: ProfileUserActions.REMOVE_PROFILE_USER
+    }
+  }
+
   static GET_PROFILE_USER_SUCCESS = 'GET_PROFILE_USER_SUCCESS';
   getProfileUserSuccess(user: IUser): Action {
     return {

@@ -1,5 +1,5 @@
 export interface IFollower {
-  userId: string;
+  userId?: string;
 }
 
 export interface IGameData {

@@ -10,8 +10,7 @@
 			*ngIf="showSearchBar"
 			[query]="query$ | async"
 			(emitOnInput)="onInput($event)"
-			(emitOnFocus)="onFocus($event)"
-			(emitOnBlur)="onBlur($event)">
+			(emitOnFocus)="onFocus($event)">
 		</profile-search-cmp>
 		<ion-buttons end>
 			<button ion-button (click)="toggleSearchBar()">
@@ -40,7 +39,10 @@
 	</profile-head-cmp>
 
 	<profile-list-cmp
-		[users]="users$ | async">
+		[user]="user$ | async"
+		[users]="users$ | async"
+		(emitFollowUser)="followUser($event)"
+		(emitShowFriendProfile)="showFriendProfile($event)">
 	</profile-list-cmp>
 
 </ion-content>

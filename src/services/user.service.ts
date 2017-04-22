@@ -30,4 +30,11 @@ export class UserService {
         return result;
       });
   }
+
+  getUserForProfile(userId: string): Observable<any> {
+    return this.api.get(`${this.usersPath}profile/${userId}`, true)
+      .map(result => {
+        return result;
+      });
+  }
 }

@@ -1,32 +1,54 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { ModalController } from 'ionic-angular';
+import { Component, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
+import { ModalController, NavController } from 'ionic-angular';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../state/app.state';
+import { UserActions } from '../../state/actions/user.actions';
+import { ProfileUserActions } from '../../state/actions/profile-user.actions';
 import { UserSearchActions } from '../../state/actions/user-search.actions';
+import { LoadingService } from '../../services/loading.service';
 import { IUser } from '../../shared/models/user.model';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { ProfileEditComponent } from '../../components/profile';
+import { FriendProfilePage } from '../friend-profile/friend-profile.page';
 
 @Component({
   selector: 'profile-page',
   templateUrl: 'profile.page.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ProfilePage {
+export class ProfilePage implements OnDestroy {
   public user$: Observable<IUser>;
   public users$: Observable<IUser[]>;
   public query$: Observable<string>;
+  loadingSubscription$: Subscription;
   showSearchBar: boolean = false;
   showOverlay: boolean = false;
+  dismissModal: boolean = false;
 
   constructor(
     private store: Store<AppState>,
+    private userActions: UserActions,
+    private profileUserActions: ProfileUserActions,
     private userSearchActions: UserSearchActions,
-    private modalCtrl: ModalController
+    private loadingService: LoadingService,
+    private modalCtrl: ModalController,
+    private navCtrl: NavController
   ) {
     this.user$ = this.store.select(state => state.auth.user);
     this.users$ = this.store.select(state => state.userSearch.result);
     this.query$ = this.store.select(state => state.userSearch.query);
+
+    this.loadingSubscription$ = this.loadingService.loadingCmp$.subscribe(loadingCmp => {
+      if(this.dismissModal) {
+        loadingCmp.dismiss().then(() => {
+          this.dismissModal = false;
+        });
+      }
+    });
+  }
+
+  ngOnDestroy() {
+    this.loadingSubscription$.unsubscribe();
   }
 
   onEditProfileBtnClick() {
@@ -51,5 +73,25 @@ export class ProfilePage {
 
   onFocus() {
     this.showOverlay = true;
+  }
+
+  followUser(data: {userId: string, user: IUser}) {
+    let user: IUser = {
+      _id: data.user._id,
+      following: data.user.following
+    };
+
+    user.following.push({ userId: data.userId });
+
+    this.store.dispatch(this.userActions.updateUser(user));
+    this.dismissModal = true;
+  }
+
+  showFriendProfile(userId: string) {
+    this.showSearchBar = !this.showSearchBar;
+    this.showOverlay = false;
+    this.store.dispatch(this.profileUserActions.getProfileUser(userId));
+    this.navCtrl.push(FriendProfilePage, null, { animation: 'ios-transition' });
+    this.store.dispatch(this.userSearchActions.searchUsersCancel());
   }
 }

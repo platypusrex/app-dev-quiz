@@ -15,7 +15,6 @@ import { ProfilePage } from '../pages/profile/profile.page';
 import { GameCategoriesPage } from '../pages/game-categories/game-categories.page';
 
 import { IUser } from '../shared/models/user.model';
-// import { storageGet, storageRemove } from '../shared/utils/storage.util';
 
 interface PageObj {
   title: string;
@@ -63,13 +62,6 @@ export class MyApp {
       this.userId = authData.userId;
     });
   }
-
-  // deleteLocalStore() {
-    // storageRemove('token');
-    // storageRemove('userId');
-    // this.userToken = '';
-    // this.userId = '';
-  // }
 
   initialize() {
     this.platform.ready().then(() => {

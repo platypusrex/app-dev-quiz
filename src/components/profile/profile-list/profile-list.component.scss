@@ -16,5 +16,9 @@
       height: 100%;
       object-fit: contain;
     }
+
+    ion-icon[name="ios-checkmark-circle-outline"] {
+      color: map_get($colors, secondary);
+    }
   }
 }

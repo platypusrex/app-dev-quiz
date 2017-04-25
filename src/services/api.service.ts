@@ -6,7 +6,7 @@ import { storageGet } from '../shared/utils/storage.util';
 
 @Injectable()
 export class ApiService {
-  apiBasePath:string = `http://localhost:8000/`;
+  apiBasePath:string = `http://10.0.0.84:8000/`;
 
   constructor(private http: Http) {}
 

@@ -72,8 +72,8 @@ profile-head-cmp {
   .profile-header-content {
     h1 {
       font-weight: 200;
-      font-size: 22px;
-      margin-bottom: 0;
+      @include font-size(26);
+      margin-bottom: 2px;
     }
 
     .profile-title {
@@ -93,7 +93,7 @@ profile-head-cmp {
     padding: 10px 5px 5px;
 
     span {
-      @include font-size(8);
+      @include font-size(9);
       text-transform: uppercase;
     }
 

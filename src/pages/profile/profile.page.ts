@@ -95,4 +95,16 @@ export class ProfilePage implements OnDestroy {
     this.navCtrl.push(FriendProfilePage, null, { animation: 'ios-transition' });
     this.store.dispatch(this.userSearchActions.searchUsersCancel());
   }
+
+  onGamesClick() {
+    console.log('games')
+  }
+
+  onFollowersClick() {
+    console.log('followers');
+  }
+
+  onFollowingClick() {
+    console.log('following');
+  }
 }

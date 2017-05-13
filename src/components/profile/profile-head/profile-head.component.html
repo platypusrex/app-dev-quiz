@@ -37,7 +37,7 @@
 		<div
 			tappable
 			class="dq-flex-container flex-column center profile-stats-container"
-			(click)="onGamesClick()">
+			(click)="handleGamesClick()">
 			<span>games</span>
 			<h2>{{ games?.length }}</h2>
 		</div>
@@ -45,7 +45,7 @@
 		<div
 			tappable
 			class="dq-flex-container flex-column center profile-stats-container"
-			(click)="onFollowersClick()">
+			(click)="handleFollowersClick()">
 			<span>followers</span>
 			<h2>{{ followers?.length }}</h2>
 		</div>
@@ -53,7 +53,7 @@
 		<div
 			tappable
 			class="dq-flex-container flex-column center profile-stats-container"
-			(click)="onFollowingClick()">
+			(click)="handleFollowingClick()">
 			<span>following</span>
 			<h2>{{ following?.length }}</h2>
 		</div>

@@ -15,20 +15,23 @@ export class ProfileHeadComponent {
   @Input() following: IFollower[];
   @Input() isFriendProfile: boolean;
   @Output() editProfile: EventEmitter<any> = new EventEmitter<any>();
+  @Output() onGamesClick: EventEmitter<any> = new EventEmitter<any>();
+  @Output() onFollowingClick: EventEmitter<any> = new EventEmitter<any>();
+  @Output() onFollowersClick: EventEmitter<any> = new EventEmitter<any>();
 
   onProfileEditBtnClick() {
     this.editProfile.emit();
   }
 
-  onGamesClick() {
-    console.log('games clicked');
+  handleGamesClick() {
+    this.onGamesClick.emit();
   }
 
-  onFollowersClick() {
-    console.log('followers clicked');
+  handleFollowersClick() {
+    this.onFollowersClick.emit();
   }
 
-  onFollowingClick() {
-    console.log('following clicked');
+  handleFollowingClick() {
+    this.onFollowingClick.emit();
   }
 }

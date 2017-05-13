@@ -35,7 +35,10 @@
 		[games]="(user$ | async)?.games"
 		[followers]="(user$ | async)?.followers"
 		[following]="(user$ | async)?.following"
-		(editProfile)="onEditProfileBtnClick()">
+		(editProfile)="onEditProfileBtnClick()"
+		(onGamesClick)="onGamesClick()"
+		(onFollowersClick)="onFollowersClick()"
+		(onFollowingClick)="onFollowingClick()">
 	</profile-head-cmp>
 
 	<profile-list-cmp

@@ -34,17 +34,26 @@
 	</div>
 
 	<div class="dq-flex-container profile-stats-wrapper">
-		<div class="dq-flex-container flex-column center profile-stats-container">
+		<div
+			tappable
+			class="dq-flex-container flex-column center profile-stats-container"
+			(click)="onGamesClick()">
 			<span>games</span>
 			<h2>{{ games?.length }}</h2>
 		</div>
 
-		<div class="dq-flex-container flex-column center profile-stats-container">
+		<div
+			tappable
+			class="dq-flex-container flex-column center profile-stats-container"
+			(click)="onFollowersClick()">
 			<span>followers</span>
 			<h2>{{ followers?.length }}</h2>
 		</div>
 
-		<div class="dq-flex-container flex-column center profile-stats-container">
+		<div
+			tappable
+			class="dq-flex-container flex-column center profile-stats-container"
+			(click)="onFollowingClick()">
 			<span>following</span>
 			<h2>{{ following?.length }}</h2>
 		</div>

@@ -19,4 +19,16 @@ export class ProfileHeadComponent {
   onProfileEditBtnClick() {
     this.editProfile.emit();
   }
+
+  onGamesClick() {
+    console.log('games clicked');
+  }
+
+  onFollowersClick() {
+    console.log('followers clicked');
+  }
+
+  onFollowingClick() {
+    console.log('following clicked');
+  }
 }

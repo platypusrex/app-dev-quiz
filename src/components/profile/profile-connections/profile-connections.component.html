@@ -1,0 +1,19 @@
+<ion-header no-border>
+	<ion-toolbar color="primary-dark">
+		<ion-buttons left>
+			<button ion-button icon-only (click)="closeModal($event)">
+				<ion-icon name="ios-close"></ion-icon>
+			</button>
+		</ion-buttons>
+		<ion-title>
+			your followers
+		</ion-title>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content>
+	<profile-list-cmp
+		[user]="user"
+		[users]="users">
+	</profile-list-cmp>
+</ion-content>

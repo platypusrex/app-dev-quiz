@@ -1,23 +1,17 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { IGameData, IFollower } from '../../../shared/models/user.model';
+import { IUser } from '../../../shared/models/user.model';
 
 @Component({
   selector: 'profile-head-cmp',
   templateUrl: 'profile-head.component.html'
 })
 export class ProfileHeadComponent {
-  @Input() userName: string;
-  @Input() createdOn: Date;
-  @Input() title: string;
-  @Input() description: string;
-  @Input() games: IGameData[];
-  @Input() followers: IFollower[];
-  @Input() following: IFollower[];
+  @Input() user: IUser;
   @Input() isFriendProfile: boolean;
   @Output() editProfile: EventEmitter<any> = new EventEmitter<any>();
   @Output() onGamesClick: EventEmitter<any> = new EventEmitter<any>();
-  @Output() onFollowingClick: EventEmitter<any> = new EventEmitter<any>();
-  @Output() onFollowersClick: EventEmitter<any> = new EventEmitter<any>();
+  @Output() onFollowingClick: EventEmitter<IUser> = new EventEmitter<IUser>();
+  @Output() onFollowersClick: EventEmitter<IUser> = new EventEmitter<IUser>();
 
   onProfileEditBtnClick() {
     this.editProfile.emit();
@@ -28,10 +22,10 @@ export class ProfileHeadComponent {
   }
 
   handleFollowersClick() {
-    this.onFollowersClick.emit();
+    this.onFollowersClick.emit(this.user);
   }
 
   handleFollowingClick() {
-    this.onFollowingClick.emit();
+    this.onFollowingClick.emit(this.user);
   }
 }

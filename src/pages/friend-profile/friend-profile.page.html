@@ -8,13 +8,7 @@
 
 <ion-content>
 	<profile-head-cmp
-		[userName]="(user$ | async)?.userName"
-		[createdOn]="(user$ | async)?.createdOn"
-		[title]="(user$ | async)?.title"
-		[description]="(user$ | async)?.description"
-		[games]="(user$ | async)?.games"
-		[followers]="(user$ | async)?.followers"
-		[following]="(user$ | async)?.following"
+		[user]="user$ | async"
 		[isFriendProfile]="true"
 		(editProfile)="onEditProfileBtnClick()">
 	</profile-head-cmp>

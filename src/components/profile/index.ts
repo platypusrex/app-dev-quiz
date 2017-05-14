@@ -3,3 +3,4 @@ export * from './profile-edit';
 export * from './profile-list';
 export * from './profile-search';
 export * from './profile-followers';
+export * from './profile-connections';

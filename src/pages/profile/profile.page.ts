@@ -10,6 +10,7 @@ import { IUser } from '../../shared/models/user.model';
 import { Observable, Subscription } from 'rxjs';
 import { ProfileEditComponent } from '../../components/profile';
 import { FriendProfilePage } from '../friend-profile/friend-profile.page';
+import { ProfileConnectionsComponent } from '../../components/profile/profile-connections';
 
 @Component({
   selector: 'profile-page',
@@ -100,11 +101,14 @@ export class ProfilePage implements OnDestroy {
     console.log('games')
   }
 
-  onFollowersClick() {
+  onFollowersClick(user: IUser) {
     console.log('followers');
+    let modal = this.modalCtrl.create(ProfileConnectionsComponent, { user, users: user.followers });
+    modal.present();
   }
 
-  onFollowingClick() {
-    console.log('following');
+  onFollowingClick(user: IUser) {
+    let modal = this.modalCtrl.create(ProfileConnectionsComponent, { user, users: user.following });
+    modal.present();
   }
 }

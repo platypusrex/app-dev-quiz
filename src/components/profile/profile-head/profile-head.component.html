@@ -6,7 +6,7 @@
 
 	<div class="dq-flex-container center profile-date-container">
 		<ion-icon name="ios-calendar-outline"></ion-icon>
-		<span>&nbsp;&nbsp;{{ createdOn | date:'shortDate' }}</span>
+		<span>&nbsp;&nbsp;{{ user.createdOn | date:'shortDate' }}</span>
 	</div>
 
 	<div
@@ -18,17 +18,17 @@
 	</div>
 
 	<div class="dq-flex-container flex-column center profile-header-content">
-		<h1>{{ userName }}</h1>
-		<p *ngIf="title" class="profile-title">
-			{{'"' + title + '"'}}
+		<h1>{{ user.userName }}</h1>
+		<p *ngIf="user.title" class="profile-title">
+			{{'"' + user.title + '"'}}
 		</p>
-		<p *ngIf="!title" class="profile-title">
+		<p *ngIf="!user.title" class="profile-title">
 			{{'"' + 'Add your title here!' + '"' }}
 		</p>
-		<span *ngIf="description" class="profile-description">
-			{{description}}
+		<span *ngIf="user.description" class="profile-description">
+			{{user.description}}
 		</span>
-		<span *ngIf="!description" class="profile-description">
+		<span *ngIf="!user.description" class="profile-description">
 			Your chance at 140 character description of the wonder that is you. Boom.
 		</span>
 	</div>
@@ -39,7 +39,7 @@
 			class="dq-flex-container flex-column center profile-stats-container"
 			(click)="handleGamesClick()">
 			<span>games</span>
-			<h2>{{ games?.length }}</h2>
+			<h2>{{ user.games?.length }}</h2>
 		</div>
 
 		<div
@@ -47,7 +47,7 @@
 			class="dq-flex-container flex-column center profile-stats-container"
 			(click)="handleFollowersClick()">
 			<span>followers</span>
-			<h2>{{ followers?.length }}</h2>
+			<h2>{{ user.followers?.length }}</h2>
 		</div>
 
 		<div
@@ -55,7 +55,7 @@
 			class="dq-flex-container flex-column center profile-stats-container"
 			(click)="handleFollowingClick()">
 			<span>following</span>
-			<h2>{{ following?.length }}</h2>
+			<h2>{{ user.following?.length }}</h2>
 		</div>
 	</div>
 

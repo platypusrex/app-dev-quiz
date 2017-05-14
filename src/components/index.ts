@@ -3,7 +3,8 @@ import {
   ProfileEditComponent,
   ProfileListComponent,
   ProfileSearchComponent,
-  ProfileFollowersComponent
+  ProfileFollowersComponent,
+  ProfileConnectionsComponent
 } from './profile';
 
 export const APP_COMPONENTS = [
@@ -11,5 +12,6 @@ export const APP_COMPONENTS = [
   ProfileEditComponent,
   ProfileListComponent,
   ProfileSearchComponent,
-  ProfileFollowersComponent
+  ProfileFollowersComponent,
+  ProfileConnectionsComponent
 ];

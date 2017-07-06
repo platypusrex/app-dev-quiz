@@ -15,7 +15,7 @@ export class ProfileListComponent implements OnChanges {
     const followingIds = this.getFollowingIds(this.user);
 
     this.users.forEach(val => {
-      if(followingIds && followingIds.includes(val._id)) {
+      if(followingIds && followingIds.includes(val.userName)) {
         val['isFollowed'] = true;
       }
     });
@@ -23,7 +23,7 @@ export class ProfileListComponent implements OnChanges {
 
   getFollowingIds(user) {
     if(user && user.following.length) {
-      return user.following.map(val => { return val.userId });
+      return user.following.map(val => { return val.userName });
     }
   }
 

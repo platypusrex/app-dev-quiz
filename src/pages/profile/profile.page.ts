@@ -102,7 +102,6 @@ export class ProfilePage implements OnDestroy {
   }
 
   onFollowersClick(user: IUser) {
-    console.log('followers');
     let modal = this.modalCtrl.create(ProfileConnectionsComponent, { user, users: user.followers });
     modal.present();
   }

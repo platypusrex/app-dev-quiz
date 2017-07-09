@@ -13,6 +13,7 @@ import { HomePage } from '../pages/home/home';
 import { AuthPage } from '../pages/auth/auth.page';
 import { ProfilePage } from '../pages/profile/profile.page';
 import { GameCategoriesPage } from '../pages/game-categories/game-categories.page';
+import { ChatPage } from '../pages/chat/chat.page';
 
 import { IUser } from '../shared/models/user.model';
 
@@ -32,7 +33,7 @@ export class MyApp {
 
   menuPages: PageObj[] = [
     { title: 'Play', icon: 'ios-game-controller-a-outline', component: GameCategoriesPage },
-    { title: 'Talk', icon: 'ios-chatboxes-outline' },
+    { title: 'Talk', icon: 'ios-chatboxes-outline', component: ChatPage },
     { title: 'Collab', icon: 'ios-people-outline'},
     { title: 'Stuff', icon: 'ios-cash-outline' },
     { title: 'Settings', icon: 'ios-settings-outline' },

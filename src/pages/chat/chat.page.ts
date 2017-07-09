@@ -3,10 +3,10 @@ import io from 'socket.io-client';
 import { IGameCategory } from '../../shared/models/game-categories.model';
 
 @Component({
-  selector: 'game-categories-page',
-  templateUrl: 'game-categories.page.html'
+  selector: 'chat-page',
+  templateUrl: 'chat.page.html'
 })
-export class GameCategoriesPage {
+export class ChatPage {
   socket: any;
 
   constructor() {

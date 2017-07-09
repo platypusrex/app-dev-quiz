@@ -1,0 +1,16 @@
+<ion-grid>
+	<ion-row>
+		<ion-col
+			class="game-btn" col-6 col-sm-4 col-md-3 col-lg-2
+			*ngFor="let category of gameCategories"
+			(click)="onCategoryClick(category)"
+		>
+			<div class="dq-flex-container flex-column center">
+				<span [ngStyle]="{'color': category.color || null}">
+					{{ category.displayName }}
+				</span>
+				<i [class]="category?.icon" [ngStyle]="{'color': category.color || null}"></i>
+			</div>
+		</ion-col>
+	</ion-row>
+</ion-grid>

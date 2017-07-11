@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
+import { ModalController } from 'ionic-angular';
 import io from 'socket.io-client';
+import { ChatRoomComponent } from '../../components/chat-room/chat-room.component';
 import { IGameCategory } from '../../shared/models/game-categories.model';
 
 @Component({
@@ -9,15 +11,18 @@ import { IGameCategory } from '../../shared/models/game-categories.model';
 export class ChatPage {
   socket: any;
 
-  constructor() {
-    this.socket = io('http://localhost:8000/');
-    this.socket.on('connect', function(){
-      console.log('fuck it');
-    });
-    this.socket.emit('message', {message: 'fuck you bitch', userName: 'p_rex'})
-  }
+  constructor(private modalCtrl: ModalController) {}
 
   onCategoryClick(category: IGameCategory) {
-    console.log(category);
+    // this.socket = io(`http://localhost:8000/${category.type}`);
+    // this.socket.emit('connect', function(){
+    //   console.log('fuck it');
+    // });
+    //
+    // this.socket.on( 'message', function( event ) {
+    //   console.log( 'chat message:', event )
+    // });
+    let modal = this.modalCtrl.create(ChatRoomComponent, {category});
+    modal.present();
   }
 }

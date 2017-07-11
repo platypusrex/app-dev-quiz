@@ -5,8 +5,20 @@
     flex-direction: column;
   }
 
+  &.center-row-vertical {
+    align-items: center;
+  }
+
+  &.center-row-horizontal {
+    justify-content: center;
+  }
+
   &.center {
     align-items: center;
     justify-content: center;
+  }
+
+  &.column {
+    flex-direction: column;
   }
 }

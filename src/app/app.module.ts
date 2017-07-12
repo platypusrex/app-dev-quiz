@@ -20,6 +20,7 @@ import { UserEffects } from '../state/effects/user.effects';
 import { UserSearchEffects } from '../state/effects/user-search.effects';
 import { GamesEffects } from '../state/effects/games.effects';
 import { ProfileUserEffects } from '../state/effects/profile-user.effects';
+import { ChatsEffects } from '../state/effects/chats.effects';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
@@ -44,7 +45,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     EffectsModule.run(UserEffects),
     EffectsModule.run(UserSearchEffects),
     EffectsModule.run(GamesEffects),
-    EffectsModule.run(ProfileUserEffects)
+    EffectsModule.run(ProfileUserEffects),
+    EffectsModule.run(ChatsEffects)
   ],
   bootstrap: [IonicApp],
   entryComponents: [

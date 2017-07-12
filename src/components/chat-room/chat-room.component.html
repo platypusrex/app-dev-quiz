@@ -16,10 +16,10 @@
 		<ion-item *ngFor="let message of messages; let last = last">
 			<div class="dq-flex-container column">
 				<div class="dq-flex-container center-row-vertical">
-					<h4>{{message.user.userName === user.userName ? 'Me' : message.user.userName}}</h4>
-					<span class="date">{{message.date | date:'yMMMdjms'}}</span>
+					<h4>{{message?.userName === user.userName ? 'Me' : message?.userName}}</h4>
+					<span class="date">{{message?.createdOn | date:'yMMMdjms'}}</span>
 				</div>
-				<span>{{message.message}}</span>
+				<span>{{message?.message}}</span>
 			</div>
 			{{last ? scrollToBottom() : null}}
 		</ion-item>

@@ -2,10 +2,12 @@ import { Component, OnDestroy, ViewChild } from '@angular/core';
 import { ViewController, NavParams, Content } from 'ionic-angular';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../state/app.state';
-import io from 'socket.io-client';
+import { ChatsActions } from '../../state/actions/chats.actions';
 import { IGameCategory } from '../../shared/models/game-categories.model';
-import { Subscription } from 'rxjs/Subscription';
 import { IUser } from '../../shared/models/user.model';
+import { IChat } from '../../shared/models/chats.model';
+import { Subscription } from 'rxjs/Subscription';
+import io from 'socket.io-client';
 
 @Component({
   selector: 'chat-room-cmp',
@@ -15,15 +17,17 @@ export class ChatRoomComponent implements OnDestroy {
   @ViewChild(Content) content: Content;
   user$: Subscription;
   user: IUser;
+  messages$: Subscription;
+  messages: IChat[] = [];
   socket: any;
   category: IGameCategory;
   message: string = '';
-  messages: {message: string; user: IUser, date: Date}[] = [];
   typing: {userName: string, isTyping: boolean} | null = null;
   typingTimeout: any;
 
   constructor(
     private store: Store<AppState>,
+    private chatsActions: ChatsActions,
     private viewCtrl: ViewController,
     private navParams: NavParams
   ){
@@ -31,18 +35,26 @@ export class ChatRoomComponent implements OnDestroy {
       this.user = user;
     });
 
+    this.messages$ =  this.store.select(state => state.chats.chats).subscribe(chats => {
+      chats.forEach(chat => {
+        this.messages.push(chat);
+      })
+    });
+
     if(navParams.get('category')) {
       this.category = navParams.get('category');
       this.connectToRoom(this.category);
     }
   }
-
-  scrollToBottom() {
-      this.content.scrollToBottom(0);
+  ionViewDidEnter() {
+    this.store.dispatch(this.chatsActions.getChatMessages(this.category.type));
   }
 
   ngOnDestroy() {
     this.socket.emit('disconnect', this.user.userName);
+    this.store.dispatch(this.chatsActions.removeChatMessages());
+    this.user$.unsubscribe();
+    this.messages$.unsubscribe();
   }
 
   connectToRoom (category: IGameCategory) {
@@ -65,8 +77,9 @@ export class ChatRoomComponent implements OnDestroy {
   sendMessage(e) {
     const msgData = {
       message: this.message,
-      user: this.user,
-      date: new Date()
+      userName: this.user.userName,
+      roomName: this.category.type,
+      createdOn: new Date()
     };
     this.socket.emit('newMessage', msgData);
     this.message = '';
@@ -86,5 +99,9 @@ export class ChatRoomComponent implements OnDestroy {
     setTimeout(() => {
       this.viewCtrl.dismiss();
     }, 250);
+  }
+
+  scrollToBottom() {
+    this.content.scrollToBottom(0);
   }
 }

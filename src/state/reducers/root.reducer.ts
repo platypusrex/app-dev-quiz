@@ -3,11 +3,13 @@ import { UserSearchReducer } from './user-search.reducer';
 import { LoadingReducer } from './loading.reducer';
 import { GamesReducer } from './games.reducer';
 import { ProfileUserReducer } from './profile-user.reducer';
+import { ChatsReducer } from './chats.reducer';
 
 export const RootReducer = {
   auth: UserReducer,
   userSearch: UserSearchReducer,
   loading: LoadingReducer,
   games: GamesReducer,
-  profileUser: ProfileUserReducer
+  profileUser: ProfileUserReducer,
+  chats: ChatsReducer
 };

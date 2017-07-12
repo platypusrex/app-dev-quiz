@@ -6,6 +6,9 @@ import {
   ProfileFollowersComponent,
   ProfileConnectionsComponent
 } from './profile';
+import { CategoryButtonsComponent } from './category-buttons';
+import { ChatRoomComponent } from './chat-room';
+
 
 export const APP_COMPONENTS = [
   ProfileHeadComponent,
@@ -13,5 +16,7 @@ export const APP_COMPONENTS = [
   ProfileListComponent,
   ProfileSearchComponent,
   ProfileFollowersComponent,
-  ProfileConnectionsComponent
+  ProfileConnectionsComponent,
+  CategoryButtonsComponent,
+  ChatRoomComponent
 ];

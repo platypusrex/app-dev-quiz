@@ -1,0 +1,46 @@
+chat-room-cmp {
+  .list {
+    margin-bottom: 72px;
+
+    .label {
+      white-space: normal !important;
+    }
+
+    .date {
+      margin-left: 10px;
+      font-size: 11px;
+      color: #9a9a9a;
+    }
+
+    .user-typing-indicator {
+      align-items: flex-start;
+      margin-left: 4px;
+    }
+  }
+
+  .dq-input-wrapper {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    background: #fff;
+    margin-bottom: 0;
+
+    .message-wrapper {
+      border-top: 1px solid #d8d8d8;
+
+      button {
+        box-shadow: none !important;
+        background: #fff;
+
+        .button-inner {
+          color: #5a5a5a;
+        }
+
+        i {
+          color: #5a5a5a;
+        }
+      }
+    }
+  }
+}

@@ -1,32 +1,23 @@
 import { Component } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { AppState } from '../../state/app.state';
-import { IGameCategories } from '../../shared/models/game-categories.model';
+import io from 'socket.io-client';
+import { IGameCategory } from '../../shared/models/game-categories.model';
 
 @Component({
   selector: 'game-categories-page',
   templateUrl: 'game-categories.page.html'
 })
 export class GameCategoriesPage {
-  gameCategories: IGameCategories;
+  socket: any;
 
-  constructor(private store: Store<AppState>) {
-    this.store.select(state => state.games.categories).subscribe(categories => {
-      this.gameCategories = this.convertGameCategoriesToArray(categories);
+  constructor() {
+    this.socket = io('http://localhost:8000/');
+    this.socket.on('connect', function(){
+      console.log('fuck it');
     });
+    this.socket.emit('message', {message: 'fuck you bitch', userName: 'p_rex'})
   }
 
-  convertGameCategoriesToArray(categories: IGameCategories) {
-    return Object.keys(categories)
-      .map(val => {
-        if(val !== '_id' && val !== '_v') return categories[val];
-      })
-      .filter(val =>  {
-        return !!(val);
-      })
-      .sort((a, b) => {
-        return a.displayName.localeCompare(b.displayName);
-      });
+  onCategoryClick(category: IGameCategory) {
+    console.log(category);
   }
-
 }

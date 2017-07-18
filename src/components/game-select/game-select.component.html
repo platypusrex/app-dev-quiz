@@ -1,0 +1,60 @@
+<ion-header no-border>
+	<ion-toolbar color="primary-dark">
+		<ion-buttons left>
+			<button ion-button icon-only (click)="closeModal($event)">
+				<ion-icon name="ios-close"></ion-icon>
+			</button>
+		</ion-buttons>
+		<ion-title>
+			{{category.displayName}} game lobby
+		</ion-title>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content>
+	<div class="lobby-msg-container dq-flex-container column center">
+		<div *ngIf="!game" class="dq-flex-container column center">
+			<h3 *ngFor="let message of messages">
+				{{message?.message}}
+			</h3>
+			<span>Choose a game type below and start a game...</span>
+		</div>
+		<div
+			class="dq-flex-container column center game-status-msg-wrapper"
+			*ngIf="game?.status === 'pending'"
+		>
+			<p>Game room created!</p>
+			<span class="dq-flex-container" style="justify-content: flex-end;">
+				waiting on opponent to join
+				<ion-spinner name="dots"></ion-spinner>
+			</span>
+		</div>
+		<div
+			class="dq-flex-container column center game-status-msg-wrapper"
+			*ngIf="game?.status === 'started'"
+		>
+			<p>Both players joined!</p>
+			<span>Get ready to start!</span>
+		</div>
+	</div>
+
+	<div *ngIf="!game" class="game-btns dq-flex-container column">
+		<div class="game-btn-wrapper dq-flex-container">
+			<button ion-button block outline color="primary">
+				<span class="game-btn-inner dq-flex-container column">
+					<span>One player</span>
+					<span>Get some practice and some alone time</span>
+				</span>
+			</button>
+		</div>
+
+		<div class="game-btn-wrapper dq-flex-container">
+			<button ion-button block outline color="secondary" (click)="createMultiPlayerGame()">
+				<span class="game-btn-inner dq-flex-container column">
+					<span>Two player</span>
+					<span>Go head-to-head with another dev-quizzer</span>
+				</span>
+			</button>
+		</div>
+	</div>
+</ion-content>

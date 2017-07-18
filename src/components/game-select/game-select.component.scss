@@ -1,0 +1,43 @@
+game-select-cmp {
+  .button {
+    height: 7rem;
+  }
+
+  .game-status-msg-wrapper {
+    height: 7px;
+    p {
+      margin-bottom: 5px;
+      font-size: 25px
+    }
+
+    span {
+      font-size: 16px;
+    }
+  }
+
+  .lobby-msg-container {
+    height: 100px;
+
+    span {
+      color: map_get($colors, light-gray);
+    }
+  }
+
+  .game-btns {
+    padding: 15px;
+  }
+
+  .game-btn-wrapper {
+    margin-bottom: 15px;
+  }
+
+  .game-btn-inner {
+    span {
+      &:last-child {
+        margin-top: 5px;
+        text-transform: none;
+        color: #a9a9a9;
+      }
+    }
+  }
+}

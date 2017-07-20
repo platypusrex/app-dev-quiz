@@ -13,7 +13,11 @@
 
 <ion-content>
 	<div class="lobby-msg-container dq-flex-container column center">
-		<div *ngIf="!game" class="dq-flex-container column center">
+		<div
+			*ngIf="!game"
+			class="dq-flex-container column center"
+			[@animate]="'bounceInLeft'"
+		>
 			<h3 *ngFor="let message of messages">
 				{{message?.message}}
 			</h3>
@@ -22,6 +26,7 @@
 		<div
 			class="dq-flex-container column center game-status-msg-wrapper"
 			*ngIf="game?.status === 'pending'"
+			[@animate]="'bounceInRight'"
 		>
 			<p>Game room created!</p>
 			<span class="dq-flex-container" style="justify-content: flex-end;">
@@ -32,13 +37,18 @@
 		<div
 			class="dq-flex-container column center game-status-msg-wrapper"
 			*ngIf="game?.status === 'started'"
+			[@animate]="'fadeInDown'"
 		>
 			<p>Both players joined!</p>
 			<span>Get ready to start!</span>
 		</div>
 	</div>
 
-	<div *ngIf="!game" class="game-btns dq-flex-container column">
+	<div
+		*ngIf="!game"
+		class="game-btns dq-flex-container column"
+		[@animate]="'fadeInUp'"
+	>
 		<div class="game-btn-wrapper dq-flex-container">
 			<button ion-button block outline color="primary">
 				<span class="game-btn-inner dq-flex-container column">

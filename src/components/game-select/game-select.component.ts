@@ -1,5 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
-import { NavParams, ViewController } from 'ionic-angular';
+import { NavParams, ViewController, AlertController } from 'ionic-angular';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../state/app.state';
 import { LoadingActions } from '../../state/actions/loading.actions';
@@ -8,10 +8,14 @@ import { IGameCategory } from '../../shared/models/game-categories.model';
 import io from 'socket.io-client';
 import { IUser } from '../../shared/models/user.model';
 import { Subscription } from 'rxjs/Subscription';
+import { animations } from '../../shared/animations';
 
 @Component({
   selector: 'game-select-cmp',
-  templateUrl: 'game-select.component.html'
+  templateUrl: 'game-select.component.html',
+  animations: [
+    animations(650, 100, 'ease-in-out')
+  ]
 })
 export class GameSelectComponent implements OnDestroy {
   socket: any;
@@ -26,6 +30,7 @@ export class GameSelectComponent implements OnDestroy {
     private store: Store<AppState>,
     private navParams: NavParams,
     private viewCtrl: ViewController,
+    private alertCtrl: AlertController,
     private loadingActions: LoadingActions,
     private loadingService: LoadingService
   ) {
@@ -44,7 +49,13 @@ export class GameSelectComponent implements OnDestroy {
   }
 
   ngOnDestroy() {
-    this.socket.emit('leaveRoom');
+    if (this.game) {
+      this.socket.emit('leaveRoom', {
+        room: this.game.room,
+        id: this.game._id,
+        userName: this.game.players.find(player => player.userName === this.user.userName)
+      });
+    }
     this.socket.emit('disconnect', this.user.userName);
     this.user$.unsubscribe();
     this.loading$.unsubscribe();
@@ -62,7 +73,6 @@ export class GameSelectComponent implements OnDestroy {
     this.socket.on('gameCreated', function(msgData) {
       let self = this;
       this.game = msgData;
-      console.log(this.game);
       self.store.dispatch(self.loadingActions.loadingStart());
       this.socket.emit('gameCreatedSuccess', this.game);
     }.bind(this));
@@ -74,6 +84,13 @@ export class GameSelectComponent implements OnDestroy {
       self.store.dispatch(self.loadingActions.loadingFinish());
       this.socket.emit('gameStartedSuccess', this.game);
     }.bind(this));
+
+    this.socket.on('gameEnded', function(msgData) {
+      if(this.viewCtrl.pageRef()) {
+        this.viewCtrl.dismiss();
+        this.presentAlert(msgData.userName);
+      }
+    }.bind(this));
   }
 
   createMultiPlayerGame() {
@@ -84,11 +101,16 @@ export class GameSelectComponent implements OnDestroy {
     });
   }
 
+  presentAlert(userName) {
+    let alert = this.alertCtrl.create({
+      title: `The game was closed by ${userName}.`,
+      subTitle: 'Choose a lobby and start a new game!',
+      enableBackdropDismiss: true
+    });
+    alert.present();
+  }
+
   closeModal() {
-    console.log('modal closed');
-    this.socket.emit('leaveRoom');
-    this.socket.emit('disconnect', this.user.userName);
     this.viewCtrl.dismiss();
-    this.user$.unsubscribe();
   }
 }

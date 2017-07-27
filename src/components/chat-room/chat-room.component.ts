@@ -7,7 +7,10 @@ import { IGameCategory } from '../../shared/models/game-categories.model';
 import { IUser } from '../../shared/models/user.model';
 import { IChat } from '../../shared/models/chats.model';
 import { Subscription } from 'rxjs/Subscription';
-import io from 'socket.io-client';
+import { chatEvents } from '../../shared/constants/socket.constants';
+import * as io from 'socket.io-client';
+
+const apiUrl: string = 'http://localhost:8000/';
 
 @Component({
   selector: 'chat-room-cmp',
@@ -15,11 +18,11 @@ import io from 'socket.io-client';
 })
 export class ChatRoomComponent implements OnDestroy {
   @ViewChild(Content) content: Content;
+  socket: SocketIOClient.Socket;
   user$: Subscription;
   user: IUser;
   messages$: Subscription;
   messages: IChat[] = [];
-  socket: any;
   category: IGameCategory;
   message: string = '';
   typing: {userName: string, isTyping: boolean} | null = null;
@@ -51,25 +54,25 @@ export class ChatRoomComponent implements OnDestroy {
   }
 
   ngOnDestroy() {
-    this.socket.emit('disconnect', this.user.userName);
+    this.socket.emit(chatEvents.disconnect, this.user.userName);
     this.store.dispatch(this.chatsActions.removeChatMessages());
     this.user$.unsubscribe();
     this.messages$.unsubscribe();
   }
 
   connectToRoom (category: IGameCategory) {
-    this.socket = io(`http://localhost:8000/${category.type}`);
-    this.socket.emit('joinRoom', category.displayName);
+    this.socket = io(`${apiUrl}${category.type}`);
+    this.socket.emit(chatEvents.joinRoom, category.displayName);
 
-    this.socket.on('message', function(msgData) {
+    this.socket.on(chatEvents.message, function(msgData) {
       this.messages.push(msgData);
     }.bind(this));
 
-    this.socket.on('userTyping', function(typingData) {
+    this.socket.on(chatEvents.userTyping, function(typingData) {
       if(!this.typing) this.typing = typingData;
     }.bind(this));
 
-    this.socket.on('userStopTyping', function(typingData) {
+    this.socket.on(chatEvents.userStopTyping, function(typingData) {
       if(this.typing && Object.keys(this.typing).length) this.typing = typingData;
     }.bind(this));
   }
@@ -81,21 +84,21 @@ export class ChatRoomComponent implements OnDestroy {
       roomName: this.category.type,
       createdOn: new Date()
     };
-    this.socket.emit('newMessage', msgData);
+    this.socket.emit(chatEvents.newMessage, msgData);
     this.message = '';
   }
 
   handleKeyDown() {
-    this.socket.emit('typing', this.user.userName);
+    this.socket.emit(chatEvents.typing, this.user.userName);
     this.typingTimeout = setTimeout(() => {
       clearTimeout(this.typingTimeout);
-      this.socket.emit('stopTyping')
+      this.socket.emit(chatEvents.stopTyping)
     }, 2000);
   }
 
   closeModal() {
-    this.socket.emit('leaveRoom', this.user.userName);
-    this.socket.emit('disconnect');
+    this.socket.emit(chatEvents.leaveRoom, this.user.userName);
+    this.socket.emit(chatEvents.disconnect);
     setTimeout(() => {
       this.viewCtrl.dismiss();
     }, 250);

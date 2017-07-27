@@ -5,10 +5,13 @@ import { AppState } from '../../state/app.state';
 import { LoadingActions } from '../../state/actions/loading.actions';
 import { LoadingService } from '../../services/loading.service';
 import { IGameCategory } from '../../shared/models/game-categories.model';
-import io from 'socket.io-client';
 import { IUser } from '../../shared/models/user.model';
 import { Subscription } from 'rxjs/Subscription';
 import { animations } from '../../shared/animations';
+import { gameEvents } from '../../shared/constants/socket.constants';
+import * as io from 'socket.io-client';
+
+const apiUrl: string = 'http://localhost:8000/';
 
 @Component({
   selector: 'game-select-cmp',
@@ -18,7 +21,7 @@ import { animations } from '../../shared/animations';
   ]
 })
 export class GameSelectComponent implements OnDestroy {
-  socket: any;
+  socket: SocketIOClient.Socket;
   category: IGameCategory;
   user: IUser;
   user$: Subscription;
@@ -50,42 +53,40 @@ export class GameSelectComponent implements OnDestroy {
 
   ngOnDestroy() {
     if (this.game) {
-      this.socket.emit('leaveRoom', {
+      this.socket.emit(gameEvents.leaveRoom, {
         room: this.game.room,
         id: this.game._id,
         userName: this.game.players.find(player => player.userName === this.user.userName)
       });
     }
-    this.socket.emit('disconnect', this.user.userName);
+    this.socket.emit(gameEvents.disconnect, this.user.userName);
     this.user$.unsubscribe();
     this.loading$.unsubscribe();
   }
 
   connectToLobby(category: IGameCategory) {
-    this.socket = io(`http://localhost:8000/${category.type}-games`);
-    this.socket.emit('joinRoom', category.displayName);
+    this.socket = io(`${apiUrl}${category.type}-games`);
+    this.socket.emit(gameEvents.joinRoom, category.displayName);
 
-    this.socket.on('message', function(msgData) {
-      console.log(msgData);
+    this.socket.on(gameEvents.message, function(msgData) {
       this.messages.push(msgData);
     }.bind(this));
 
-    this.socket.on('gameCreated', function(msgData) {
+    this.socket.on(gameEvents.gameCreated, function(msgData) {
       let self = this;
       this.game = msgData;
       self.store.dispatch(self.loadingActions.loadingStart());
-      this.socket.emit('gameCreatedSuccess', this.game);
+      this.socket.emit(gameEvents.gameCreatedSuccess, this.game);
     }.bind(this));
 
-    this.socket.on('gameStarted', function(msgData) {
+    this.socket.on(gameEvents.gameStarted, function(msgData) {
       let self = this;
       this.game = msgData;
-      console.log(this.game);
       self.store.dispatch(self.loadingActions.loadingFinish());
-      this.socket.emit('gameStartedSuccess', this.game);
+      this.socket.emit(gameEvents.gameStartedSuccess, this.game);
     }.bind(this));
 
-    this.socket.on('gameEnded', function(msgData) {
+    this.socket.on(gameEvents.gameEnded, function(msgData) {
       if(this.viewCtrl.pageRef()) {
         this.viewCtrl.dismiss();
         this.presentAlert(msgData.userName);
@@ -93,8 +94,8 @@ export class GameSelectComponent implements OnDestroy {
     }.bind(this));
   }
 
-  createMultiPlayerGame() {
-    this.socket.emit('createGameMulti', {
+  createTwoPlayerGame() {
+    this.socket.emit(gameEvents.createTwoPlayerGame, {
       room: `${this.category.type}${this.user._id}`,
       type: `${this.category.type}`,
       userName: this.user.userName

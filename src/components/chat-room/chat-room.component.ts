@@ -3,14 +3,13 @@ import { ViewController, NavParams, Content } from 'ionic-angular';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../state/app.state';
 import { ChatsActions } from '../../state/actions/chats.actions';
+import { ChatSocketService } from '../../services/chat-socket.service';
 import { IGameCategory } from '../../shared/models/game-categories.model';
 import { IUser } from '../../shared/models/user.model';
-import { IChat } from '../../shared/models/chats.model';
+import { IChat, IUserTyping } from '../../shared/models/chats.model';
+import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
-import { chatEvents } from '../../shared/constants/socket.constants';
-import * as io from 'socket.io-client';
 
-const apiUrl: string = 'http://localhost:8000/';
 
 @Component({
   selector: 'chat-room-cmp',
@@ -18,19 +17,17 @@ const apiUrl: string = 'http://localhost:8000/';
 })
 export class ChatRoomComponent implements OnDestroy {
   @ViewChild(Content) content: Content;
-  socket: SocketIOClient.Socket;
+  messages$: Observable<Array<IChat>>;
+  typing$: Observable<IUserTyping>;
   user$: Subscription;
   user: IUser;
-  messages$: Subscription;
-  messages: IChat[] = [];
   category: IGameCategory;
   message: string = '';
-  typing: {userName: string, isTyping: boolean} | null = null;
-  typingTimeout: any;
 
   constructor(
     private store: Store<AppState>,
     private chatsActions: ChatsActions,
+    private chatSocketService: ChatSocketService,
     private viewCtrl: ViewController,
     private navParams: NavParams
   ){
@@ -38,70 +35,41 @@ export class ChatRoomComponent implements OnDestroy {
       this.user = user;
     });
 
-    this.messages$ =  this.store.select(state => state.chats.chats).subscribe(chats => {
-      chats.forEach(chat => {
-        this.messages.push(chat);
-      })
-    });
+    this.messages$ = this.store.select(state => state.chats.chats);
+    this.typing$ = this.store.select(state => state.chats.typing);
 
     if(navParams.get('category')) {
       this.category = navParams.get('category');
-      this.connectToRoom(this.category);
+      this.chatSocketService.joinChatRoom(this.category.type);
     }
   }
+
   ionViewDidEnter() {
     this.store.dispatch(this.chatsActions.getChatMessages(this.category.type));
   }
 
   ngOnDestroy() {
-    this.socket.emit(chatEvents.disconnect, this.user.userName);
-    this.store.dispatch(this.chatsActions.removeChatMessages());
+    this.chatSocketService.disconnectFromRoom(this.user.userName);
     this.user$.unsubscribe();
-    this.messages$.unsubscribe();
   }
 
-  connectToRoom (category: IGameCategory) {
-    this.socket = io(`${apiUrl}${category.type}`);
-    this.socket.emit(chatEvents.joinRoom, category.displayName);
-
-    this.socket.on(chatEvents.message, function(msgData) {
-      this.messages.push(msgData);
-    }.bind(this));
-
-    this.socket.on(chatEvents.userTyping, function(typingData) {
-      if(!this.typing) this.typing = typingData;
-    }.bind(this));
-
-    this.socket.on(chatEvents.userStopTyping, function(typingData) {
-      if(this.typing && Object.keys(this.typing).length) this.typing = typingData;
-    }.bind(this));
-  }
-
-  sendMessage(e) {
-    const msgData = {
+  sendMessage() {
+    const msgData:IChat = {
       message: this.message,
       userName: this.user.userName,
       roomName: this.category.type,
       createdOn: new Date()
     };
-    this.socket.emit(chatEvents.newMessage, msgData);
+    this.chatSocketService.sendMessage(msgData);
     this.message = '';
   }
 
-  handleKeyDown() {
-    this.socket.emit(chatEvents.typing, this.user.userName);
-    this.typingTimeout = setTimeout(() => {
-      clearTimeout(this.typingTimeout);
-      this.socket.emit(chatEvents.stopTyping)
-    }, 2000);
+  handleKeyDown(e) {
+    this.chatSocketService.handleUserTyping(this.user.userName, e);
   }
 
   closeModal() {
-    this.socket.emit(chatEvents.leaveRoom, this.user.userName);
-    this.socket.emit(chatEvents.disconnect);
-    setTimeout(() => {
-      this.viewCtrl.dismiss();
-    }, 250);
+    this.viewCtrl.dismiss();
   }
 
   scrollToBottom() {

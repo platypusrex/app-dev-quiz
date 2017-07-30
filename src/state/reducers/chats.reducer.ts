@@ -1,26 +1,37 @@
 import { ActionReducer, Action } from '@ngrx/store';
 import { ChatsActions } from '../actions/chats.actions';
-import { IChat } from '../../shared/models/chats.model';
+import { IChat, IUserTyping } from '../../shared/models/chats.model';
 
 export interface IChatsState {
   chats: IChat[];
-  error?: any
+  typing: IUserTyping | null
+  error?: any,
 }
 
 const initialState: IChatsState = {
   chats: [],
+  typing: null
 };
 
 export const ChatsReducer: ActionReducer<any> = (state: IChatsState = initialState, action: Action) => {
   switch(action.type) {
     case ChatsActions.GET_CHAT_MESSAGES_SUCCESS:
-      return Object.assign({}, state, { chats: action.payload});
+      return {...state, chats: action.payload};
 
     case ChatsActions.GET_CHAT_MESSAGES_FAILURE:
-      return Object.assign({}, state, { error: action.payload });
+      return {...state, error: action.payload};
+
+    case ChatsActions.ADD_CHAT_MESSAGE:
+      return {...state, chats: [...state.chats, action.payload]};
 
     case ChatsActions.REMOVE_CHAT_MESSAGES:
-      return Object.assign({}, state, { chats: []});
+      return {...state, initialState};
+
+    case ChatsActions.USER_IS_TYPING:
+      return {...state, typing: action.payload};
+
+    case ChatsActions.USER_STOPPED_TYPING:
+      return {...state, typing: initialState.typing};
 
     default:
       return state;

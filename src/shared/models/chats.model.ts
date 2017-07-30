@@ -5,3 +5,8 @@ export interface IChat {
   roomName?: string;
   userName?: string;
 }
+
+export interface IUserTyping {
+  userName?: string;
+  isTyping?: boolean;
+}

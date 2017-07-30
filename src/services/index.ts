@@ -4,6 +4,7 @@ import { UserService } from './user.service';
 import { LoadingService } from './loading.service';
 import { GamesService } from './games.service';
 import { ChatsService } from './chats.service';
+import { ChatSocketService } from './chat-socket.service';
 
 export const APP_SERVICES = [
   ApiService,
@@ -11,5 +12,6 @@ export const APP_SERVICES = [
   UserService,
   LoadingService,
   GamesService,
-  ChatsService
+  ChatsService,
+  ChatSocketService
 ];

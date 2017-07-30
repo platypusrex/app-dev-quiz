@@ -6,6 +6,7 @@ import * as io from 'socket.io-client';
 import { Subscription } from 'rxjs/Subscription';
 import { chatEvents } from '../shared/constants/socket.constants';
 import { IChat, IUserTyping } from '../shared/models/chats.model';
+import { IGameCategory } from '../shared/models/game-categories.model';
 
 @Injectable()
 export class ChatSocketService {
@@ -13,7 +14,7 @@ export class ChatSocketService {
   private url: string = 'http://localhost:8000/';
   private typing: IUserTyping;
   private typing$: Subscription;
-  private typingTimeout = undefined;
+  private typingTimeout;
 
   constructor(
     private store: Store<AppState>,
@@ -24,8 +25,10 @@ export class ChatSocketService {
     });
   }
 
-  joinChatRoom(chatRoomName: string) {
-    this.socket = io(`${this.url}${chatRoomName}`);
+  joinChatRoom(category: IGameCategory) {
+    this.socket = io(`${this.url}${category.type}`);
+
+    this.socket.emit(chatEvents.joinRoom, category.displayName);
 
     this.socket.on(chatEvents.message, function(msgData) {
       this.store.dispatch(this.chatsActions.addChatMessage(msgData))

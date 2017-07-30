@@ -40,7 +40,7 @@ export class ChatRoomComponent implements OnDestroy {
 
     if(navParams.get('category')) {
       this.category = navParams.get('category');
-      this.chatSocketService.joinChatRoom(this.category.type);
+      this.chatSocketService.joinChatRoom(this.category);
     }
   }
 
@@ -69,7 +69,9 @@ export class ChatRoomComponent implements OnDestroy {
   }
 
   closeModal() {
-    this.viewCtrl.dismiss();
+    setTimeout(() => {
+      this.viewCtrl.dismiss();
+    }, 200);
   }
 
   scrollToBottom() {

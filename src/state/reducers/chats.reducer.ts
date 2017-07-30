@@ -16,7 +16,7 @@ const initialState: IChatsState = {
 export const ChatsReducer: ActionReducer<any> = (state: IChatsState = initialState, action: Action) => {
   switch(action.type) {
     case ChatsActions.GET_CHAT_MESSAGES_SUCCESS:
-      return {...state, chats: action.payload};
+      return {...state, chats: [...state.chats, ...action.payload]};
 
     case ChatsActions.GET_CHAT_MESSAGES_FAILURE:
       return {...state, error: action.payload};
@@ -25,7 +25,7 @@ export const ChatsReducer: ActionReducer<any> = (state: IChatsState = initialSta
       return {...state, chats: [...state.chats, action.payload]};
 
     case ChatsActions.REMOVE_CHAT_MESSAGES:
-      return {...state, initialState};
+      return {...state, chats: [], typing: null};
 
     case ChatsActions.USER_IS_TYPING:
       return {...state, typing: action.payload};

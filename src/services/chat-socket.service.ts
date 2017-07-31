@@ -43,7 +43,7 @@ export class ChatSocketService {
     }.bind(this));
   }
 
-  sendMessage(msgData: IChat) {
+  handleSendMessage(msgData: IChat) {
     this.socket.emit(chatEvents.newMessage, msgData);
   }
 
@@ -60,7 +60,7 @@ export class ChatSocketService {
     }
   }
 
-  disconnectFromRoom(userName: string) {
+  disconnectFromChatRoom(userName: string) {
     this.socket.emit(chatEvents.disconnect, userName);
     this.store.dispatch(this.chatsActions.removeChatMessages());
   }

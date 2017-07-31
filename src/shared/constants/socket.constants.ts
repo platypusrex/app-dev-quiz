@@ -19,7 +19,9 @@ interface IGameEvents extends ISocketEvents {
   gameStarted: string;
   gameStartedSuccess: string;
   gameEnded: string;
+  gameCanceled: string;
   createTwoPlayerGame: string;
+  cancelTwoPlayerGame: string;
 }
 
 const socketEvents = {
@@ -45,5 +47,7 @@ export const gameEvents = {
   gameStarted: 'gameStarted',
   gameStartedSuccess: 'gameStartedSuccess',
   gameEnded: 'gameEnded',
-  createTwoPlayerGame: 'createTwoPlayerGame'
+  gameCanceled: 'gameCanceled',
+  createTwoPlayerGame: 'createTwoPlayerGame',
+  cancelTwoPlayerGame: 'cancelTwoPlayerGame'
 } as IGameEvents;

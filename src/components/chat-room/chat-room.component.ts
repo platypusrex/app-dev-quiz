@@ -49,7 +49,7 @@ export class ChatRoomComponent implements OnDestroy {
   }
 
   ngOnDestroy() {
-    this.chatSocketService.disconnectFromRoom(this.user.userName);
+    this.chatSocketService.disconnectFromChatRoom(this.user.userName);
     this.user$.unsubscribe();
   }
 
@@ -60,7 +60,7 @@ export class ChatRoomComponent implements OnDestroy {
       roomName: this.category.type,
       createdOn: new Date()
     };
-    this.chatSocketService.sendMessage(msgData);
+    this.chatSocketService.handleSendMessage(msgData);
     this.message = '';
   }
 

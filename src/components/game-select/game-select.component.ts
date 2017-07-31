@@ -2,16 +2,17 @@ import { Component, OnDestroy } from '@angular/core';
 import { NavParams, ViewController, AlertController } from 'ionic-angular';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../state/app.state';
-import { LoadingActions } from '../../state/actions/loading.actions';
+import { GamesActions } from '../../state/actions/game.actions';
 import { LoadingService } from '../../services/loading.service';
+import { GameSocketService } from '../../services/game-socket.service';
 import { IGameCategory } from '../../shared/models/game-categories.model';
 import { IUser } from '../../shared/models/user.model';
+import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { animations } from '../../shared/animations';
 import { gameEvents } from '../../shared/constants/socket.constants';
-import * as io from 'socket.io-client';
-
-const apiUrl: string = 'http://localhost:8000/';
+import { IChat } from '../../shared/models/chats.model';
+import { ICreateGame, IGame } from '../../shared/models/game.model';
 
 @Component({
   selector: 'game-select-cmp',
@@ -21,97 +22,83 @@ const apiUrl: string = 'http://localhost:8000/';
   ]
 })
 export class GameSelectComponent implements OnDestroy {
-  socket: SocketIOClient.Socket;
+  game$: Observable<IGame>;
+  messages$: Subscription;
+  user$: Subscription;
+  loading$: Subscription;
+  messages: IChat[];
   category: IGameCategory;
   user: IUser;
-  user$: Subscription;
-  messages: {message: string; userName: string; createdOn: Date;}[] = [];
-  game: any;
-  loading$: Subscription;
 
   constructor(
     private store: Store<AppState>,
     private navParams: NavParams,
     private viewCtrl: ViewController,
     private alertCtrl: AlertController,
-    private loadingActions: LoadingActions,
-    private loadingService: LoadingService
+    private loadingService: LoadingService,
+    private gamesActions: GamesActions,
+    private gameSocketService: GameSocketService
   ) {
     this.user$ = this.store.select(state => state.auth.user).subscribe(user => {
       this.user = user;
+    });
+
+    this.messages$ = this.store.select(state => state.games.messages).subscribe(messages => {
+      this.messages = messages;
+      const cancelRoomData = this.messages.find(message => message.message === gameEvents.gameCanceled);
+      if(this.viewCtrl.pageRef() && cancelRoomData) {
+        this.presentAlert(cancelRoomData.userName);
+        this.viewCtrl.dismiss();
+      }
     });
 
     this.loading$ = this.loadingService.loadingCmp$.subscribe(loadingCmp => {
       loadingCmp.dismiss();
     });
 
+    this.game$ = this.store.select(state => state.games.game);
+
     if(navParams.get('category')) {
       this.category = navParams.get('category');
-      this.connectToLobby(this.category);
+      this.gameSocketService.joinGameRoom(this.category);
     }
   }
 
   ngOnDestroy() {
-    if (this.game) {
-      this.socket.emit(gameEvents.leaveRoom, {
-        room: this.game.room,
-        id: this.game._id,
-        userName: this.game.players.find(player => player.userName === this.user.userName)
-      });
-    }
-    this.socket.emit(gameEvents.disconnect, this.user.userName);
     this.user$.unsubscribe();
+    this.messages$.unsubscribe();
     this.loading$.unsubscribe();
   }
 
-  connectToLobby(category: IGameCategory) {
-    this.socket = io(`${apiUrl}${category.type}-games`);
-    this.socket.emit(gameEvents.joinRoom, category.displayName);
-
-    this.socket.on(gameEvents.message, function(msgData) {
-      this.messages.push(msgData);
-    }.bind(this));
-
-    this.socket.on(gameEvents.gameCreated, function(msgData) {
-      let self = this;
-      this.game = msgData;
-      self.store.dispatch(self.loadingActions.loadingStart());
-      this.socket.emit(gameEvents.gameCreatedSuccess, this.game);
-    }.bind(this));
-
-    this.socket.on(gameEvents.gameStarted, function(msgData) {
-      let self = this;
-      this.game = msgData;
-      self.store.dispatch(self.loadingActions.loadingFinish());
-      this.socket.emit(gameEvents.gameStartedSuccess, this.game);
-    }.bind(this));
-
-    this.socket.on(gameEvents.gameEnded, function(msgData) {
-      if(this.viewCtrl.pageRef()) {
-        this.viewCtrl.dismiss();
-        this.presentAlert(msgData.userName);
-      }
-    }.bind(this));
-  }
-
   createTwoPlayerGame() {
-    this.socket.emit(gameEvents.createTwoPlayerGame, {
+    const gameData: ICreateGame = {
       room: `${this.category.type}${this.user._id}`,
       type: `${this.category.type}`,
       userName: this.user.userName
-    });
+    };
+    this.gameSocketService.handleCreateTwoPlayerGame(gameData);
   }
 
   presentAlert(userName) {
     let alert = this.alertCtrl.create({
       title: `The game was closed by ${userName}.`,
       subTitle: 'Choose a lobby and start a new game!',
-      enableBackdropDismiss: true
+      enableBackdropDismiss: false,
+      buttons: [
+        {
+          text: 'Ok',
+          role: 'cancel',
+          handler: () => {
+            this.store.dispatch(this.gamesActions.clearGameData());
+          }
+        }
+      ]
     });
     alert.present();
   }
 
   closeModal() {
+    this.gameSocketService.handleCancelGameInProgress(this.user.userName);
     this.viewCtrl.dismiss();
   }
 }

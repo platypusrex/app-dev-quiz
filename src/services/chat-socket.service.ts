@@ -30,17 +30,17 @@ export class ChatSocketService {
 
     this.socket.emit(chatEvents.joinRoom, category.displayName);
 
-    this.socket.on(chatEvents.message, function(msgData) {
+    this.socket.on(chatEvents.message, (msgData) => {
       this.store.dispatch(this.chatsActions.addChatMessage(msgData))
-    }.bind(this));
+    });
 
-    this.socket.on(chatEvents.userTyping, function(typingData: IUserTyping) {
+    this.socket.on(chatEvents.userTyping, (typingData: IUserTyping) => {
       this.store.dispatch(this.chatsActions.userIsTyping(typingData));
-    }.bind(this));
+    });
 
-    this.socket.on(chatEvents.userStopTyping, function() {
+    this.socket.on(chatEvents.userStopTyping, () => {
       this.store.dispatch(this.chatsActions.userStoppedTyping());
-    }.bind(this));
+    });
   }
 
   handleSendMessage(msgData: IChat) {

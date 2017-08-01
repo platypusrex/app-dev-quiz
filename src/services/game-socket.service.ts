@@ -22,38 +22,34 @@ export class GameSocketService {
   ) {
     this.store.select(state => state.games.game).subscribe(game => {
       this.game = game;
-    })
+    });
   }
 
   joinGameRoom(category: IGameCategory) {
     this.socket = io(`${this.url}${category.type}-games`);
     this.socket.emit(gameEvents.joinRoom, category.displayName);
 
-    this.socket.on(gameEvents.message, function(msgData) {
-      let self = this;
-      self.store.dispatch(self.gamesActions.updateGameMessages(msgData));
-    }.bind(this));
+    this.socket.on(gameEvents.message, (msgData) => {
+      this.store.dispatch(this.gamesActions.updateGameMessages(msgData));
+    });
 
-    this.socket.on(gameEvents.gameCreated, function(gameData: IGame) {
-      let self = this;
-      self.store.dispatch(self.gamesActions.updateGameData(gameData));
-      self.store.dispatch(self.loadingActions.loadingStart());
+    this.socket.on(gameEvents.gameCreated, (gameData: IGame) => {
+      this.store.dispatch(this.gamesActions.updateGameData(gameData));
+      this.store.dispatch(this.loadingActions.loadingStart());
       this.socket.emit(gameEvents.gameCreatedSuccess, this.game);
-    }.bind(this));
+    });
 
-    this.socket.on(gameEvents.gameStarted, function(gameData: IGame) {
-      let self = this;
-      self.store.dispatch(self.gamesActions.updateGameData(gameData));
-      self.store.dispatch(self.loadingActions.loadingFinish());
+    this.socket.on(gameEvents.gameStarted, (gameData: IGame) => {
+      this.store.dispatch(this.gamesActions.updateGameData(gameData));
+      this.store.dispatch(this.loadingActions.loadingFinish());
       this.socket.emit(gameEvents.gameStartedSuccess, this.game);
-    }.bind(this));
+    });
 
-    this.socket.on(gameEvents.gameCanceled, function(msgData: IChat) {
-      let self = this;
-      if (self.game) {
-        self.store.dispatch(self.gamesActions.updateGameMessages(msgData));
+    this.socket.on(gameEvents.gameCanceled, (msgData: IChat) => {
+      if (this.game) {
+        this.store.dispatch(this.gamesActions.updateGameMessages(msgData));
       }
-    }.bind(this));
+    });
   }
 
   handleCreateTwoPlayerGame(createGameData: ICreateGame) {

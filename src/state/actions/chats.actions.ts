@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Action } from '@ngrx/store';
-import { IChat } from '../../shared/models/chats.model';
+import { IChat, IUserTyping } from '../../shared/models/chats.model';
 
 @Injectable()
 export class ChatsActions {
@@ -28,10 +28,33 @@ export class ChatsActions {
     }
   }
 
+  static ADD_CHAT_MESSAGE = 'ADD_CHAT_MESSAGE';
+  addChatMessage(chatMessage: IChat): Action {
+    return {
+      type: ChatsActions.ADD_CHAT_MESSAGE,
+      payload: chatMessage
+    }
+  }
+
   static REMOVE_CHAT_MESSAGES = 'REMOVE_CHAT_MESSAGES';
-  removeChatMessages() {
+  removeChatMessages(): Action {
     return {
       type: ChatsActions.REMOVE_CHAT_MESSAGES
+    }
+  }
+
+  static USER_IS_TYPING = 'USER_IS_TYPING';
+  userIsTyping(typingData: IUserTyping): Action {
+    return {
+      type: ChatsActions.USER_IS_TYPING,
+      payload: typingData
+    }
+  }
+
+  static USER_STOPPED_TYPING = 'USER_STOPPED_TYPING';
+  userStoppedTyping(): Action {
+    return {
+      type: ChatsActions.USER_STOPPED_TYPING
     }
   }
 }

@@ -14,7 +14,7 @@
 <ion-content>
 	<div class="lobby-msg-container dq-flex-container column center">
 		<div
-			*ngIf="!game"
+			*ngIf="!(game$ | async)"
 			class="dq-flex-container column center"
 			[@animate]="'bounceInLeft'"
 		>
@@ -25,8 +25,8 @@
 		</div>
 		<div
 			class="dq-flex-container column center game-status-msg-wrapper"
-			*ngIf="game?.status === 'pending'"
-			[@animate]="'bounceInRight'"
+			*ngIf="(game$ | async)?.status === 'pending'"
+			[@animate]="'fadeInUp'"
 		>
 			<p>Game room created!</p>
 			<span class="dq-flex-container" style="justify-content: flex-end;">
@@ -36,8 +36,8 @@
 		</div>
 		<div
 			class="dq-flex-container column center game-status-msg-wrapper"
-			*ngIf="game?.status === 'started'"
-			[@animate]="'fadeInDown'"
+			*ngIf="(game$ | async)?.status === 'started'"
+			[@animate]="'fadeInUp'"
 		>
 			<p>Both players joined!</p>
 			<span>Get ready to start!</span>
@@ -45,7 +45,7 @@
 	</div>
 
 	<div
-		*ngIf="!game"
+		*ngIf="!(game$ | async)"
 		class="game-btns dq-flex-container column"
 		[@animate]="'fadeInUp'"
 	>

@@ -16,7 +16,7 @@ export class CategoryButtonsComponent implements OnDestroy {
   constructor(private store: Store<AppState>) {
     this.gameCategoriesSubscription$ = this.store.select(state => state.games.categories).subscribe(categories => {
       this.gameCategories = this.convertGameCategoriesToArray(categories);
-    })
+    });
   }
 
   ngOnDestroy() {

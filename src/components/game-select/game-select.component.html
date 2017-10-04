@@ -23,24 +23,42 @@
 			</h3>
 			<span>Choose a game type below and start a game...</span>
 		</div>
-		<div
-			class="dq-flex-container column center game-status-msg-wrapper"
-			*ngIf="(game$ | async)?.status === 'pending'"
-			[@animate]="'fadeInUp'"
-		>
-			<p>Game room created!</p>
-			<span class="dq-flex-container" style="justify-content: flex-end;">
-				waiting on opponent to join
-				<ion-spinner name="dots"></ion-spinner>
-			</span>
+
+		<div *ngIf="gameType === 'onePlayer'">
+			<div
+				class="dq-flex-container column center game-status-msg-wrapper"
+				*ngIf="(game$ | async)?.status === 'started'"
+				[@animate]="'fadeInUp'"
+			>
+				<p>One player game starting!</p>
+				<span class="dq-flex-container" style="justify-content: flex-end;">
+					Good luck padawan.
+					<ion-spinner name="dots"></ion-spinner>
+				</span>
+			</div>
 		</div>
-		<div
-			class="dq-flex-container column center game-status-msg-wrapper"
-			*ngIf="(game$ | async)?.status === 'started'"
-			[@animate]="'fadeInUp'"
-		>
-			<p>Both players joined!</p>
-			<span>Get ready to start!</span>
+
+		<div *ngIf="gameType === 'twoPlayer'">
+			<div
+				class="dq-flex-container column center game-status-msg-wrapper"
+				*ngIf="(game$ | async)?.status === 'pending'"
+				[@animate]="'fadeInUp'"
+			>
+				<p>Game room created!</p>
+				<span class="dq-flex-container" style="justify-content: flex-end;">
+					waiting on opponent to join
+					<ion-spinner name="dots"></ion-spinner>
+				</span>
+			</div>
+
+			<div
+				class="dq-flex-container column center game-status-msg-wrapper"
+				*ngIf="(game$ | async)?.status === 'started'"
+				[@animate]="'fadeInUp'"
+			>
+				<p>Both players joined!</p>
+				<span>Get ready to start!</span>
+			</div>
 		</div>
 	</div>
 
@@ -50,7 +68,7 @@
 		[@animate]="'fadeInUp'"
 	>
 		<div class="game-btn-wrapper dq-flex-container">
-			<button ion-button block outline color="primary">
+			<button ion-button block outline color="primary" (click)="createOnePlayerGame()">
 				<span class="game-btn-inner dq-flex-container column">
 					<span>One player</span>
 					<span>Get some practice and some alone time</span>

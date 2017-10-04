@@ -1,11 +1,11 @@
-interface ISocketEvents {
+type ISocketEvents = {
   joinRoom: string;
   message: string;
   leaveRoom: string;
   disconnect: string;
 }
 
-interface IChatEvents extends ISocketEvents {
+type IChatEvents = ISocketEvents & {
   newMessage: string;
   typing: string;
   stopTyping: string;
@@ -13,16 +13,33 @@ interface IChatEvents extends ISocketEvents {
   userStopTyping: string;
 }
 
-interface IGameEvents extends ISocketEvents {
-  gameCreated: string;
-  gameCreatedSuccess: string;
-  gameStarted: string;
-  gameStartedSuccess: string;
-  gameEnded: string;
-  gameCanceled: string;
+interface ITwoPlayerGameEvents {
   createTwoPlayerGame: string;
   cancelTwoPlayerGame: string;
+  twoPlayerGameCreated: string,
+  twoPlayerGameCreatedSuccess: string;
+  twoPlayerGameStarted: string,
+  twoPlayerGameStartedSuccess: string,
+  twoPlayerGameCanceled: string,
+  twoPlayerGameEndedSuccess: string;
+  leaveTwoPlayerGameRoom: string;
 }
+
+interface IOnePlayerGameEvents {
+  createOnePlayerGame: string;
+  cancelOnePlayerGame: string;
+  onePlayerGameCreated: string,
+  onePlayerGameCreatedSuccess: string;
+  onePlayerGameCanceled: string,
+  onePlayerGameEndedSuccess: string;
+}
+
+type IGameEvents = ISocketEvents &
+  IOnePlayerGameEvents &
+  ITwoPlayerGameEvents & {
+  newQuestion: string;
+  newQuestionSuccess: string;
+};
 
 const socketEvents = {
   joinRoom: 'joinRoom',
@@ -31,23 +48,43 @@ const socketEvents = {
   disconnect: 'disconnect'
 };
 
-export const chatEvents = {
-  ...socketEvents,
+export const chatEvents: IChatEvents = Object.assign({
   newMessage: 'newMessage',
   typing: 'typing',
   stopTyping: 'stopTyping',
   userTyping: 'userTyping',
   userStopTyping: 'userStopTyping'
-} as IChatEvents;
+}, socketEvents);
 
-export const gameEvents = {
-  ...socketEvents,
-  gameCreated: 'gameCreated',
-  gameCreatedSuccess: 'gameCreatedSuccess',
-  gameStarted: 'gameStarted',
-  gameStartedSuccess: 'gameStartedSuccess',
-  gameEnded: 'gameEnded',
-  gameCanceled: 'gameCanceled',
+export const onePlayerGameEvents: IOnePlayerGameEvents = {
+  createOnePlayerGame: 'createOnePlayerGame',
+  cancelOnePlayerGame: 'cancelOnePlayerGame',
+  onePlayerGameCreated: 'onePlayerGameCreated',
+  onePlayerGameCreatedSuccess: 'onePlayerGameCreatedSuccess',
+  onePlayerGameCanceled: 'onePlayerGameCanceled',
+  onePlayerGameEndedSuccess: 'onePlayerGameEndedSuccess'
+};
+
+export const twoPlayerGameEvents: ITwoPlayerGameEvents = {
   createTwoPlayerGame: 'createTwoPlayerGame',
-  cancelTwoPlayerGame: 'cancelTwoPlayerGame'
-} as IGameEvents;
+  cancelTwoPlayerGame: 'cancelTwoPlayerGame',
+  twoPlayerGameCreated: 'twoPlayerGameCreated',
+  twoPlayerGameCreatedSuccess: 'twoPlayerGameCreatedSuccess',
+  twoPlayerGameStarted: 'twoPlayerGameStarted',
+  twoPlayerGameStartedSuccess: 'twoPlayerGameStartedSuccess',
+  twoPlayerGameCanceled: 'twoPlayerGameCanceled',
+  twoPlayerGameEndedSuccess: 'twoPlayerGameEndedSuccess',
+  leaveTwoPlayerGameRoom: 'leaveTwoPlayerGameRoom'
+};
+
+export const gameEvents: IGameEvents =
+  Object.assign(
+    {},
+    socketEvents,
+    onePlayerGameEvents,
+    twoPlayerGameEvents,
+    {
+      newQuestion: 'newQuestion',
+      newQuestionSuccess: 'newQuestionSuccess'
+    }
+  );

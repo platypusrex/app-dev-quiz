@@ -36,7 +36,7 @@
 				placeholder="Clear Input"
 				clearInput
 				[(ngModel)]="message"
-				(keyup)="handleKeyDown($event)">
+				(keydown)="handleKeyDown($event)">
 			</ion-input>
 			<button [disabled]="message.length < 1" ion-button icon-only (click)="sendMessage()">
 				<ion-icon name="md-send"></ion-icon>

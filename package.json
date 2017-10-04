@@ -32,6 +32,7 @@
     "rxjs": "5.1.1",
     "socket.io-client": "2.0.3",
     "sw-toolbox": "3.4.0",
+    "uuid": "^3.1.0",
     "zone.js": "^0.8.4"
   },
   "devDependencies": {

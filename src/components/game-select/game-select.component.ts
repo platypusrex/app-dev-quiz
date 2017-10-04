@@ -2,7 +2,7 @@ import { Component, OnDestroy } from '@angular/core';
 import { NavParams, ViewController, AlertController } from 'ionic-angular';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../state/app.state';
-import { GamesActions } from '../../state/actions/game.actions';
+// import { GamesActions } from '../../state/actions/game.actions';
 import { LoadingService } from '../../services/loading.service';
 import { GameSocketService } from '../../services/game-socket.service';
 import { IGameCategory } from '../../shared/models/game-categories.model';
@@ -10,9 +10,10 @@ import { IUser } from '../../shared/models/user.model';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { animations } from '../../shared/animations';
-import { gameEvents } from '../../shared/constants/socket.constants';
+import { twoPlayerGameEvents } from '../../shared/constants/socket.constants';
 import { IChat } from '../../shared/models/chats.model';
-import { ICreateGame, IGame } from '../../shared/models/game.model';
+import { ICreateGame, IGame, IGameType } from '../../shared/models/game.model';
+import uuid from 'uuid/v4';
 
 @Component({
   selector: 'game-select-cmp',
@@ -29,6 +30,8 @@ export class GameSelectComponent implements OnDestroy {
   messages: IChat[];
   category: IGameCategory;
   user: IUser;
+  gameType: IGameCategory | null;
+  gameTimeout: number;
 
   constructor(
     private store: Store<AppState>,
@@ -36,7 +39,7 @@ export class GameSelectComponent implements OnDestroy {
     private viewCtrl: ViewController,
     private alertCtrl: AlertController,
     private loadingService: LoadingService,
-    private gamesActions: GamesActions,
+    // private gamesActions: GamesActions,
     private gameSocketService: GameSocketService
   ) {
     this.user$ = this.store.select(state => state.auth.user).subscribe(user => {
@@ -45,16 +48,14 @@ export class GameSelectComponent implements OnDestroy {
 
     this.messages$ = this.store.select(state => state.games.messages).subscribe(messages => {
       this.messages = messages;
-      const cancelRoomData = this.messages.find(message => message.message === gameEvents.gameCanceled);
+      const cancelRoomData = this.messages.find(message => message.message === twoPlayerGameEvents.twoPlayerGameCanceled);
       if(this.viewCtrl.pageRef() && cancelRoomData) {
-        this.presentAlert(cancelRoomData.userName);
+        this.presentGameCancelledAlert(cancelRoomData.userName);
         this.viewCtrl.dismiss();
       }
     });
 
-    this.loading$ = this.loadingService.loadingCmp$.subscribe(loadingCmp => {
-      loadingCmp.dismiss();
-    });
+    this.loading$ = this.loadingService.loadingCmp$.subscribe(loadingCmp => loadingCmp.dismiss());
 
     this.game$ = this.store.select(state => state.games.game);
 
@@ -68,18 +69,50 @@ export class GameSelectComponent implements OnDestroy {
     this.user$.unsubscribe();
     this.messages$.unsubscribe();
     this.loading$.unsubscribe();
+    clearTimeout(this.gameTimeout);
   }
 
   createTwoPlayerGame() {
+    this.gameType = 'twoPlayer';
     const gameData: ICreateGame = {
-      room: `${this.category.type}${this.user._id}`,
-      type: `${this.category.type}`,
+      room: `${this.category.type}${uuid()}`,
+      type: `${this.category.type}` as IGameType,
+      category: 'twoPlayer',
       userName: this.user.userName
     };
     this.gameSocketService.handleCreateTwoPlayerGame(gameData);
+    this.checkForBothPlayersJoined();
   }
 
-  presentAlert(userName) {
+  checkForBothPlayersJoined() {
+    this.gameTimeout = window.setTimeout(() => {
+      if (this.gameSocketService.handleCheckForBothPlayersJoined(this.user.userName)) {
+        this.presentGameTimedOutAlert();
+        this.viewCtrl.dismiss();
+      }
+    }, 15000);
+  }
+
+  createOnePlayerGame() {
+    this.gameType = 'onePlayer';
+    const gameData: ICreateGame = {
+      room: `${this.category.type}${uuid()}`,
+      type: `${this.category.type}` as IGameType,
+      category: 'onePlayer',
+      userName: this.user.userName
+    };
+    this.gameSocketService.handleCreateOnePlayerGame(gameData);
+  }
+
+  presentGameTimedOutAlert() {
+    let alert = this.alertCtrl.create({
+      title: `Sorry dude.`,
+      subTitle: 'Looks like nobody joined the game.',
+    });
+    alert.present();
+  }
+
+  presentGameCancelledAlert(userName) {
     let alert = this.alertCtrl.create({
       title: `The game was closed by ${userName}.`,
       subTitle: 'Choose a lobby and start a new game!',
@@ -89,7 +122,7 @@ export class GameSelectComponent implements OnDestroy {
           text: 'Ok',
           role: 'cancel',
           handler: () => {
-            this.store.dispatch(this.gamesActions.clearGameData());
+            this.gameSocketService.handleLeaveTwoPlayerGame();
           }
         }
       ]
@@ -98,7 +131,18 @@ export class GameSelectComponent implements OnDestroy {
   }
 
   closeModal() {
-    this.gameSocketService.handleCancelGameInProgress(this.user.userName);
+    switch (this.gameType) {
+      case 'onePlayer':
+        this.gameSocketService.handleLeaveOnePlayerGame(this.user.userName);
+        break;
+      case 'twoPlayer':
+        this.gameSocketService.handleLeaveTwoPlayerGame(this.user.userName);
+        break;
+      default:
+        this.gameSocketService.handleLeaveTwoPlayerGame();
+        break;
+    }
+
     this.viewCtrl.dismiss();
   }
 }

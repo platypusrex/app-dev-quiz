@@ -28,12 +28,8 @@ export class CategoryButtonsComponent implements OnDestroy {
       .map(val => {
         if(val !== '_id' && val !== '_v') return categories[val];
       })
-      .filter(val =>  {
-        return !!(val);
-      })
-      .sort((a, b) => {
-        return a.displayName.localeCompare(b.displayName);
-      });
+      .filter(val =>  !!(val))
+      .sort((a, b) => a.displayName.localeCompare(b.displayName));
   }
 
   onCategoryClick(category: IGameCategory) {

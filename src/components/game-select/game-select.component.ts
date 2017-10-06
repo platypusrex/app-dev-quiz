@@ -2,9 +2,9 @@ import { Component, OnDestroy } from '@angular/core';
 import { NavParams, ViewController, AlertController } from 'ionic-angular';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../state/app.state';
-// import { GamesActions } from '../../state/actions/game.actions';
 import { LoadingService } from '../../services/loading.service';
 import { GameSocketService } from '../../services/game-socket.service';
+import { TimerService } from '../../services/timer.service';
 import { IGameCategory } from '../../shared/models/game-categories.model';
 import { IUser } from '../../shared/models/user.model';
 import { Observable } from 'rxjs/Observable';
@@ -27,11 +27,13 @@ export class GameSelectComponent implements OnDestroy {
   messages$: Subscription;
   user$: Subscription;
   loading$: Subscription;
+  questionTimer$: Subscription;
   messages: IChat[];
   category: IGameCategory;
   user: IUser;
   gameType: IGameCategory | null;
   gameTimeout: number;
+  questionTimer: number;
 
   constructor(
     private store: Store<AppState>,
@@ -39,11 +41,21 @@ export class GameSelectComponent implements OnDestroy {
     private viewCtrl: ViewController,
     private alertCtrl: AlertController,
     private loadingService: LoadingService,
-    // private gamesActions: GamesActions,
-    private gameSocketService: GameSocketService
+    private gameSocketService: GameSocketService,
+    private timerService: TimerService
   ) {
-    this.user$ = this.store.select(state => state.auth.user).subscribe(user => {
-      this.user = user;
+    this.user$ = this.store.select(state => state.auth.user).subscribe(user => this.user = user);
+    this.loading$ = this.loadingService.loadingCmp$.subscribe(loadingCmp => loadingCmp.dismiss());
+    this.game$ = this.store.select(state => state.games.game);
+
+    this.questionTimer$ = this.timerService.getTimer().subscribe(timer => {
+      console.log(timer);
+      if (timer === 0) {
+        setTimeout(() => {
+          this.timerService.startTimer(11);
+        }, 5000);
+      }
+      this.questionTimer = timer
     });
 
     this.messages$ = this.store.select(state => state.games.messages).subscribe(messages => {
@@ -55,10 +67,6 @@ export class GameSelectComponent implements OnDestroy {
       }
     });
 
-    this.loading$ = this.loadingService.loadingCmp$.subscribe(loadingCmp => loadingCmp.dismiss());
-
-    this.game$ = this.store.select(state => state.games.game);
-
     if(navParams.get('category')) {
       this.category = navParams.get('category');
       this.gameSocketService.joinGameRoom(this.category);
@@ -69,7 +77,20 @@ export class GameSelectComponent implements OnDestroy {
     this.user$.unsubscribe();
     this.messages$.unsubscribe();
     this.loading$.unsubscribe();
+    this.questionTimer$.unsubscribe();
     clearTimeout(this.gameTimeout);
+  }
+
+  createOnePlayerGame() {
+    this.gameType = 'onePlayer';
+    const gameData: ICreateGame = {
+      room: `${this.category.type}${uuid()}`,
+      type: `${this.category.type}` as IGameType,
+      category: 'onePlayer',
+      userName: this.user.userName
+    };
+    this.gameSocketService.handleCreateOnePlayerGame(gameData);
+    this.timerService.startTimer(6);
   }
 
   createTwoPlayerGame() {
@@ -91,17 +112,6 @@ export class GameSelectComponent implements OnDestroy {
         this.viewCtrl.dismiss();
       }
     }, 15000);
-  }
-
-  createOnePlayerGame() {
-    this.gameType = 'onePlayer';
-    const gameData: ICreateGame = {
-      room: `${this.category.type}${uuid()}`,
-      type: `${this.category.type}` as IGameType,
-      category: 'onePlayer',
-      userName: this.user.userName
-    };
-    this.gameSocketService.handleCreateOnePlayerGame(gameData);
   }
 
   presentGameTimedOutAlert() {

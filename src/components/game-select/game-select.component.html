@@ -62,6 +62,11 @@
 		</div>
 	</div>
 
+	<div class="dq-flex-container column center" *ngIf="questionTimer && questionTimer > 0">
+		<h3 style="margin-bottom: 0;">Game starts in</h3>
+		<h3 style="margin-top: 0;">{{questionTimer}}</h3>
+	</div>
+
 	<div
 		*ngIf="!(game$ | async)"
 		class="game-btns dq-flex-container column"

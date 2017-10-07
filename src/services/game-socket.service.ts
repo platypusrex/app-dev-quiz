@@ -4,10 +4,12 @@ import { Store } from '@ngrx/store';
 import { AppState } from '../state/app.state';
 import { LoadingActions } from '../state/actions/loading.actions';
 import { GamesActions } from '../state/actions/game.actions';
+import { TriviaQuestionActions } from '../state/actions/trivia-question.actions';
 import { gameEvents } from '../shared/constants/socket.constants';
 import { IGameCategory } from '../shared/models/game-categories.model';
 import { ICreateGame, IGame } from '../shared/models/game.model';
 import { IChat } from '../shared/models/chats.model';
+import { IGetTriviaQuestion, ITriviaQuestion } from '../shared/models/trivia-question.model';
 
 @Injectable()
 export class GameSocketService {
@@ -18,7 +20,8 @@ export class GameSocketService {
   constructor(
     private store: Store<AppState>,
     private loadingActions: LoadingActions,
-    private gamesActions: GamesActions
+    private gamesActions: GamesActions,
+    private triviaQuestionActions: TriviaQuestionActions
   ) {
     this.store.select(state => state.games.game).subscribe(game => {
       this.game = game;
@@ -88,14 +91,16 @@ export class GameSocketService {
     this.store.dispatch(this.gamesActions.clearGameData());
   }
 
-  handleGetNewQuestion(category: string) {
-    this.socket.emit(gameEvents.newQuestion, category);
+  handleGetNewQuestion(getQuestionData: IGetTriviaQuestion) {
+    getQuestionData.room = this.game.room;
+    this.socket.emit(gameEvents.newQuestion, getQuestionData);
   }
 
   getGameEventListeners() {
-    this.socket.on(gameEvents.newQuestionSuccess, (questionData: any) => {
-      console.log(questionData);
+    this.socket.on(gameEvents.newQuestionSuccess, (questionData: ITriviaQuestion) => {
+      console.log('question data', questionData);
       // TODO: update trivia questions store
+      this.store.dispatch(this.triviaQuestionActions.updateTriviaQuestion(questionData));
     });
   }
 

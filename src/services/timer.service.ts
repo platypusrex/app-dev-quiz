@@ -10,10 +10,9 @@ export class TimerService {
 
   constructor() {
     this.timer$ = this.timerControl$.switchMap(() =>
-      Observable.timer(0, 1000).map(() => {
-        console.log(this.counter);
-        return --this.counter;
-      }).takeWhile(val => this.continueTiming || this.counter < 1)
+      Observable.timer(0, 1000).map(() =>
+        --this.counter
+      ).takeWhile(val => this.continueTiming || this.counter > 1)
     );
   }
 

@@ -1,8 +1,9 @@
-import { IUserState } from '../state/reducers/user.reducer';
+import { IUserState } from './reducers/user.reducer';
 import { IUserSearch } from '../shared/models/user-search.model';
-import { IGamesState } from '../state/reducers/games.reducer';
-import { IProfileUserState } from '../state/reducers/profile-user.reducer'
-import { IChatsState } from '../state/reducers/chats.reducer';
+import { IGamesState } from './reducers/games.reducer';
+import { IProfileUserState } from './reducers/profile-user.reducer'
+import { IChatsState } from './reducers/chats.reducer';
+import { ITriviaQuestionState } from '../state/reducers/trivia-question.reducer';
 
 export interface AppState {
   auth: IUserState;
@@ -10,5 +11,6 @@ export interface AppState {
   loading: boolean;
   games: IGamesState;
   profileUser: IProfileUserState,
-  chats: IChatsState
+  chats: IChatsState,
+  triviaQuestion: ITriviaQuestionState
 }

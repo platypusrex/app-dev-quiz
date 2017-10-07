@@ -34,12 +34,15 @@ interface IOnePlayerGameEvents {
   onePlayerGameEndedSuccess: string;
 }
 
-type IGameEvents = ISocketEvents &
-  IOnePlayerGameEvents &
-  ITwoPlayerGameEvents & {
+interface ITriviaQuestionEvents {
   newQuestion: string;
   newQuestionSuccess: string;
-};
+}
+
+type IGameEvents = ISocketEvents &
+  IOnePlayerGameEvents &
+  ITwoPlayerGameEvents &
+  ITriviaQuestionEvents;
 
 const socketEvents = {
   joinRoom: 'joinRoom',
@@ -77,14 +80,10 @@ export const twoPlayerGameEvents: ITwoPlayerGameEvents = {
   leaveTwoPlayerGameRoom: 'leaveTwoPlayerGameRoom'
 };
 
+export const triviaQuestionEvents = {
+  newQuestion: 'newQuestion',
+  newQuestionSuccess: 'newQuestionSuccess'
+};
+
 export const gameEvents: IGameEvents =
-  Object.assign(
-    {},
-    socketEvents,
-    onePlayerGameEvents,
-    twoPlayerGameEvents,
-    {
-      newQuestion: 'newQuestion',
-      newQuestionSuccess: 'newQuestionSuccess'
-    }
-  );
+  Object.assign({}, socketEvents, onePlayerGameEvents, twoPlayerGameEvents, triviaQuestionEvents);

@@ -4,6 +4,7 @@ import { LoadingActions } from './loading.actions';
 import { GamesActions } from './game.actions';
 import { ProfileUserActions } from './profile-user.actions';
 import { ChatsActions } from './chats.actions';
+import { TriviaQuestionActions } from './trivia-question.actions';
 
 export const ACTIONS = [
   UserActions,
@@ -11,5 +12,6 @@ export const ACTIONS = [
   LoadingActions,
   GamesActions,
   ProfileUserActions,
-  ChatsActions
+  ChatsActions,
+  TriviaQuestionActions
 ];

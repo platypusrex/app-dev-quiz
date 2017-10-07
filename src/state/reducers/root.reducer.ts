@@ -4,6 +4,7 @@ import { LoadingReducer } from './loading.reducer';
 import { GamesReducer } from './games.reducer';
 import { ProfileUserReducer } from './profile-user.reducer';
 import { ChatsReducer } from './chats.reducer';
+import { TriviaQuestionReducer } from './trivia-question.reducer';
 
 export const RootReducer = {
   auth: UserReducer,
@@ -11,5 +12,6 @@ export const RootReducer = {
   loading: LoadingReducer,
   games: GamesReducer,
   profileUser: ProfileUserReducer,
-  chats: ChatsReducer
+  chats: ChatsReducer,
+  triviaQuestion: TriviaQuestionReducer
 };

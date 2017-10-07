@@ -1,18 +1,18 @@
 import { Component, OnDestroy } from '@angular/core';
 import { NavParams, ViewController, AlertController } from 'ionic-angular';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../state/app.state';
-import { LoadingService } from '../../services/loading.service';
-import { GameSocketService } from '../../services/game-socket.service';
-import { TimerService } from '../../services/timer.service';
-import { IGameCategory } from '../../shared/models/game-categories.model';
-import { IUser } from '../../shared/models/user.model';
+import { AppState } from '../../../state/app.state';
+import { LoadingService } from '../../../services/loading.service';
+import { GameSocketService } from '../../../services/game-socket.service';
+import { TimerService } from '../../../services/timer.service';
+import { IGameCategory } from '../../../shared/models/game-categories.model';
+import { IUser } from '../../../shared/models/user.model';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
-import { animations } from '../../shared/animations';
-import { twoPlayerGameEvents } from '../../shared/constants/socket.constants';
-import { IChat } from '../../shared/models/chats.model';
-import { ICreateGame, IGame, IGameType } from '../../shared/models/game.model';
+import { animations } from '../../../shared/animations';
+import { twoPlayerGameEvents } from '../../../shared/constants/socket.constants';
+import { IChat } from '../../../shared/models/chats.model';
+import { ICreateGame, IGame, IGameType } from '../../../shared/models/game.model';
 import uuid from 'uuid/v4';
 
 @Component({
@@ -52,7 +52,8 @@ export class GameSelectComponent implements OnDestroy {
       console.log(timer);
       if (timer === 0) {
         setTimeout(() => {
-          this.timerService.startTimer(11);
+          this.getTriviaQuestion();
+          // this.timerService.startTimer(11);
         }, 5000);
       }
       this.questionTimer = timer
@@ -112,6 +113,13 @@ export class GameSelectComponent implements OnDestroy {
         this.viewCtrl.dismiss();
       }
     }, 15000);
+  }
+
+  getTriviaQuestion() {
+    this.gameSocketService.handleGetNewQuestion({
+      category: this.category.type,
+      id: null
+    })
   }
 
   presentGameTimedOutAlert() {

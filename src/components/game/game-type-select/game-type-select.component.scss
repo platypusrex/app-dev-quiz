@@ -1,0 +1,23 @@
+game-type-select-cmp {
+  .button {
+    height: 7rem;
+  }
+
+  .game-btns {
+    padding: 15px;
+  }
+
+  .game-btn-wrapper {
+    margin-bottom: 15px;
+  }
+
+  .game-btn-inner {
+    span {
+      &:last-child {
+        margin-top: 5px;
+        text-transform: none;
+        color: #a9a9a9;
+      }
+    }
+  }
+}

@@ -1,0 +1,49 @@
+<div *ngIf="isMessageVisible" class="lobby-msg-container dq-flex-container column center">
+	<div
+		*ngIf="!game"
+		class="dq-flex-container column center"
+		[@animate]="'bounceInLeft'"
+	>
+		<h3 *ngFor="let message of messages">
+			{{message?.message}}
+		</h3>
+		<span>Choose a game type below and start a game...</span>
+	</div>
+
+	<div *ngIf="gameType === 'onePlayer'">
+		<div
+			class="dq-flex-container column center game-status-msg-wrapper"
+			*ngIf="game?.status === 'started'"
+			[@animate]="'fadeInUp'"
+		>
+			<p>One player game starting!</p>
+			<span class="dq-flex-container" style="justify-content: flex-end;">
+					Good luck padawan.
+					<ion-spinner name="dots"></ion-spinner>
+				</span>
+		</div>
+	</div>
+
+	<div *ngIf="gameType === 'twoPlayer'">
+		<div
+			class="dq-flex-container column center game-status-msg-wrapper"
+			*ngIf="game?.status === 'pending'"
+			[@animate]="'fadeInUp'"
+		>
+			<p>Game room created!</p>
+			<span class="dq-flex-container" style="justify-content: flex-end;">
+					waiting on opponent to join
+					<ion-spinner name="dots"></ion-spinner>
+				</span>
+		</div>
+
+		<div
+			class="dq-flex-container column center game-status-msg-wrapper"
+			*ngIf="game?.status === 'started'"
+			[@animate]="'fadeInUp'"
+		>
+			<p>Both players joined!</p>
+			<span>Get ready to start!</span>
+		</div>
+	</div>
+</div>

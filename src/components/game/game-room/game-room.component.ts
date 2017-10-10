@@ -14,16 +14,18 @@ import { twoPlayerGameEvents } from '../../../shared/constants/socket.constants'
 import { IChat } from '../../../shared/models/chats.model';
 import { ICreateGame, IGame, IGameType } from '../../../shared/models/game.model';
 import uuid from 'uuid/v4';
+import { ITriviaQuestion } from '../../../shared/models/trivia-question.model';
 
 @Component({
-  selector: 'game-select-cmp',
-  templateUrl: 'game-select.component.html',
+  selector: 'game-room-cmp',
+  templateUrl: 'game-room.component.html',
   animations: [
     animations(650, 100, 'ease-in-out')
   ]
 })
-export class GameSelectComponent implements OnDestroy {
+export class GameRoomComponent implements OnDestroy {
   game$: Observable<IGame>;
+  triviaQuestion$: Observable<ITriviaQuestion>;
   messages$: Subscription;
   user$: Subscription;
   loading$: Subscription;
@@ -47,14 +49,14 @@ export class GameSelectComponent implements OnDestroy {
     this.user$ = this.store.select(state => state.auth.user).subscribe(user => this.user = user);
     this.loading$ = this.loadingService.loadingCmp$.subscribe(loadingCmp => loadingCmp.dismiss());
     this.game$ = this.store.select(state => state.games.game);
+    this.triviaQuestion$ = this.store.select(state => state.triviaQuestion.triviaQuestion);
 
     this.questionTimer$ = this.timerService.getTimer().subscribe(timer => {
-      console.log(timer);
+      // console.log(timer);
       if (timer === 0) {
         setTimeout(() => {
           this.getTriviaQuestion();
-          // this.timerService.startTimer(11);
-        }, 5000);
+        }, 1000);
       }
       this.questionTimer = timer
     });
@@ -115,11 +117,16 @@ export class GameSelectComponent implements OnDestroy {
     }, 15000);
   }
 
-  getTriviaQuestion() {
+  getTriviaQuestion(id?: string) {
     this.gameSocketService.handleGetNewQuestion({
       category: this.category.type,
-      id: null
+      id
     })
+  }
+
+  handlePlayerAnswerSelection(userAnswer: {choice: string; triviaQuestion: ITriviaQuestion}) {
+    console.log('answer check', userAnswer.choice === userAnswer.triviaQuestion.answer);
+    this.getTriviaQuestion(userAnswer.triviaQuestion._id || undefined);
   }
 
   presentGameTimedOutAlert() {

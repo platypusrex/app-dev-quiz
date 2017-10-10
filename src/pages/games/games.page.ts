@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ModalController } from 'ionic-angular'
-import { GameSelectComponent } from '../../components/game/game-select';
+import { GameRoomComponent } from '../../components/game/game-room/game-room.component';
 import { IGameCategory } from '../../shared/models/game-categories.model';
 
 @Component({
@@ -11,7 +11,7 @@ export class GamesPage {
   constructor(private modalCtrl: ModalController) {}
 
   onCategoryClick(category: IGameCategory) {
-    let modal = this.modalCtrl.create(GameSelectComponent, {category});
+    let modal = this.modalCtrl.create(GameRoomComponent, {category});
     modal.present();
   }
 }

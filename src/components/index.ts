@@ -7,12 +7,13 @@ import {
   ProfileConnectionsComponent
 } from './profile';
 import {
-  GameSelectComponent
+  GameRoomComponent,
+  GameTypeSelectComponent,
+  GameMessageComponent,
+  GameQuestionComponent
 } from './game';
 import { CategoryButtonsComponent } from './category-buttons';
 import { ChatRoomComponent } from './chat-room';
-// import { GameSelectComponent } from './game-select';
-
 
 export const APP_COMPONENTS = [
   ProfileHeadComponent,
@@ -23,5 +24,8 @@ export const APP_COMPONENTS = [
   ProfileConnectionsComponent,
   CategoryButtonsComponent,
   ChatRoomComponent,
-  GameSelectComponent
+  GameRoomComponent,
+  GameTypeSelectComponent,
+  GameMessageComponent,
+  GameQuestionComponent
 ];

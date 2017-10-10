@@ -1,0 +1,44 @@
+<ion-header no-border>
+	<ion-toolbar color="primary-dark">
+		<ion-buttons left>
+			<button ion-button icon-only (click)="closeModal($event)">
+				<ion-icon name="ios-close"></ion-icon>
+			</button>
+		</ion-buttons>
+		<ion-title>
+			{{category.displayName}} game lobby
+		</ion-title>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content>
+	<game-message-cmp
+		[game]="game$ | async"
+		[gameType]="gameType"
+		[messages]="messages"
+		[isMessageVisible]="!(triviaQuestion$ | async)?._id">
+	</game-message-cmp>
+
+	<div class="dq-flex-container column center" *ngIf="questionTimer && questionTimer > 0">
+		<h3 style="margin-bottom: 0;">Get Ready</h3>
+		<h3 style="margin-top: 0;">{{questionTimer}}</h3>
+	</div>
+
+	<div style="width:100%;" *ngIf="questionTimer && questionTimer > 0">
+		<progress-bar-cmp
+			[progress]="questionTimer"
+			[startingNumber]="6">
+		</progress-bar-cmp>
+	</div>
+
+	<game-question-cmp
+		[triviaQuestion]="triviaQuestion$ | async"
+		(emitPlayerAnswerSelection)="handlePlayerAnswerSelection($event)">
+	</game-question-cmp>
+
+	<game-type-select-cmp
+		[game]="game$ | async"
+		(emitOnePlayerGameSelect)="createOnePlayerGame()"
+		(emitTwoPlayerGameSelect)="createTwoPlayerGame()">
+	</game-type-select-cmp>
+</ion-content>

@@ -1,0 +1,23 @@
+<div
+	*ngIf="!game"
+	class="game-btns dq-flex-container column"
+	[@animate]="'fadeInUp'"
+>
+	<div class="game-btn-wrapper dq-flex-container">
+		<button ion-button block outline color="primary" (click)="handleOnePlayerGameSelect()">
+				<span class="game-btn-inner dq-flex-container column">
+					<span>One player</span>
+					<span>Get some practice and some alone time</span>
+				</span>
+		</button>
+	</div>
+
+	<div class="game-btn-wrapper dq-flex-container">
+		<button ion-button block outline color="secondary" (click)="handleTwoPlayerGameSelect()">
+				<span class="game-btn-inner dq-flex-container column">
+					<span>Two player</span>
+					<span>Go head-to-head with another dev-quizzer</span>
+				</span>
+		</button>
+	</div>
+</div>

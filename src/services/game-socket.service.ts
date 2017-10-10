@@ -72,6 +72,7 @@ export class GameSocketService {
     }
     this.socket.emit(gameEvents.leaveRoom);
     this.store.dispatch(this.gamesActions.clearGameData());
+    this.store.dispatch(this.triviaQuestionActions.clearTriviaQuestion());
   }
 
   handleLeaveTwoPlayerGame(userName?: string, gameStatus?: string) {
@@ -89,6 +90,7 @@ export class GameSocketService {
     }
 
     this.store.dispatch(this.gamesActions.clearGameData());
+    this.store.dispatch(this.triviaQuestionActions.clearTriviaQuestion());
   }
 
   handleGetNewQuestion(getQuestionData: IGetTriviaQuestion) {
@@ -99,7 +101,6 @@ export class GameSocketService {
   getGameEventListeners() {
     this.socket.on(gameEvents.newQuestionSuccess, (questionData: ITriviaQuestion) => {
       console.log('question data', questionData);
-      // TODO: update trivia questions store
       this.store.dispatch(this.triviaQuestionActions.updateTriviaQuestion(questionData));
     });
   }

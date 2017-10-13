@@ -123,6 +123,25 @@ export const rollInOut: AnimationEntryMetadata = trigger('rollInOut', [
   ])
 ]);
 
+export const bounceInDown: AnimationEntryMetadata = trigger('bounceInDown', [
+  transition(':enter', [
+    animate(350, keyframes([
+      style({opacity: 0, transform: 'translate3d(0, -1000px, 0)', offset: 0}),
+      style({opacity: 1, transform: 'translate3d(0, 20px, 0)', offset: 0.6}),
+      style({transform: 'translate3d(0, -10px, 0)', offset: 0.75}),
+      style({transform: 'translate3d(0, 5px, 0)', offset: 0.9}),
+      style({transform: 'translate3d(0, 0, 0)', offset: 1})
+    ]))
+  ]),
+  transition(':leave', [
+    animate(350, keyframes([
+      style({transform: 'translate3d(0, -10px, 0)', offset: 0.2}),
+      style({opacity: 1, transform: 'translate3d(0, 20px, 0)', offset: 0.5}),
+      style({opacity: 0, transform: 'translate3d(0, -1000px, 0)', offset: 1})
+    ]))
+  ])
+]);
+
 export const bounceInOut: AnimationEntryMetadata = trigger('bounceInOut', [
   transition(':enter', [
     animate(350, keyframes([

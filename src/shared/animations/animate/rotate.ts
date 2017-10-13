@@ -35,49 +35,49 @@ export const rotate = (timing:string) => [
       style({opacity: 0, transformOrigin: 'center', transform: 'rotate3d(0, 0, 1, 200deg)', offset: 1})
     ]))
   ]),
-  transition('* => rotateInDownLeft', [
+  transition('* => rotateInDown', [
     animate(timing, keyframes([
       style({opacity: 0, transformOrigin: 'left bottom', transform: 'rotate3d(0, 0, 1, -45deg)', offset: 0}),
       style({opacity: 1, transformOrigin: 'left bottom', transform: 'rotate3d(0, 0, 1, 0deg)', offset: 1})
     ]))
   ]),
-  transition('rotateInDownLeft => void, * => rotateOutDownLeft', [
+  transition('rotateInDown => void, * => rotateOutDownLeft', [
     animate(timing, keyframes([
       style({opacity: 1, transformOrigin: 'left bottom', transform: 'rotate3d(0, 0, 1, 0deg)', offset: 0}),
       style({opacity: 0, transformOrigin: 'left bottom', transform: 'rotate3d(0, 0, 1, 45deg)', offset: 1})
     ]))
   ]),
-  transition('* => rotateInDownRight', [
+  transition('* => rotateInRight', [
     animate(timing, keyframes([
       style({opacity: 0, transformOrigin: 'right bottom', transform: 'rotate3d(0, 0, 1, 45deg)', offset: 0}),
       style({opacity: 1, transformOrigin: 'right bottom', transform: 'rotate3d(0, 0, 1, 0deg)', offset: 1})
     ]))
   ]),
-  transition('rotateInDownRight => void, * => rotateOutDownRight', [
+  transition('rotateInRight => void, * => rotateOutDownRight', [
     animate(timing, keyframes([
       style({opacity: 1, transformOrigin: 'right bottom', transform: 'rotate3d(0, 0, 1, 0deg)', offset: 0}),
       style({opacity: 0, transformOrigin: 'right bottom', transform: 'rotate3d(0, 0, 1, -45deg)', offset: 1})
     ]))
   ]),
-  transition('* => rotateInUpLeft', [
+  transition('* => rotateInLeft', [
     animate(timing, keyframes([
       style({opacity: 0, transformOrigin: 'left bottom', transform: 'rotate3d(0, 0, 1, 45deg)', offset: 0}),
       style({opacity: 1, transformOrigin: 'left bottom', transform: 'rotate3d(0, 0, 1, 0deg)', offset: 1})
     ]))
   ]),
-  transition('rotateInUpLeft => void, * => rotateOutUpLeft', [
+  transition('rotateInLeft => void, * => rotateOutUpLeft', [
     animate(timing, keyframes([
       style({opacity: 1, transformOrigin: 'left bottom', transform: 'rotate3d(0, 0, 1, 0deg)', offset: 0}),
       style({opacity: 0, transformOrigin: 'left bottom', transform: 'rotate3d(0, 0, 1, -45deg)', offset: 1})
     ]))
   ]),
-  transition('* => rotateInUpRight', [
+  transition('* => rotateInUp', [
     animate(timing, keyframes([
       style({opacity: 0, transformOrigin: 'right bottom', transform: 'rotate3d(0, 0, 1, -45deg)', offset: 0}),
       style({opacity: 1, transformOrigin: 'right bottom', transform: 'rotate3d(0, 0, 1, 0deg)', offset: 1})
     ]))
   ]),
-  transition('rotateInUpRight => void, * => rotateOutUpRight', [
+  transition('rotateInUp => void, * => rotateOutUpRight', [
     animate(timing, keyframes([
       style({opacity: 1, transformOrigin: 'right bottom', transform: 'rotate3d(0, 0, 1, 0deg)', offset: 0}),
       style({opacity: 0, transformOrigin: 'right bottom', transform: 'rotate3d(0, 0, 1, 45deg)', offset: 1})

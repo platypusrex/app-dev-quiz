@@ -1,0 +1,37 @@
+game-check-answer-cmp {
+  .game-choice-response {
+    position: absolute;
+    top: 40px;
+    border: 2px solid;
+    background: #f5f5f5;
+    padding: 10px 10px 10px 20px;
+    z-index: 2500;
+    width: 220px;
+    left: 50%;
+    margin-left: -110px;
+    border-radius: 3px;
+
+    &.correct {
+      color: #00a854;
+      border-color: #00a854;
+    }
+
+    &.incorrect {
+      color: rgb(55, 115, 65);
+      border-color: rgb(55, 115, 65);
+    }
+  }
+
+  ion-icon {
+    font-size: 35px;
+    width: 20%;
+    position: relative;
+    right: 15px;
+  }
+
+  .message {
+    font-size: 17px;
+    position: relative;
+    right: 15px;
+  }
+}

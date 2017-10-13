@@ -1,0 +1,1 @@
+export * from './game-check-answer.component';

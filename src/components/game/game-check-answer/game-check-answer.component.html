@@ -1,0 +1,10 @@
+<div
+	*ngIf="showMessage"
+	[ngClass]="isCorrect ? 'correct' : 'incorrect'"
+	class="game-choice-response dq-flex-container center"
+	[@bounceInDown]="showMessage">
+	<ion-icon [name]="isCorrect ? 'ios-checkmark-circle-outline' : 'ios-close-circle-outline'"></ion-icon>
+	<div class="dq-flex-container center message">
+		<span>{{message}}</span>
+	</div>
+</div>

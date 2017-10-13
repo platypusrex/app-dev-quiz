@@ -94,13 +94,14 @@ export class GameSocketService {
   }
 
   handleGetNewQuestion(getQuestionData: IGetTriviaQuestion) {
-    getQuestionData.room = this.game.room;
-    this.socket.emit(gameEvents.newQuestion, getQuestionData);
+    if (this.game) {
+      getQuestionData.room = this.game.room;
+      this.socket.emit(gameEvents.newQuestion, getQuestionData);
+    }
   }
 
   getGameEventListeners() {
     this.socket.on(gameEvents.newQuestionSuccess, (questionData: ITriviaQuestion) => {
-      console.log('question data', questionData);
       this.store.dispatch(this.triviaQuestionActions.updateTriviaQuestion(questionData));
     });
   }

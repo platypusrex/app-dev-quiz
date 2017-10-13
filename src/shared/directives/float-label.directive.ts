@@ -1,4 +1,4 @@
-import { Directive, Input, Renderer, ElementRef, OnChanges } from '@angular/core';
+import { Directive, Input, Renderer2, ElementRef, OnChanges } from '@angular/core';
 
 @Directive({
   selector: '[float-label]',
@@ -12,7 +12,7 @@ export class FloatLabelDirective implements OnChanges {
   @Input() error: string;
   @Input() hasValue: any;
 
-  constructor(private ref: ElementRef, private renderer: Renderer) {}
+  constructor(private ref: ElementRef, private renderer: Renderer2) {}
 
   ngOnChanges() {
     if(this.isFloating && this.hasValue) {
@@ -35,6 +35,8 @@ export class FloatLabelDirective implements OnChanges {
 
   setActiveClass(addClass: boolean) {
     let label = this.ref.nativeElement.parentNode.firstElementChild;
-    this.renderer.setElementClass(label, 'active-input', addClass);
+    addClass ?
+    this.renderer.addClass(label, 'active-input') :
+    this.renderer.removeClass(label, 'active-input');
   }
 }

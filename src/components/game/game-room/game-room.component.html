@@ -19,15 +19,21 @@
 		[isMessageVisible]="!(triviaQuestion$ | async)?._id">
 	</game-message-cmp>
 
-	<div class="dq-flex-container column center" *ngIf="questionTimer && questionTimer > 0">
-		<h3 style="margin-bottom: 0;">Get Ready</h3>
-		<h3 style="margin-top: 0;">{{questionTimer}}</h3>
+	<game-check-answer-cmp
+		[isCorrect]="answerCorrect"
+		[showMessage]="showNotification">
+	</game-check-answer-cmp>
+
+	<div
+		class="dq-flex-container column center"
+		*ngIf="!(triviaQuestion$ | async) && questionTimer && questionTimer > 0">
+		<game-start-countdown-cmp></game-start-countdown-cmp>
 	</div>
 
-	<div style="width:100%;" *ngIf="questionTimer && questionTimer > 0">
+	<div style="width:100%;" *ngIf="(triviaQuestion$ | async) && questionTimer && questionTimer > 0">
 		<progress-bar-cmp
 			[progress]="questionTimer"
-			[startingNumber]="6">
+			[startingNumber]="!(triviaQuestion$ | async) ? 5 : 10">
 		</progress-bar-cmp>
 	</div>
 

@@ -10,7 +10,8 @@ import {
   GameRoomComponent,
   GameTypeSelectComponent,
   GameMessageComponent,
-  GameQuestionComponent
+  GameQuestionComponent,
+  GameCheckAnswerComponent
 } from './game';
 import { CategoryButtonsComponent } from './category-buttons';
 import { ChatRoomComponent } from './chat-room';
@@ -27,5 +28,6 @@ export const APP_COMPONENTS = [
   GameRoomComponent,
   GameTypeSelectComponent,
   GameMessageComponent,
-  GameQuestionComponent
+  GameQuestionComponent,
+  GameCheckAnswerComponent
 ];

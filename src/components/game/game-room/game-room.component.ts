@@ -37,6 +37,9 @@ export class GameRoomComponent implements OnDestroy {
   gameTimeout: number;
   questionTimer: number;
 
+  showNotification: boolean = false;
+  answerCorrect: boolean;
+
   constructor(
     private store: Store<AppState>,
     private navParams: NavParams,
@@ -52,10 +55,11 @@ export class GameRoomComponent implements OnDestroy {
     this.triviaQuestion$ = this.store.select(state => state.triviaQuestion.triviaQuestion);
 
     this.questionTimer$ = this.timerService.getTimer().subscribe(timer => {
-      // console.log(timer);
+      console.log(timer);
       if (timer === 0) {
         setTimeout(() => {
           this.getTriviaQuestion();
+          this.timerService.startTimer(11);
         }, 1000);
       }
       this.questionTimer = timer
@@ -93,7 +97,7 @@ export class GameRoomComponent implements OnDestroy {
       userName: this.user.userName
     };
     this.gameSocketService.handleCreateOnePlayerGame(gameData);
-    this.timerService.startTimer(6);
+    this.timerService.startTimer(7);
   }
 
   createTwoPlayerGame() {
@@ -126,7 +130,15 @@ export class GameRoomComponent implements OnDestroy {
 
   handlePlayerAnswerSelection(userAnswer: {choice: string; triviaQuestion: ITriviaQuestion}) {
     console.log('answer check', userAnswer.choice === userAnswer.triviaQuestion.answer);
-    this.getTriviaQuestion(userAnswer.triviaQuestion._id || undefined);
+    this.showNotification = true;
+    this.answerCorrect = userAnswer.choice === userAnswer.triviaQuestion.answer;
+    this.timerService.stopTimer();
+
+    setTimeout(() => {
+      this.showNotification = false;
+      this.getTriviaQuestion(userAnswer.triviaQuestion._id || undefined);
+      this.timerService.startTimer(11);
+    }, 2500);
   }
 
   presentGameTimedOutAlert() {

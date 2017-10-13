@@ -12,7 +12,7 @@ export class TimerService {
     this.timer$ = this.timerControl$.switchMap(() =>
       Observable.timer(0, 1000).map(() =>
         --this.counter
-      ).takeWhile(val => this.continueTiming || this.counter > 1)
+      ).takeWhile(val => this.continueTiming)
     );
   }
 

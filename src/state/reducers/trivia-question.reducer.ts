@@ -3,17 +3,16 @@ import { TriviaQuestionActions } from '../actions/trivia-question.actions';
 import { ITriviaQuestion} from '../../shared/models/trivia-question.model';
 
 export interface ITriviaQuestionState {
-  triviaQuestion: ITriviaQuestion;
+  triviaQuestion: ITriviaQuestion | null;
 }
 
 const initialState: ITriviaQuestionState = {
-  triviaQuestion: {}
+  triviaQuestion: null
 };
 
 export const TriviaQuestionReducer: ActionReducer<any> = (state: ITriviaQuestionState = initialState, action: Action) => {
   switch(action.type) {
     case TriviaQuestionActions.UPDATE_TRIVIA_QUESTION:
-      console.log('reducer');
       return {...state, triviaQuestion: {...state.triviaQuestion, ...action.payload}};
 
     case TriviaQuestionActions.CLEAR_TRIVIA_QUESTION:

@@ -16,6 +16,11 @@ import { ICreateGame, IGame, IGameType } from '../../../shared/models/game.model
 import uuid from 'uuid/v4';
 import { ITriviaQuestion } from '../../../shared/models/trivia-question.model';
 
+const calculateScore = (time: number) => {
+  const multiplier = time * 0.1;
+  return (time % 2 !== 0) ? multiplier + 0.1 : multiplier;
+};
+
 @Component({
   selector: 'game-room-cmp',
   templateUrl: 'game-room.component.html',
@@ -24,6 +29,7 @@ import { ITriviaQuestion } from '../../../shared/models/trivia-question.model';
   ]
 })
 export class GameRoomComponent implements OnDestroy {
+  // subscriptions & observables
   game$: Observable<IGame>;
   triviaQuestion$: Observable<ITriviaQuestion>;
   messages$: Subscription;
@@ -31,14 +37,21 @@ export class GameRoomComponent implements OnDestroy {
   loading$: Subscription;
   questionTimer$: Subscription;
   messages: IChat[];
-  category: IGameCategory;
   user: IUser;
+
+  //nav params
+  category: IGameCategory;
+
+  // game controls
   gameType: IGameCategory | null;
   gameTimeout: number;
   questionTimer: number;
 
   showNotification: boolean = false;
   answerCorrect: boolean;
+
+  totalQuestions: number = 8;
+  totalScore: number = 0;
 
   constructor(
     private store: Store<AppState>,
@@ -55,7 +68,6 @@ export class GameRoomComponent implements OnDestroy {
     this.triviaQuestion$ = this.store.select(state => state.triviaQuestion.triviaQuestion);
 
     this.questionTimer$ = this.timerService.getTimer().subscribe(timer => {
-      console.log(timer);
       if (timer === 0) {
         setTimeout(() => {
           this.getTriviaQuestion();
@@ -129,16 +141,28 @@ export class GameRoomComponent implements OnDestroy {
   }
 
   handlePlayerAnswerSelection(userAnswer: {choice: string; triviaQuestion: ITriviaQuestion}) {
-    console.log('answer check', userAnswer.choice === userAnswer.triviaQuestion.answer);
+    const timeRemaining = this.questionTimer;
+    this.timerService.stopTimer();
     this.showNotification = true;
     this.answerCorrect = userAnswer.choice === userAnswer.triviaQuestion.answer;
-    this.timerService.stopTimer();
+    this.totalQuestions--;
+    this.totalScore = this.answerCorrect ?
+      this.totalScore + (25 * calculateScore(timeRemaining)) : this.totalScore;
+
+    console.log('total questions', this.totalQuestions);
+    console.log('total score', this.totalScore);
 
     setTimeout(() => {
       this.showNotification = false;
-      this.getTriviaQuestion(userAnswer.triviaQuestion._id || undefined);
-      this.timerService.startTimer(11);
-    }, 2500);
+      if (!this.totalQuestions) {
+        this.presentEndGameAlert();
+      } else {
+        setTimeout(() => {
+          this.getTriviaQuestion(userAnswer.triviaQuestion._id || undefined);
+          this.timerService.startTimer(11);
+        }, 600);
+      }
+    }, 2000);
   }
 
   presentGameTimedOutAlert() {
@@ -160,6 +184,24 @@ export class GameRoomComponent implements OnDestroy {
           role: 'cancel',
           handler: () => {
             this.gameSocketService.handleLeaveTwoPlayerGame();
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+
+  presentEndGameAlert() {
+    let alert = this.alertCtrl.create({
+      title: 'Game Over',
+      subTitle: `total score: ${this.totalScore}`,
+      enableBackdropDismiss: false,
+      buttons: [
+        {
+          text: 'Ok',
+          role: 'cancel',
+          handler: () => {
+            this.closeModal();
           }
         }
       ]

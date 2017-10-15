@@ -1,3 +1,11 @@
 game-room-cmp {
-
+  ion-content {
+    &.game-in-progress {
+      .fixed-content,
+      .scroll-content {
+        margin: 0 !important;
+        transition: all .15s ease-in-out;
+      }
+    }
+  }
 }

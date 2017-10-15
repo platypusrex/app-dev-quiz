@@ -47,7 +47,6 @@ export class GameCheckAnswerComponent implements OnChanges {
   constructor(private cdr: ChangeDetectorRef) {}
 
   ngOnChanges(thing) {
-    console.log(thing);
     this.animation = this.animationsTypes[this.getRandomNum(0,5)] + this.animationDirections[this.getRandomNum(0,3)];
     this.message = this.isCorrect ?
       this.correctMessages[this.getRandomNum(0, 5)] :

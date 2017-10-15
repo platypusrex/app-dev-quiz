@@ -1,4 +1,4 @@
-<ion-header no-border>
+<ion-header [@animate]="!(game$ | async) ? 'slideInDown' : 'rotateOutUpLeft'" no-border>
 	<ion-toolbar color="primary-dark">
 		<ion-buttons left>
 			<button ion-button icon-only (click)="closeModal($event)">
@@ -6,12 +6,21 @@
 			</button>
 		</ion-buttons>
 		<ion-title>
-			{{category.displayName}} game lobby
+			<div class="dq-flex-container center-row-vertical">
+				<i
+					[ngClass]="category?.icon"
+					[style.color]="category?.color"
+					style="font-size: 28px;margin-right: 12px;position:relative;top:2px;">
+				</i>
+				<span style="text-transform: uppercase;font-size: 14px;">
+					{{category?.displayName}}
+				</span>
+			</div>
 		</ion-title>
 	</ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content [ngClass]="(game$ | async) ? 'game-in-progress' : ''">
 	<game-message-cmp
 		[game]="game$ | async"
 		[gameType]="gameType"
@@ -35,6 +44,10 @@
 			[progress]="questionTimer"
 			[startingNumber]="!(triviaQuestion$ | async) ? 5 : 10">
 		</progress-bar-cmp>
+		<div class="dq-flex-container center-text-vertical" style="padding-right:10px;line-height:13px;">
+			<span style="font-size:12px;color:#2a2a2a;margin-left:auto;">{{user.userName}}&nbsp;&nbsp;</span>
+			<span style="font-size:13px;color:cornflowerblue;width:24px;text-align:right;">{{totalScore}}</span>
+		</div>
 	</div>
 
 	<game-question-cmp

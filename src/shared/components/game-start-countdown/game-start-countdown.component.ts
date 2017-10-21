@@ -5,15 +5,12 @@ import { Component, Renderer2, ElementRef, OnInit } from '@angular/core';
   templateUrl: 'game-start-countdown.component.html'
 })
 export class GameStartCountdownComponent implements OnInit {
-  startNum: number;
-  currentNum: number;
+  startNumber: number = 6;
   startText: string;
   timerInterval: any;
+  isCountdownHidden: boolean = false;
 
-  constructor(private renderer: Renderer2, private ref: ElementRef) {
-    this.startNum = 6;
-    this.currentNum = this.startNum;
-  }
+  constructor(private renderer: Renderer2, private ref: ElementRef) {}
 
   ngOnInit() {
     this.timerInterval = setInterval(() => {
@@ -32,12 +29,19 @@ export class GameStartCountdownComponent implements OnInit {
   animateTimer() {
     const countdownEl = this.ref.nativeElement.firstElementChild;
     this.addClassDelayed(500);
-    if (this.currentNum === 1) {
+    if (this.startNumber === 1) {
       this.startText = 'Go!';
-      clearInterval(this.timerInterval);
-    } else {
-      this.currentNum--;
     }
+
+    if (this.startNumber < 1) {
+      clearInterval(this.timerInterval);
+      setTimeout(() => {
+        this.isCountdownHidden = true;
+      }, 0);
+    } else {
+      this.startNumber--;
+    }
+
     this.renderer.removeClass(countdownEl, 'puffer');
   }
 }

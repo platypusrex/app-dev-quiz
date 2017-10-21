@@ -12,5 +12,5 @@ export interface AppState {
   games: IGamesState;
   profileUser: IProfileUserState,
   chats: IChatsState,
-  triviaQuestion: ITriviaQuestionState
+  triviaQuestions: ITriviaQuestionState
 }

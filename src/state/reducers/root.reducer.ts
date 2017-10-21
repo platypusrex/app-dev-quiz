@@ -13,5 +13,5 @@ export const RootReducer = {
   games: GamesReducer,
   profileUser: ProfileUserReducer,
   chats: ChatsReducer,
-  triviaQuestion: TriviaQuestionReducer
+  triviaQuestions: TriviaQuestionReducer
 };

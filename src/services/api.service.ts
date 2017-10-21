@@ -4,19 +4,19 @@ import { Observable } from 'rxjs';
 import 'rxjs/add/operator/map';
 import { storageGet } from '../shared/utils/storage.util';
 
+export const apiBasePath: string = `http://10.0.0.84:8000/`;
+
 @Injectable()
 export class ApiService {
-  apiBasePath:string = `http://10.0.0.84:8000/`;
-
   constructor(private http: Http) {}
 
-  private addHeaders(needsToken: boolean = false): RequestOptions {
+  private addHeaders(addToken: boolean = false): RequestOptions {
     const token = storageGet('token');
     let headers = new Headers({
       'Content-Type': 'application/json'
     });
 
-    if(needsToken) {
+    if(addToken) {
       headers.append('x-access-token', token);
       return new RequestOptions({headers});
     }
@@ -32,20 +32,20 @@ export class ApiService {
     return Observable.throw(error.json());
   }
 
-  get(path:string, needsToken:boolean = false):Observable<any> {
-    return this.http.get(`${this.apiBasePath}${path}`, this.addHeaders(needsToken))
+  get(path:string, addToken:boolean = false): Observable<any> {
+    return this.http.get(`${apiBasePath}${path}`, this.addHeaders(addToken))
       .map(this.getJson)
       .catch(this.handleError);
   }
 
-  post(path:string, body:any, needsToken:boolean = false):Observable<any> {
-    return this.http.post(`${this.apiBasePath}${path}`, body, this.addHeaders(needsToken))
+  post(path:string, body:any, addToken:boolean = false): Observable<any> {
+    return this.http.post(`${apiBasePath}${path}`, body, this.addHeaders(addToken))
       .map(this.getJson)
       .catch(this.handleError);
   }
 
-  put(path:string, body:any, needsToken:boolean = false):Observable<any> {
-    return this.http.put(`${this.apiBasePath}${path}`, body, this.addHeaders(needsToken))
+  put(path:string, body:any, addToken:boolean = false): Observable<any> {
+    return this.http.put(`${apiBasePath}${path}`, body, this.addHeaders(addToken))
       .map(this.getJson)
       .catch(this.handleError);
   }

@@ -31,7 +31,6 @@ const calculateScore = (time: number) => {
 export class GameRoomComponent implements OnDestroy {
   // subscriptions & observables
   game$: Observable<IGame>;
-  triviaQuestion$: Observable<ITriviaQuestion>;
   messages$: Subscription;
   user$: Subscription;
   loading$: Subscription;
@@ -46,10 +45,14 @@ export class GameRoomComponent implements OnDestroy {
   gameType: IGameCategory | null;
   gameTimeout: number;
   questionTimer: number;
+  isCountdownVisible: boolean = true;
 
   showNotification: boolean = false;
-  answerCorrect: boolean;
+  isAnswerCorrect: boolean;
 
+  questions$: Subscription;
+  questions: ITriviaQuestion[] | null;
+  questionIndex: number = 0;
   totalQuestions: number = 8;
   totalScore: number = 0;
 
@@ -65,16 +68,25 @@ export class GameRoomComponent implements OnDestroy {
     this.user$ = this.store.select(state => state.auth.user).subscribe(user => this.user = user);
     this.loading$ = this.loadingService.loadingCmp$.subscribe(loadingCmp => loadingCmp.dismiss());
     this.game$ = this.store.select(state => state.games.game);
-    this.triviaQuestion$ = this.store.select(state => state.triviaQuestion.triviaQuestion);
+
+    this.questions$ = this.store.select(state => state.triviaQuestions.triviaQuestions)
+      .subscribe(questions => this.questions = questions);
 
     this.questionTimer$ = this.timerService.getTimer().subscribe(timer => {
-      if (timer === 0) {
-        setTimeout(() => {
-          this.getTriviaQuestion();
+      this.questionTimer = timer;
+
+      if (this.questionTimer === 0) {
+        if (!this.questions) {
+          this.isCountdownVisible = false;
+          this.getTriviaQuestions();
           this.timerService.startTimer(11);
-        }, 1000);
+        }
+
+        if (this.questions) {
+          this.isAnswerCorrect = false;
+          this.showUserAnswerConfirmation()
+        }
       }
-      this.questionTimer = timer
     });
 
     this.messages$ = this.store.select(state => state.games.messages).subscribe(messages => {
@@ -97,6 +109,7 @@ export class GameRoomComponent implements OnDestroy {
     this.messages$.unsubscribe();
     this.loading$.unsubscribe();
     this.questionTimer$.unsubscribe();
+    this.questions$.unsubscribe();
     clearTimeout(this.gameTimeout);
   }
 
@@ -133,32 +146,33 @@ export class GameRoomComponent implements OnDestroy {
     }, 15000);
   }
 
-  getTriviaQuestion(id?: string) {
-    this.gameSocketService.handleGetNewQuestion({
+  getTriviaQuestions() {
+    this.gameSocketService.handleGetTriviaQuestionCollection({
       category: this.category.type,
-      id
     })
   }
 
   handlePlayerAnswerSelection(userAnswer: {choice: string; triviaQuestion: ITriviaQuestion}) {
     const timeRemaining = this.questionTimer;
-    this.timerService.stopTimer();
-    this.showNotification = true;
-    this.answerCorrect = userAnswer.choice === userAnswer.triviaQuestion.answer;
-    this.totalQuestions--;
-    this.totalScore = this.answerCorrect ?
+    this.isAnswerCorrect = userAnswer.choice === userAnswer.triviaQuestion.answer;
+    this.totalScore = this.isAnswerCorrect ?
       this.totalScore + (25 * calculateScore(timeRemaining)) : this.totalScore;
 
-    console.log('total questions', this.totalQuestions);
-    console.log('total score', this.totalScore);
+    this.showUserAnswerConfirmation();
+  }
+
+  showUserAnswerConfirmation() {
+    this.timerService.stopTimer();
+    this.showNotification = true;
+    this.totalQuestions--;
 
     setTimeout(() => {
       this.showNotification = false;
-      if (!this.totalQuestions) {
+      if (!(this.totalQuestions)) {
         this.presentEndGameAlert();
       } else {
         setTimeout(() => {
-          this.getTriviaQuestion(userAnswer.triviaQuestion._id || undefined);
+          this.questionIndex++;
           this.timerService.startTimer(11);
         }, 600);
       }
@@ -212,16 +226,21 @@ export class GameRoomComponent implements OnDestroy {
   closeModal() {
     switch (this.gameType) {
       case 'onePlayer':
-        this.gameSocketService.handleLeaveOnePlayerGame(this.user.userName);
+        setTimeout(() => {
+          this.gameSocketService.handleLeaveOnePlayerGame(this.user.userName);
+        }, 1000);
         break;
       case 'twoPlayer':
-        this.gameSocketService.handleLeaveTwoPlayerGame(this.user.userName);
+        setTimeout(() => {
+          this.gameSocketService.handleLeaveTwoPlayerGame(this.user.userName);
+        }, 1000);
         break;
       default:
-        this.gameSocketService.handleLeaveTwoPlayerGame();
+        setTimeout(() => {
+          this.gameSocketService.handleLeaveTwoPlayerGame(this.user.userName);
+        }, 1000);
         break;
     }
-
     this.viewCtrl.dismiss();
   }
 }

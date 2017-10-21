@@ -9,5 +9,5 @@ export interface ITriviaQuestion {
 export interface IGetTriviaQuestion {
   category: string;
   room?: string;
-  id: string | null;
+  // questionIds: string[];
 }

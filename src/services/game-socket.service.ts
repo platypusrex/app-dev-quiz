@@ -10,11 +10,11 @@ import { IGameCategory } from '../shared/models/game-categories.model';
 import { ICreateGame, IGame } from '../shared/models/game.model';
 import { IChat } from '../shared/models/chats.model';
 import { IGetTriviaQuestion, ITriviaQuestion } from '../shared/models/trivia-question.model';
+import { apiBasePath } from './api.service';
 
 @Injectable()
 export class GameSocketService {
   private socket: SocketIOClient.Socket;
-  private url: string = 'http://localhost:8000/';
   private game: IGame;
 
   constructor(
@@ -29,7 +29,7 @@ export class GameSocketService {
   }
 
   joinGameRoom(category: IGameCategory) {
-    this.socket = io(`${this.url}${category.type}-games`);
+    this.socket = io(`${apiBasePath}${category.type}-games`);
     this.socket.emit(gameEvents.joinRoom, category.displayName);
 
     this.socket.on(gameEvents.message, (msgData) => {
@@ -100,9 +100,16 @@ export class GameSocketService {
     }
   }
 
+  handleGetTriviaQuestionCollection(getQuestionData: IGetTriviaQuestion) {
+    if (this.game) {
+      getQuestionData.room = this.game.room;
+      this.socket.emit(gameEvents.newQuestion, getQuestionData);
+    }
+  }
+
   getGameEventListeners() {
-    this.socket.on(gameEvents.newQuestionSuccess, (questionData: ITriviaQuestion) => {
-      this.store.dispatch(this.triviaQuestionActions.updateTriviaQuestion(questionData));
+    this.socket.on(gameEvents.newQuestionSuccess, (questionData: ITriviaQuestion[]) => {
+      this.store.dispatch(this.triviaQuestionActions.getTriviaQuestionCollection(questionData));
     });
   }
 

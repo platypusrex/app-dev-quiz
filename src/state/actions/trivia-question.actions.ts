@@ -4,10 +4,10 @@ import { ITriviaQuestion } from '../../shared/models/trivia-question.model';
 
 @Injectable()
 export class TriviaQuestionActions {
-  static UPDATE_TRIVIA_QUESTION = 'UPDATE_TRIVIA_QUESTION';
-  updateTriviaQuestion(triviaQuestion: ITriviaQuestion): Action {
+  static GET_TRIVIA_QUESTION_COLLECTION = 'GET_TRIVIA_QUESTION_COLLECTION';
+  getTriviaQuestionCollection(triviaQuestion: ITriviaQuestion[]): Action {
     return {
-      type: TriviaQuestionActions.UPDATE_TRIVIA_QUESTION,
+      type: TriviaQuestionActions.GET_TRIVIA_QUESTION_COLLECTION,
       payload: triviaQuestion
     }
   }

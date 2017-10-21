@@ -25,24 +25,24 @@
 		[game]="game$ | async"
 		[gameType]="gameType"
 		[messages]="messages"
-		[isMessageVisible]="!(triviaQuestion$ | async)?._id">
+		[isMessageVisible]="!questions">
 	</game-message-cmp>
 
 	<game-check-answer-cmp
-		[isCorrect]="answerCorrect"
+		[isCorrect]="isAnswerCorrect"
 		[showMessage]="showNotification">
 	</game-check-answer-cmp>
 
 	<div
 		class="dq-flex-container column center"
-		*ngIf="!(triviaQuestion$ | async) && questionTimer && questionTimer > 0">
+		*ngIf="!(questions) && isCountdownVisible && questionTimer">
 		<game-start-countdown-cmp></game-start-countdown-cmp>
 	</div>
 
-	<div style="width:100%;" *ngIf="(triviaQuestion$ | async) && questionTimer && questionTimer > 0">
+	<div style="width:100%;" *ngIf="!!(questions)">
 		<progress-bar-cmp
 			[progress]="questionTimer"
-			[startingNumber]="!(triviaQuestion$ | async) ? 5 : 10">
+			[startingNumber]="!questions ? 5 : 10">
 		</progress-bar-cmp>
 		<div class="dq-flex-container center-text-vertical" style="padding-right:10px;line-height:13px;">
 			<span style="font-size:12px;color:#2a2a2a;margin-left:auto;">{{user.userName}}&nbsp;&nbsp;</span>
@@ -51,7 +51,7 @@
 	</div>
 
 	<game-question-cmp
-		[triviaQuestion]="triviaQuestion$ | async"
+		[triviaQuestion]="questions && questions[questionIndex]"
 		(emitPlayerAnswerSelection)="handlePlayerAnswerSelection($event)">
 	</game-question-cmp>
 

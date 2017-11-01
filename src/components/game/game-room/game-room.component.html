@@ -52,6 +52,7 @@
 
 	<game-question-cmp
 		[triviaQuestion]="questions && questions[questionIndex]"
+		[areGameButtonsActive]="areGameButtonsActive"
 		(emitPlayerAnswerSelection)="handlePlayerAnswerSelection($event)">
 	</game-question-cmp>
 

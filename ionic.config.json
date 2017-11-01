@@ -1,5 +1,8 @@
 {
   "name": "app-dev-quiz",
   "app_id": "",
-  "projectTypeId": "ionic-angular"
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "ionic-angular"
 }

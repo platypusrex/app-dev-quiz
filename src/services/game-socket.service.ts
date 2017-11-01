@@ -96,19 +96,19 @@ export class GameSocketService {
   handleGetNewQuestion(getQuestionData: IGetTriviaQuestion) {
     if (this.game) {
       getQuestionData.room = this.game.room;
-      this.socket.emit(gameEvents.newQuestion, getQuestionData);
+      this.socket.emit(gameEvents.getQuestions, getQuestionData);
     }
   }
 
   handleGetTriviaQuestionCollection(getQuestionData: IGetTriviaQuestion) {
     if (this.game) {
       getQuestionData.room = this.game.room;
-      this.socket.emit(gameEvents.newQuestion, getQuestionData);
+      this.socket.emit(gameEvents.getQuestions, getQuestionData);
     }
   }
 
   getGameEventListeners() {
-    this.socket.on(gameEvents.newQuestionSuccess, (questionData: ITriviaQuestion[]) => {
+    this.socket.on(gameEvents.getQuestionsSuccess, (questionData: ITriviaQuestion[]) => {
       this.store.dispatch(this.triviaQuestionActions.getTriviaQuestionCollection(questionData));
     });
   }

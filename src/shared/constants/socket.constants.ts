@@ -35,8 +35,8 @@ interface IOnePlayerGameEvents {
 }
 
 interface ITriviaQuestionEvents {
-  newQuestion: string;
-  newQuestionSuccess: string;
+  getQuestions: string;
+  getQuestionsSuccess: string;
 }
 
 type IGameEvents = ISocketEvents &
@@ -81,8 +81,8 @@ export const twoPlayerGameEvents: ITwoPlayerGameEvents = {
 };
 
 export const triviaQuestionEvents = {
-  newQuestion: 'newQuestion',
-  newQuestionSuccess: 'newQuestionSuccess'
+  getQuestions: 'getQuestions',
+  getQuestionsSuccess: 'getQuestionsSuccess'
 };
 
 export const gameEvents: IGameEvents =

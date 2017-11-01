@@ -48,6 +48,7 @@ export class GameRoomComponent implements OnDestroy {
   isCountdownVisible: boolean = true;
 
   showNotification: boolean = false;
+  areGameButtonsActive: boolean = true;
   isAnswerCorrect: boolean;
 
   questions$: Subscription;
@@ -163,6 +164,7 @@ export class GameRoomComponent implements OnDestroy {
 
   showUserAnswerConfirmation() {
     this.timerService.stopTimer();
+    this.areGameButtonsActive = false;
     this.showNotification = true;
     this.totalQuestions--;
 
@@ -173,6 +175,7 @@ export class GameRoomComponent implements OnDestroy {
       } else {
         setTimeout(() => {
           this.questionIndex++;
+          this.areGameButtonsActive = true;
           this.timerService.startTimer(11);
         }, 600);
       }

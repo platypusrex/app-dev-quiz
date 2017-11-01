@@ -12,9 +12,12 @@ interface PlayerAnswer {
 })
 export class GameQuestionComponent {
   @Input() triviaQuestion: ITriviaQuestion;
+  @Input() areGameButtonsActive: boolean;
   @Output() emitPlayerAnswerSelection: EventEmitter<PlayerAnswer> = new EventEmitter<PlayerAnswer>();
 
   handlePlayerAnswerSelection(choice: string, triviaQuestion: ITriviaQuestion) {
-    this.emitPlayerAnswerSelection.emit({choice, triviaQuestion});
+    if (this.areGameButtonsActive) {
+      this.emitPlayerAnswerSelection.emit({choice, triviaQuestion});
+    }
   }
 }

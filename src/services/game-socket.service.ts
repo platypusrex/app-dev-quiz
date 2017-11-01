@@ -76,7 +76,7 @@ export class GameSocketService {
   }
 
   handleLeaveTwoPlayerGame(userName?: string, gameStatus?: string) {
-    if (userName) {
+    if (userName && this.game) {
       this.socket.emit(gameEvents.cancelTwoPlayerGame, {
         room: this.game.room,
         id: this.game._id,
@@ -91,13 +91,6 @@ export class GameSocketService {
 
     this.store.dispatch(this.gamesActions.clearGameData());
     this.store.dispatch(this.triviaQuestionActions.clearTriviaQuestion());
-  }
-
-  handleGetNewQuestion(getQuestionData: IGetTriviaQuestion) {
-    if (this.game) {
-      getQuestionData.room = this.game.room;
-      this.socket.emit(gameEvents.getQuestions, getQuestionData);
-    }
   }
 
   handleGetTriviaQuestionCollection(getQuestionData: IGetTriviaQuestion) {
